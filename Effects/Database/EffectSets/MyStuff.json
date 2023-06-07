@@ -1,0 +1,54 @@
+{
+   "00Fard - DMCAbullet_attached" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/vehicle/gasengines/gasengine05" ],
+            "type" : "audio"
+         },
+         {
+            "attached" : true,
+            "particles" : [ "DMCAbullet" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "00Fard - DMCAbullet_hit" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/vehicle/triggers/encryptor_on" ],
+            "type" : "audio"
+         },
+         {
+            "particles" : [ "DMCAbullet_hit" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Amogus - Twerk" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "Amogus_twerk" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Medi - Beam_segment" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "medi_beam_segment" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "SUS" : {
+      "effectList" : [
+         {
+            "attached" : true,
+            "particles" : [ "SUS" ],
+            "type" : "particle"
+         }
+      ]
+   }
+}
