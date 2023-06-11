@@ -42,6 +42,15 @@
          }
       ]
    },
+   "Player - Anime_lines" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_enviroment_fallingeffect_01" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "SUS" : {
       "effectList" : [
          {
