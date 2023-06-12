@@ -18,15 +18,16 @@ function PlayerChar.client_onCreate( self )
 end
 
 function PlayerChar.client_onFixedUpdate( self, dt )
-    local fast
     if not sm.exists( self.character ) then
         return
     end
-    print(self.character.velocity:length())
+    --print(self.character.velocity:length())
     if falling ~= nil then
+        --[[
         local lockingInteractable = self.character:getLockingInteractable()
-        local velocity = 0
         local isDriving = false
+        local velocity = 0
+        local fast
         if lockingInteractable then
             fast = sm.effect.createEffect( "Player - Anime_lines", lockingInteractable )
             velocity = lockingInteractable.shape.velocity:length()
@@ -48,14 +49,24 @@ function PlayerChar.client_onFixedUpdate( self, dt )
                 falling:setOffsetRotation(offset)
                 falling:start()
             end
+        ]]
+        if self.character.velocity.z:length() > 20 then
+            if self.character.velocity.z > 0 then
+                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.character:getVelocity() ))
+            else
+                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, -1, 0 ), self.character:getVelocity() ))
+            end
+            falling:start()
         else
             if falling:isPlaying() then
                 falling:stop()
             end
+            --[[
             if fast ~= nil and fast:isPlaying() then
                 fast:stop()
                 fast:destroy()
             end
+            ]]
         end
     end
 end
