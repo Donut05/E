@@ -4,6 +4,7 @@
       "particles/DMCAbullet_hit.json",
       "particles/DMCAbullet.json",
       "particles/Amogus_twerk.json",
-      "particles/medi_beam_segment.json"
+      "particles/medi_beam_segment.json",
+      "particles/rain.json"
    ]
 }

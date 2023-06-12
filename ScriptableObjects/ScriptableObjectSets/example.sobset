@@ -1,3 +1,10 @@
 {
-	"scriptableObjectList": []
+   "scriptableObjectList" : [
+      {
+         "classname" : "WeatherManager",
+         "filename" : "$CONTENT_DATA/Scripts/managers/WeatherManager.lua",
+         "name" : "WeatherManager",
+         "uuid" : "88c4f979-0feb-44d3-8b59-51da00338430"
+      }
+   ]
 }

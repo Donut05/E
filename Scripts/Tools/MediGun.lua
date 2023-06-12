@@ -62,6 +62,18 @@ function Medi.client_onUpdate( self )
     end
 end
 
+function Medi.server_onFixedUpdate( self, dt )
+    if not self.target then return end
+    if self.target:isPlayer() then
+        local edibleParams = {
+            hpGain = 1
+        }
+        sm.event.sendToPlayer( self.target, "sv_e_eat", edibleParams )
+    else
+        self.target:setTumbling( true )
+    end
+end
+
 function Medi.client_onEquippedUpdate( self, lmb )
     if lmb == 1 then
         if self.target then

@@ -33,6 +33,23 @@
          }
       ]
    },
+   "Environment - Rain" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "rain" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Environment - Rain_sound" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/amb/3D/water_splash" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "Medi - Beam_segment" : {
       "effectList" : [
          {

@@ -1,7 +1,7 @@
 dofile( "$GAME_DATA/Scripts/game/AnimationUtil.lua" )
 dofile( "$SURVIVAL_DATA/Scripts/util.lua" )
 
---dofile( "$CONTENT_DATA/Scripts/Security.lua" )
+
 
 DMCAgun = class()
 
@@ -21,7 +21,6 @@ sm.tool.preloadRenderables( renderablesTp )
 sm.tool.preloadRenderables( renderablesFp )
 
 function DMCAgun.client_onCreate( self )
-	Security.client_onCreate( self )
 	self.shootEffect = sm.effect.createEffect( "SpudgunBasic - BasicMuzzel" )
 	self.shootEffectFP = sm.effect.createEffect( "SpudgunBasic - FPBasicMuzzel" )
 end
@@ -141,8 +140,6 @@ function DMCAgun.loadAnimations( self )
 end
 
 function DMCAgun.client_onUpdate( self, dt )
-
-	Security.client_onCreate( self )
 
 	-- First person animation
 	local isSprinting =  self.tool:isSprinting()

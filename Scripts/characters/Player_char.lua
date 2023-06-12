@@ -4,7 +4,7 @@ dofile "$SURVIVAL_DATA/Scripts/game/characters/MechanicCharacter.lua"
 
 PlayerChar = class( MechanicCharacter )
 
-local falling
+local switch, falling, rain = false
 
 function PlayerChar.server_onCreate( self )
     MechanicCharacter.server_onCreate( self )
@@ -50,11 +50,11 @@ function PlayerChar.client_onFixedUpdate( self, dt )
                 falling:start()
             end
         ]]
-        if self.character.velocity.z:length() > 20 then
-            if self.character.velocity.z > 0 then
+        if math.abs( self.character.velocity.z ) > 20 then
+            if self.character.velocity.z > 20 then
+                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, -1, 0 ), ( self.character:getVelocity() * -1 ) ))
+            elseif self.character.velocity.z < 20 then
                 falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.character:getVelocity() ))
-            else
-                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, -1, 0 ), self.character:getVelocity() ))
             end
             falling:start()
         else

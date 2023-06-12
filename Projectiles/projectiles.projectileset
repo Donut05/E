@@ -17,7 +17,7 @@
          "enableImpactEffect" : true,
          "friction" : 0.2000000029802322,
          "mass" : 0.0,
-         "mesh" : "$CONTENT_DATA/Projectiles/Mesh/Empty.fbx",
+         "mesh" : "$CONTENT_DATA/Objects/Mesh/part.fbx",
          "name" : "DMCAbullet",
          "radius" : 1.0,
          "spin" : 42.0,

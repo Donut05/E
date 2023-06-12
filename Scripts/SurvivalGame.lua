@@ -1,3 +1,5 @@
+---@diagnostic disable: lowercase-global, undefined-global
+
 dofile( "$SURVIVAL_DATA/Scripts/game/managers/BeaconManager.lua" )
 
 
@@ -67,10 +69,7 @@ function SurvivalGame.server_onCreate( self )
 	g_elevatorManager = ElevatorManager()
 	g_elevatorManager:sv_onCreate()
 
-
-
-
-
+	g_WeatherManager = sm.scriptableObject.createScriptableObject( sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld )
 
 	g_respawnManager = RespawnManager()
 	g_respawnManager:sv_onCreate( self.sv.saved.overworld )
@@ -190,6 +189,7 @@ function SurvivalGame.bindChatCommands( self )
 	local addCheats = g_survivalDev
 
 	if addCheats then
+		sm.game.bindChatCommand( "/rain", {}, "cl_onChatCommand", "Toggles rain" )
 		sm.game.bindChatCommand( "/ammo", { { "int", "quantity", true } }, "cl_onChatCommand", "Give ammo (default 50)" )
 		sm.game.bindChatCommand( "/spudgun", {}, "cl_onChatCommand", "Give the spudgun" )
 		sm.game.bindChatCommand( "/gatling", {}, "cl_onChatCommand", "Give the potato gatling gun" )
@@ -779,7 +779,8 @@ function SurvivalGame.sv_onChatCommand( self, params, player )
 		else
 			self.network:sendToClients( "client_showMessage", "Player is not tumbling" )
 		end
-
+	elseif params[1] == "/rain" then
+		sm.event.sendToScriptableObject( g_WeatherManager, "sv_toggle_rain" )
 	elseif params[1] == "/sethp" then
 		sm.event.sendToPlayer( player, "sv_e_debug", { hp = params[2] } )
 
