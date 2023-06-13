@@ -45,7 +45,7 @@
    "Environment - Rain_sound" : {
       "effectList" : [
          {
-            "audio" : [ "event:/amb/3D/water_splash" ],
+            "audio" : [ "event:/coll/dust_rocket" ],
             "type" : "audio"
          }
       ]

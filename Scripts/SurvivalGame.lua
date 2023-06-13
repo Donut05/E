@@ -760,11 +760,11 @@ end
 
 function SurvivalGame.sv_exportCreation( self, params )
 	local obj = sm.json.parseJsonString( sm.creation.exportToString( params.body ) )
-	sm.json.save( obj, "$SURVIVAL_DATA/LocalBlueprints/"..params.name..".blueprint" )
+	sm.json.save( obj, "$CONTENT_DATA/LocalBlueprints/"..params.name..".blueprint" )
 end
 
 function SurvivalGame.sv_importCreation( self, params )
-	sm.creation.importFromFile( params.world, "$SURVIVAL_DATA/LocalBlueprints/"..params.name..".blueprint", params.position )
+	sm.creation.importFromFile( params.world, "$CONTENT_DATA/LocalBlueprints/"..params.name..".blueprint", params.position )
 end
 
 function SurvivalGame.sv_onChatCommand( self, params, player )
