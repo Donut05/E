@@ -13,8 +13,8 @@ end
 function WeatherManager.client_onUpdate( self, dt )
     if self.rainSwitch then
         local player = sm.localPlayer.getPlayer()
-        self.rain:setPosition( player.character.worldPosition + sm.vec3.new( player.character.velocity.x / 10 + 0.5, player.character.velocity.y / 10 + 0.5, 0 ) )
-        local hit, result = sm.physics.raycast( player.character.worldPosition, player.character.worldPosition + sm.vec3.new( 0, 0, 1000 ) )
+        self.rain:setPosition( sm.vec3.new( player.character.worldPosition.x, player.character.worldPosition.y, 0 ) + sm.vec3.new( player.character.velocity.x / 10 + 0.5, player.character.velocity.y / 10 + 0.5, 0 ) )
+        local hit, result = sm.physics.raycast( player.character.worldPosition, player.character.worldPosition + sm.vec3.new( 0, 0, 14 ) )
         if hit then
             self.rainSound:setPosition( result.pointWorld + sm.vec3.new( 0, 0, 2 ) + self.rainSoundOffset )
             --sm.particle.createParticle("construct_welding", result.pointWorld + sm.vec3.new( 0, 0, 2 ) )
