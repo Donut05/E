@@ -5,6 +5,7 @@
       "particles/DMCAbullet.json",
       "particles/Amogus_twerk.json",
       "particles/medi_beam_segment.json",
-      "particles/rain.json"
+      "particles/rain.json",
+      "particles/ground_slam.json"
    ]
 }

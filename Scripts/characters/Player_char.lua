@@ -13,6 +13,7 @@ end
 
 function PlayerChar.client_onCreate( self )
     MechanicCharacter.client_onCreate( self )
+    self.previousTick = sm.game.getCurrentTick()
     falling = sm.effect.createEffect( "Player - Anime_lines", self.character )
     print("PlayerChar.client_onCreate")
 end
@@ -21,7 +22,12 @@ function PlayerChar.client_onFixedUpdate( self, dt )
     if not sm.exists( self.character ) then
         return
     end
-    --print(self.character.velocity:length())
+    if self.previousTick + 5 == sm.game.getCurrentTick() then
+        print("Updated!")
+        self.previousTick = sm.game.getCurrentTick()
+        self.previousVelocity = math.abs( self.character.velocity.z )
+        print(self.previousVelocity)
+    end
     if falling ~= nil then
         --[[
         local lockingInteractable = self.character:getLockingInteractable()
@@ -68,5 +74,11 @@ function PlayerChar.client_onFixedUpdate( self, dt )
             end
             ]]
         end
+    end
+end
+
+function PlayerChar.client_onCollision( self, other, position, selfPointVelocity, otherPointVelocity, normal )
+    if self.previousVelocity > 20 then --and self.character.worldPosition.z > position.z then
+        sm.effect.playEffect( "Player - Slam", self.character.worldPosition )
     end
 end

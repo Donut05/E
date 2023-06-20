@@ -68,6 +68,19 @@
          }
       ]
    },
+   "Player - Slam" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "ground_slam" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/char/npc/bots/enemies/farmbot/farmbot_takedamage" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "SUS" : {
       "effectList" : [
          {
