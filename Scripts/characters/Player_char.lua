@@ -4,7 +4,7 @@ dofile "$SURVIVAL_DATA/Scripts/game/characters/MechanicCharacter.lua"
 
 PlayerChar = class( MechanicCharacter )
 
-local switch, falling, rain = false
+local falling
 
 function PlayerChar.server_onCreate( self )
     MechanicCharacter.server_onCreate( self )
@@ -23,10 +23,8 @@ function PlayerChar.client_onFixedUpdate( self, dt )
         return
     end
     if self.previousTick + 5 == sm.game.getCurrentTick() then
-        print("Updated!")
         self.previousTick = sm.game.getCurrentTick()
-        self.previousVelocity = math.abs( self.character.velocity.z )
-        print(self.previousVelocity)
+        self.previousVelocity = self.character.velocity.z
     end
     if falling ~= nil then
         --[[
@@ -66,6 +64,9 @@ function PlayerChar.client_onFixedUpdate( self, dt )
         else
             if falling:isPlaying() then
                 falling:stop()
+                if self.previousVelocity < 20 then
+                    sm.effect.playEffect( "Player - Slam", self.character.worldPosition )
+                end
             end
             --[[
             if fast ~= nil and fast:isPlaying() then
@@ -74,11 +75,5 @@ function PlayerChar.client_onFixedUpdate( self, dt )
             end
             ]]
         end
-    end
-end
-
-function PlayerChar.client_onCollision( self, other, position, selfPointVelocity, otherPointVelocity, normal )
-    if self.previousVelocity > 20 then --and self.character.worldPosition.z > position.z then
-        sm.effect.playEffect( "Player - Slam", self.character.worldPosition )
     end
 end
