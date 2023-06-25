@@ -23,9 +23,12 @@ sm.tool.preloadRenderables( renderablesFp )
 function DMCAgun.client_onCreate( self )
 	self.shootEffect = sm.effect.createEffect( "SpudgunBasic - BasicMuzzel" )
 	self.shootEffectFP = sm.effect.createEffect( "SpudgunBasic - FPBasicMuzzel" )
-	self.chargeCounter = 0
+
+	self.isLocal = self.tool:isLocal()
+	if not self.isLocal then return end
+
+	self.chargeCounter = nil
 	self.isCharging = false
-	self.previousTick = sm.game.getCurrentTick()
 end
 
 function DMCAgun.client_onRefresh( self )
@@ -640,10 +643,32 @@ function DMCAgun.cl_onPrimaryUse( self, state )
 	end
 end
 
-function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
+
+
+function DMCAgun:client_onFixedUpdate()
+	if not self.isLocal then return end
 
 	if self.isCharging then
-		print(self.chargeCounter)
+		self.chargeCounter = self.chargeCounter + 1
+		if self.chargeCounter == 120 then
+			self.chargeCounter = nil
+			self.isCharging = false
+			self:cl_onSecondaryUse( 1 )
+		end
+	end
+end
+
+function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
+	self.isCharging = (secondaryState == 1 or secondaryState == 2) and self.fireCooldownTimer <= 0
+	if self.isCharging then
+		if self.chargeCounter == nil then
+			self.chargeCounter = 0
+		end
+	else
+		self.chargeCounter = nil
+	end
+
+	if self.isCharging then
 		sm.gui.setProgressFraction(self.chargeCounter / 120)
 	else
 		sm.gui.setProgressFraction(self.fireCooldownTimer / self.normalFireMode.fireCooldown)
@@ -652,27 +677,6 @@ function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
 	if primaryState ~= self.prevPrimaryState then
 		self:cl_onPrimaryUse( primaryState )
 		self.prevPrimaryState = primaryState
-	end
-
-	if secondaryState == 1 then
-		self.chargetimer = sm.game.getCurrentTick()
-		self.isCharging = true
-		self.chargeCounter = 0
-		print("Set charge timer!")
-	end
-
-	if secondaryState == 2 then
-		if sm.game.getCurrentTick() - 120 == self.chargetimer then
-			self.chargeCounter = 0
-			self.isCharging = false
-			print("passed")
-			self:cl_onSecondaryUse( 1 )
-		else
-			if self.previousTick + 1 == sm.game.getCurrentTick() then
-				self.previousTick = sm.game.getCurrentTick()
-				self.chargeCounter = self.chargeCounter + 1
-			end
-		end
 	end
 
 	return true, true
