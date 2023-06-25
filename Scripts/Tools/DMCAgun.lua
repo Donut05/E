@@ -23,6 +23,9 @@ sm.tool.preloadRenderables( renderablesFp )
 function DMCAgun.client_onCreate( self )
 	self.shootEffect = sm.effect.createEffect( "SpudgunBasic - BasicMuzzel" )
 	self.shootEffectFP = sm.effect.createEffect( "SpudgunBasic - FPBasicMuzzel" )
+	self.chargeCounter = 0
+	self.isCharging = false
+	self.previousTick = sm.game.getCurrentTick()
 end
 
 function DMCAgun.client_onRefresh( self )
@@ -92,12 +95,12 @@ function DMCAgun.loadAnimations( self )
 	end
 
 	self.normalFireMode = {
-		fireCooldown = 0.20,
+		fireCooldown = 1,
 		spreadCooldown = 0.18,
 		spreadIncrement = 2.6,
 		spreadMinAngle = .25,
 		spreadMaxAngle = 8,
-		fireVelocity = 25,
+		fireVelocity = 15,
 
 		minDispersionStanding = 0.1,
 		minDispersionCrouching = 0.04,
@@ -411,7 +414,7 @@ function DMCAgun.client_onUnequip( self, animate )
 		end
 	end
 end
-
+--[[
 function DMCAgun.sv_n_onAim( self, aiming )
 	self.network:sendToClients( "cl_n_onAim", aiming )
 end
@@ -428,7 +431,7 @@ function DMCAgun.onAim( self, aiming )
 		setTpAnimation( self.tpAnimations, self.aiming and "aim" or "idle", 5.0 )
 	end
 end
-
+]]
 function DMCAgun.sv_n_onShoot( self, dir )
 	self.network:sendToClients( "cl_n_onShoot", dir )
 end
@@ -545,7 +548,7 @@ function DMCAgun.calculateFpMuzzlePos( self )
 	return self.tool:getFpBonePos( "pejnt_barrel" ) + sm.vec3.lerp( muzzlePos45, muzzlePos90, fovScale )
 end
 
-function DMCAgun.cl_onPrimaryUse( self, state )
+function DMCAgun.cl_onSecondaryUse( self, state )
 	if self.tool:getOwner().character == nil then
 		return
 	end
@@ -617,7 +620,7 @@ function DMCAgun.cl_onPrimaryUse( self, state )
 	end
 end
 
-function DMCAgun.cl_onSecondaryUse( self, state )
+function DMCAgun.cl_onPrimaryUse( self, state )
 	if state == sm.tool.interactState.start and not self.aiming then
 		self.aiming = true
 		self.tpAnimations.animations.idle.time = 0
@@ -638,14 +641,38 @@ function DMCAgun.cl_onSecondaryUse( self, state )
 end
 
 function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
+
+	if self.isCharging then
+		print(self.chargeCounter)
+		sm.gui.setProgressFraction(self.chargeCounter / 120)
+	else
+		sm.gui.setProgressFraction(self.fireCooldownTimer / self.normalFireMode.fireCooldown)
+	end
+
 	if primaryState ~= self.prevPrimaryState then
 		self:cl_onPrimaryUse( primaryState )
 		self.prevPrimaryState = primaryState
 	end
 
-	if secondaryState ~= self.prevSecondaryState then
-		self:cl_onSecondaryUse( secondaryState )
-		self.prevSecondaryState = secondaryState
+	if secondaryState == 1 then
+		self.chargetimer = sm.game.getCurrentTick()
+		self.isCharging = true
+		self.chargeCounter = 0
+		print("Set charge timer!")
+	end
+
+	if secondaryState == 2 then
+		if sm.game.getCurrentTick() - 120 == self.chargetimer then
+			self.chargeCounter = 0
+			self.isCharging = false
+			print("passed")
+			self:cl_onSecondaryUse( 1 )
+		else
+			if self.previousTick + 1 == sm.game.getCurrentTick() then
+				self.previousTick = sm.game.getCurrentTick()
+				self.chargeCounter = self.chargeCounter + 1
+			end
+		end
 	end
 
 	return true, true

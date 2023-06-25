@@ -2,22 +2,17 @@
    "projectiles" : [
       {
          "attachedEffect" : "00Fard - DMCAbullet_attached",
-         "audiomass" : 250.0,
+         "audiomass" : 1000.0,
          "destruction" : {
-            "destructionLevels" : [
-               {
-                  "chance" : 0.0,
-                  "qualityLevel" : 1
-               }
-            ]
+            "destructionLevels" : []
          },
          "effect" : "00Fard - DMCAbullet_hit",
          "effectmaterial" : "Mechanical",
          "enableGravity" : true,
          "enableImpactEffect" : true,
-         "friction" : 0.2000000029802322,
-         "mass" : 0.0,
-         "mesh" : "$CONTENT_DATA/Objects/Mesh/part.fbx",
+         "friction" : 100.0,
+         "mass" : 100.0,
+         "mesh" : "$CONTENT_DATA/Projectiles/Renderables/DMCA_bullet.rend",
          "name" : "DMCAbullet",
          "radius" : 1.0,
          "spin" : 42.0,
