@@ -350,8 +350,8 @@ function DMCAgun.client_onUpdate( self, dt )
 
 	-- Camera update
 	local bobbing = 1
-	if self.aiming then
-		local blend = 1 - math.pow( 1 - 1 / self.aimBlendSpeed, dt * 60 )
+	if self.isCharging then
+		local blend = 1 - math.pow( 1 - 1 / self.aimBlendSpeed, dt * 2 )
 		self.aimWeight = sm.util.lerp( self.aimWeight, 1.0, blend )
 		bobbing = 0.12
 	else
@@ -417,7 +417,7 @@ function DMCAgun.client_onUnequip( self, animate )
 		end
 	end
 end
---[[
+
 function DMCAgun.sv_n_onAim( self, aiming )
 	self.network:sendToClients( "cl_n_onAim", aiming )
 end
@@ -434,7 +434,7 @@ function DMCAgun.onAim( self, aiming )
 		setTpAnimation( self.tpAnimations, self.aiming and "aim" or "idle", 5.0 )
 	end
 end
-]]
+
 function DMCAgun.sv_n_onShoot( self, dir )
 	self.network:sendToClients( "cl_n_onShoot", dir )
 end
