@@ -1,6 +1,7 @@
+---@diagnostic disable: need-check-nil
 dofile( "$GAME_DATA/Scripts/game/AnimationUtil.lua" )
 dofile( "$SURVIVAL_DATA/Scripts/util.lua" )
-
+dofile( "$CONTENT_DATA/Scripts/visualised_trigger.lua" )
 
 
 DMCAgun = class()
@@ -23,6 +24,7 @@ sm.tool.preloadRenderables( renderablesFp )
 function DMCAgun.client_onCreate( self )
 	self.shootEffect = sm.effect.createEffect( "SpudgunBasic - BasicMuzzel" )
 	self.shootEffectFP = sm.effect.createEffect( "SpudgunBasic - FPBasicMuzzel" )
+	self.flames = sm.effect.createEffect( "Dirtf - Tirade_flames" )
 
 	self.isLocal = self.tool:isLocal()
 	if not self.isLocal then return end
@@ -370,6 +372,7 @@ function DMCAgun.client_onEquip( self, animate )
 		sm.audio.play( "PotatoRifle - Equip", self.tool:getPosition() )
 	end
 
+	self.tiradeTrigger = CreateVisualizedTrigger( self:calculateFirePosition(), sm.vec3.new( 1.5, 4, 2 ), 4 )
 	self.wantEquipped = true
 	self.aiming = false
 	local cameraWeight, cameraFPWeight = self.tool:getCameraWeights()
@@ -398,6 +401,7 @@ end
 
 function DMCAgun.client_onUnequip( self, animate )
 
+	self.tiradeTrigger:destroy()
 	self.wantEquipped = false
 	self.equipped = false
 	self.aiming = false
@@ -627,18 +631,16 @@ function DMCAgun.cl_onPrimaryUse( self, state )
 	if state == sm.tool.interactState.start and not self.aiming then
 		self.aiming = true
 		self.tpAnimations.animations.idle.time = 0
-
+		self.flames:start()
 		self:onAim( self.aiming )
-		self.tool:setMovementSlowDown( self.aiming )
 		self.network:sendToServer( "sv_n_onAim", self.aiming )
 	end
 
 	if self.aiming and (state == sm.tool.interactState.stop or state == sm.tool.interactState.null) then
 		self.aiming = false
 		self.tpAnimations.animations.idle.time = 0
-
+		self.flames:stop()
 		self:onAim( self.aiming )
-		self.tool:setMovementSlowDown( self.aiming )
 		self.network:sendToServer( "sv_n_onAim", self.aiming )
 	end
 end
@@ -648,12 +650,33 @@ end
 function DMCAgun:client_onFixedUpdate()
 	if not self.isLocal then return end
 
+	self.tool:setMovementSlowDown( self.isCharging )
 	if self.isCharging then
 		self.chargeCounter = self.chargeCounter + 1
 		if self.chargeCounter == 120 then
 			self.chargeCounter = nil
 			self.isCharging = false
 			self:cl_onSecondaryUse( 1 )
+		end
+	end
+
+	if self.aiming then
+		self.tiradeTrigger:setPosition( self:calculateFirePosition() + sm.localPlayer.getDirection() * 2.5 )
+		self.tiradeTrigger:setRotation( sm.camera.getRotation() )
+		if self.tool:isInFirstPersonView() then
+			self.flames:setPosition( self.tool:getFpBonePos( "pejnt_barrel" ) )
+		else
+			self.flames:setPosition( self.tool:getTpBonePos( "pejnt_barrel" ) )
+		end
+		self.flames:setRotation( sm.camera.getRotation() )
+
+		local areaContents = self.tiradeTrigger:getContents()
+		if #areaContents ~= 0 or areaContents ~= {} and areaContents ~= nil then
+			for _, character in pairs( areaContents ) do
+				if not character:isPlayer() then
+					
+				end
+			end
 		end
 	end
 end
