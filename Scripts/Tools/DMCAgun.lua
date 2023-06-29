@@ -670,11 +670,13 @@ function DMCAgun:client_onFixedUpdate()
 		end
 		self.flames:setRotation( sm.camera.getRotation() )
 
-		local areaContents = self.tiradeTrigger:getContents()
+		local areaContents = self.tiradeTrigger.trigger:getContents()
 		if #areaContents ~= 0 or areaContents ~= {} and areaContents ~= nil then
 			for _, character in pairs( areaContents ) do
+				if not sm.exists(character) then return end
 				if not character:isPlayer() then
-					
+					if not sm.exists(character) then return end
+					sm.projectile.projectileAttack( sm.uuid.new("132c44d3-7436-419d-ac6b-fc178336dcb7"), 1, character.worldPosition + sm.vec3.new( 0, 0, 0.5 ), sm.vec3.new( 0, 0, 1 ), self.tool:getOwner() )
 				end
 			end
 		end

@@ -23,7 +23,7 @@ function WeatherManager.client_onUpdate( self, dt )
         end
         if sm.game.getCurrentTick() >= self.nexttick then
             self.nexttick = sm.game.getCurrentTick() + 40
-            self.rainSoundOffset = sm.vec3.new( math.random( -0.2, 0.2 ), math.random( -0.2, 0.2 ), 0 )
+            self.rainSoundOffset = sm.vec3.zero () --sm.vec3.new( math.random( -0.2, 0.2 ), math.random( -0.2, 0.2 ), 0 )
         end
     end
 end
