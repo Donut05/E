@@ -707,8 +707,8 @@ function DMCAgun.sv_syncFlames( self, data )
 end
 
 function DMCAgun.cl_syncFlames( self, data )
-	self.flames:setPosition( data[1] )
-	self.flames:setPosition( data[2] )
+	self.flames:setPosition( data.position )
+	self.flames:setPosition( data.position )
 end
 
 function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
