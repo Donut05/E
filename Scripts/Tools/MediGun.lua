@@ -68,7 +68,7 @@ function Medi.server_onFixedUpdate( self, dt )
         local edibleParams = {
             hpGain = 1
         }
-        sm.event.sendToPlayer( self.target, "sv_e_eat", edibleParams )
+        sm.event.sendToPlayer( self.target:getPlayer(), "sv_e_eat", edibleParams )
     else
         self.target:setTumbling( true )
     end

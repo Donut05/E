@@ -401,6 +401,8 @@ end
 
 function DMCAgun.client_onUnequip( self, animate )
 
+	--self.flames:stop()
+	self.network:sendToServer( "sv_switchFlames", false )
 	self.tiradeTrigger:destroy()
 	self.wantEquipped = false
 	self.equipped = false
@@ -631,7 +633,8 @@ function DMCAgun.cl_onPrimaryUse( self, state )
 	if state == sm.tool.interactState.start and not self.aiming then
 		self.aiming = true
 		self.tpAnimations.animations.idle.time = 0
-		self.flames:start()
+		--self.flames:start()
+		self.network:sendToServer( "sv_switchFlames", true )
 		self:onAim( self.aiming )
 		self.network:sendToServer( "sv_n_onAim", self.aiming )
 	end
@@ -639,13 +642,24 @@ function DMCAgun.cl_onPrimaryUse( self, state )
 	if self.aiming and (state == sm.tool.interactState.stop or state == sm.tool.interactState.null) then
 		self.aiming = false
 		self.tpAnimations.animations.idle.time = 0
-		self.flames:stop()
+		--self.flames:stop()
+		self.network:sendToServer( "sv_switchFlames", false )
 		self:onAim( self.aiming )
 		self.network:sendToServer( "sv_n_onAim", self.aiming )
 	end
 end
 
+function DMCAgun.sv_switchFlames( self, state )
+	self.network:sendToClients( "cl_switchFlames", state )
+end
 
+function DMCAgun.cl_switchFlames( self, state )
+	if state then
+		self.flames:start()
+	else
+		self.flames:stop()
+	end
+end
 
 function DMCAgun:client_onFixedUpdate()
 	if not self.isLocal then return end
