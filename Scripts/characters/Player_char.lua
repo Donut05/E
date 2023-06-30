@@ -22,6 +22,7 @@ function PlayerChar.client_onFixedUpdate( self, dt )
     if not sm.exists( self.character ) then
         return
     end
+    if not ( sm.localPlayer.getPlayer() == self.character:getPlayer() ) then return end
     if self.previousTick + 5 == sm.game.getCurrentTick() then
         self.previousTick = sm.game.getCurrentTick()
         self.previousVelocity = self.character.velocity.z
