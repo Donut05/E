@@ -679,7 +679,7 @@ function DMCAgun:client_onFixedUpdate()
 		self.tiradeTrigger:setRotation( sm.camera.getRotation() )
 		local data = {
 			position = self.tool:getTpBonePos( "pejnt_barrel" ),
-			rotation = self.tool:getOwner().character:getDirection()
+			rotation = sm.camera.getRotation()
 		}
 		self.network:sendToServer( "sv_syncFlames", data )
 		if self.tool:isInFirstPersonView() then
@@ -708,7 +708,7 @@ end
 
 function DMCAgun.cl_syncFlames( self, data )
 	self.flames:setPosition( data.position )
-	self.flames:setPosition( data.position )
+	self.flames:setRotation( data.rotation )
 end
 
 function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
