@@ -679,7 +679,7 @@ function DMCAgun:client_onFixedUpdate()
 		self.tiradeTrigger:setRotation( sm.camera.getRotation() )
 		local data = {
 			position = self.tool:getTpBonePos( "pejnt_barrel" ),
-			rotation = sm.camera.getRotation()
+			rotation = self.tool:getOwner().character:getDirection()
 		}
 		self.network:sendToServer( "sv_syncFlames", data )
 		if self.tool:isInFirstPersonView() then
