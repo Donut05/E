@@ -677,8 +677,11 @@ function DMCAgun:client_onFixedUpdate()
 	if self.aiming then
 		self.tiradeTrigger:setPosition( self:calculateFirePosition() + sm.localPlayer.getDirection() * 2.5 )
 		self.tiradeTrigger:setRotation( sm.camera.getRotation() )
-		local position, rotation = self.tool:getTpBonePos( "pejnt_barrel" ), sm.camera.getRotation()
-		self.network:sendToServer( "sv_syncFlames", position, rotation )
+		local data = {
+			position = self.tool:getTpBonePos( "pejnt_barrel" ),
+			rotation = sm.camera.getRotation()
+		}
+		self.network:sendToServer( "sv_syncFlames", data )
 		if self.tool:isInFirstPersonView() then
 			self.flames:setPosition( self.tool:getFpBonePos( "pejnt_barrel" ) )
 		else
@@ -699,13 +702,13 @@ function DMCAgun:client_onFixedUpdate()
 	end
 end
 
-function DMCAgun.sv_syncFlames( self, position, rotation )
-	self.network:sendToClients( "cl_syncFlames", position, rotation )
+function DMCAgun.sv_syncFlames( self, data )
+	self.network:sendToClients( "cl_syncFlames", data )
 end
 
-function DMCAgun.cl_syncFlames( self, position, rotation )
-	self.flames:setPosition( position )
-	self.flames:setPosition( rotation )
+function DMCAgun.cl_syncFlames( self, data )
+	self.flames:setPosition( data[1] )
+	self.flames:setPosition( data[2] )
 end
 
 function DMCAgun.client_onEquippedUpdate( self, primaryState, secondaryState )
