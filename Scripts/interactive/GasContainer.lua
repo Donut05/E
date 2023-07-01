@@ -120,21 +120,22 @@ GasolineContainer.connectionOutput = sm.interactable.connectionType.gasoline
 GasolineContainer.colorNormal = sm.color.new( 0x84ff32ff )
 GasolineContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
 
-local thruster_1, thruster_2, thruster_3, thruster_4, thruster_5 = sm.uuid.new("df8528ed-15ad-4a39-a33a-698880684001"), sm.uuid.new("9fc793b2-250b-40ab-bcb3-97cf97c7b481"), sm.uuid.new("4c1cc8de-7af1-4f8e-a5c4-c583460af9e5"), sm.uuid.new("e6db321c-6f98-47f6-9f7f-4e6794a62cb8"), sm.uuid.new("a736ffdf-22c1-40f2-8e40-988cab7c0559")
-
+local isThruster = {
+	thruster = true,
+	survivalThruster = true
+}
 function GasolineContainer.server_onFixedUpdate( self, dt )
 	local children = self.shape.interactable:getChildren()
-	if #children > 0 then
-		for _, interactable in ipairs(children) do
-			if interactable:isActive() and (interactable.shape.uuid == thruster_1 or interactable.shape.uuid == thruster_2 or interactable.shape.uuid == thruster_3 or interactable.shape.uuid == thruster_4 or interactable.shape.uuid == thruster_5) then
-				self.network:sendToClients( "cl_createTrail", interactable.shape.worldPosition + interactable.shape.worldRotation * sm.vec3.new( 0, 0, 1 ) )
-			end
+	for _, interactable in ipairs(children) do --if table is empty, for loop doesnt run
+		if interactable.active and isThruster[interactable.type] == true then
+			local shape = interactable.shape
+			self.network:sendToClients( "cl_createTrail", shape.worldPosition + shape.up )
 		end
 	end
 end
 
-function GasolineContainer.cl_createTrail( self, position )
-	sm.effect.playEffect( "Thruster - Exhaust", position, position * 5 )
+function GasolineContainer.cl_createTrail( self, pos )
+	sm.effect.playEffect( "Thruster - Exhaust", pos)
 end
 
 AmmoContainer = class( ConsumableContainer )
