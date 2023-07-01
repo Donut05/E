@@ -98,5 +98,14 @@
             "type" : "particle"
          }
       ]
+   },
+   "Thruster - Exhaust" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "thruster_exhaust" ],
+            "type" : "particle"
+         }
+      ]
    }
 }

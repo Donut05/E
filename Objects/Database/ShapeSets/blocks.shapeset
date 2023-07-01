@@ -5,6 +5,7 @@
          "color" : "44A6FF",
          "dif" : "$CONTENT_DATA/Objects/Textures/blitzarn_dif.tga",
          "flammable" : true,
+         "name" : "Blitzarn block",
          "nor" : "$CONTENT_DATA/Objects/Textures/blitzarn_nor.tga",
          "physicsMaterial" : "Metal",
          "ratings" : {
@@ -22,6 +23,7 @@
          "color" : "6998C7",
          "dif" : "$CONTENT_DATA/Objects/Textures/isli_dif.tga",
          "flammable" : false,
+         "name" : "Isli tiles",
          "nor" : "$CONTENT_DATA/Objects/Textures/isli_nor.tga",
          "physicsMaterial" : "Mechanical",
          "ratings" : {

@@ -7,12 +7,13 @@
             "z" : 1
          },
          "color" : "696969",
+         "name" : "Amogus particle block",
          "physicsMaterial" : "Mechanical",
          "renderable" : "$CONTENT_DATA/Objects/Renderables/effect block.rend",
          "rotationSet" : "PropZ",
          "scripted" : {
             "classname" : "SusEffect",
-            "filename" : "$CONTENT_DATA/Scripts/MyEffects.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/MyEffects.lua"
          },
          "uuid" : "99e7b2b9-b760-4273-ada0-b15d8d93a120"
       },
@@ -177,7 +178,7 @@
          "rotationSet" : "Default",
          "scripted" : {
             "classname" : "Amogus",
-            "filename" : "$CONTENT_DATA/Scripts/amogus.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/amogus.lua"
          },
          "uuid" : "d04badce-fc8a-46da-9389-f3bade34fb7d"
       }

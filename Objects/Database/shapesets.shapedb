@@ -4,6 +4,22 @@
       "$CONTENT_DATA/Objects/Database/ShapeSets/parts.shapeset",
       "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleLights.json",
       "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleTwo.json",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/enemies.shapeset"
+      "$CONTENT_DATA/Objects/Database/ShapeSets/enemies.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/blocks.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/interactive.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/lights.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/vehicle.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/industrial.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/spaceship.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/fittings.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/containers.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/decor.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/plants.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/blocks.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/challenge.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/interactive.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/override.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/characterobject.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Survival/interactivecontainers_shared.json"
    ]
 }
