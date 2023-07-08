@@ -129,13 +129,17 @@ function GasolineContainer.server_onFixedUpdate( self, dt )
 	for _, interactable in ipairs(children) do --if table is empty, for loop doesnt run
 		if interactable.active and isThruster[interactable.type] == true then
 			local shape = interactable.shape
-			self.network:sendToClients( "cl_createTrail", shape.worldPosition + shape.up )
+			local data = {
+				pos = shape.worldPosition + shape.up,
+				rot = shape.worldRotation
+			}
+			self.network:sendToClients( "cl_createTrail", data )
 		end
 	end
 end
 
-function GasolineContainer.cl_createTrail( self, pos )
-	sm.effect.playEffect( "Thruster - Exhaust", pos)
+function GasolineContainer.cl_createTrail( self, data )
+	sm.effect.playEffect( "Thruster - Exhaust", data.pos, nil, data.rot )
 end
 
 AmmoContainer = class( ConsumableContainer )

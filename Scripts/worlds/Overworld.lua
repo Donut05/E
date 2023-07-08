@@ -2,7 +2,7 @@ dofile( "$SURVIVAL_DATA/Scripts/game/worlds/BaseWorld.lua")
 
 
 
-dofile( "$SURVIVAL_DATA/Scripts/game/managers/WaterManager.lua" )
+dofile( "$CONTENT_DATA/Scripts/managers/WaterManager.lua" )
 dofile( "$SURVIVAL_DATA/Scripts/game/managers/PackingStationManager.lua" )
 
 ---@class Overworld : WorldClass
@@ -14,6 +14,7 @@ Overworld.enableSurface = true
 Overworld.enableAssets = true
 Overworld.enableClutter = true
 Overworld.enableNodes = true
+Overworld.isStatic = true -- !for testing, disable before release!
 Overworld.enableCreations = true
 Overworld.enableHarvestables = true
 Overworld.enableKinematics = true
@@ -22,6 +23,7 @@ Overworld.cellMinX = -64
 Overworld.cellMaxX = 63
 Overworld.cellMinY = -48
 Overworld.cellMaxY = 47
+-- cellMin is (cellMax * (-1)) - 1 and cellMax is (cellMin * (-1)) - 1
 
 function Overworld.server_onCreate( self )
     self.sob = sm.scriptableObject.createScriptableObject(sm.uuid.new("9a078eef-36f4-4c47-96cf-287723f3c1bc"),{},self.world)

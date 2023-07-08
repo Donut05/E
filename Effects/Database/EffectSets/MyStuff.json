@@ -24,11 +24,77 @@
          }
       ]
    },
+   "Action - Chest_Close" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/ui/openclose/chest_close" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Action - Chest_Open" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/ui/openclose/chest_open" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Action - File_cabinet_close" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/tools/handbook/handbook_close" ],
+            "type" : "audio"
+         },
+         {
+            "audio" : [ "event:/char/npc/bots/utility/dressbot/db_door_open" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Action - File_cabinet_open" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/tools/handbook/handbook_turnpage" ],
+            "type" : "audio"
+         },
+         {
+            "audio" : [ "event:/char/npc/bots/utility/dressbot/db_door_open" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Action - Locker_close" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/props/installations/packingstation/ps_load" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Action - Locker_open" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/props/installations/mechanicstation/ms_open" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "Amogus - Twerk" : {
       "effectList" : [
          {
             "offset" : [ 0.0, 0.0, 0.0 ],
             "particles" : [ "Amogus_twerk" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Chests - Large_chest_bubbles_loop" : {
+      "effectList" : [
+         {
+            "attached" : true,
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "large_chest_bubbles_loop" ],
             "type" : "particle"
          }
       ]

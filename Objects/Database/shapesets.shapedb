@@ -20,6 +20,7 @@
       "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/interactive.json",
       "$CONTENT_DATA/Objects/Database/ShapeSets/Challenge/override.json",
       "$CONTENT_DATA/Objects/Database/ShapeSets/Creative/characterobject.json",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/Survival/interactivecontainers_shared.json"
+      "$CONTENT_DATA/Objects/Database/ShapeSets/Survival/interactivecontainers_shared.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/chests.shapeset"
    ]
 }
