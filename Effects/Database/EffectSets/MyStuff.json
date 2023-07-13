@@ -64,18 +64,10 @@
          }
       ]
    },
-   "Action - Locker_close" : {
+   "Action - Locker" : {
       "effectList" : [
          {
-            "audio" : [ "event:/props/installations/packingstation/ps_load" ],
-            "type" : "audio"
-         }
-      ]
-   },
-   "Action - Locker_open" : {
-      "effectList" : [
-         {
-            "audio" : [ "event:/props/installations/mechanicstation/ms_open" ],
+            "audio" : [ "event:/char/npc/bots/enemies/tapebot/tapebot_foley_gunrattle" ],
             "type" : "audio"
          }
       ]
@@ -89,6 +81,19 @@
          }
       ]
    },
+   "Chests - Large_chest_bubbles_close" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "large_chest_bubbles_close" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/tools/waterbucket_throw" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "Chests - Large_chest_bubbles_loop" : {
       "effectList" : [
          {
@@ -96,6 +101,91 @@
             "offset" : [ 0.0, 0.0, 0.0 ],
             "particles" : [ "large_chest_bubbles_loop" ],
             "type" : "particle"
+         }
+      ]
+   },
+   "Chests - Large_chest_bubbles_open" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "large_chest_bubbles_open" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/weapons/watercannon_fire" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Chests - Locker_bubbles_close" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "locker_bubbles_close" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/tools/waterbucket_throw" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Chests - Locker_bubbles_loop" : {
+      "effectList" : [
+         {
+            "attached" : true,
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "locker_bubbles_loop" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Chests - Locker_bubbles_open" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "locker_bubbles_open" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/weapons/watercannon_fire" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Chests - Small_chest_bubbles_close" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "small_chest_bubbles_close" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/tools/waterbucket_throw" ],
+            "type" : "audio"
+         }
+      ]
+   },
+   "Chests - Small_chest_bubbles_loop" : {
+      "effectList" : [
+         {
+            "attached" : true,
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "small_chest_bubbles_loop" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Chests - Small_chest_bubbles_open" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "small_chest_bubbles_open" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/weapons/watercannon_fire" ],
+            "type" : "audio"
          }
       ]
    },

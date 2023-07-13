@@ -82,39 +82,44 @@ end
 --------------------
 
 local chestOpeningSpeed = 8.0
+local effectRoationFix = sm.vec3.getRotation( sm.vec3.new( 0, 0, 1 ), sm.vec3.new( 0, 1, 0 ) )
 
 function Chest:client_onCreate()
 	self.cl = {}
 	self.cl.chestAnimDirection = -1
 	self.cl.isInWater = false
-	self.cl.bubblesLooping = sm.effect.createEffect( "Chests - Large_chest_bubbles_loop", self.interactable )
-	self.cl.bubblesLooping:setOffsetRotation( sm.vec3.getRotation( sm.vec3.new( 0, 0, 1 ), sm.vec3.new( 0, 1, 0 ) ) )
+	if self.data.uwLoopingEffect then
+		print("creating custom loop effect")
+		self.cl.bubblesLooping = sm.effect.createEffect( self.data.uwLoopingEffect, self.interactable )
+	else
+		self.cl.bubblesLooping = sm.effect.createEffect( "Chests - Large_chest_bubbles_loop", self.interactable )
+	end
+	self.cl.bubblesLooping:setOffsetRotation( effectRoationFix )
 end
 
 function Chest.client_onInteract(self, character, state)
-	if state == true then
-		local container = self.shape.interactable:getContainer(0)
-		if container then
-			self.cl.containerGui = sm.gui.createContainerGui(true)
-			if self.data.title then
-				self.cl.containerGui:setText("UpperName", self.data.title)
-			else
-				self.cl.containerGui:setText("UpperName", "#{CONTAINER_TITLE_GENERIC}")
-			end
-			self.cl.containerGui:setVisible("TakeAll", true)
-			self.cl.containerGui:setContainer("UpperGrid", container);
-			self.cl.containerGui:setText("LowerName", "#{INVENTORY_TITLE}")
-			self.cl.containerGui:setContainer("LowerGrid", sm.localPlayer.getInventory())
-			self.cl.containerGui:setOnCloseCallback("cl_guiClosed")
-			self.cl.containerGui:open()
-
-			if self.data.openSound then
-				sm.effect.playEffect( self.data.openSound, self.shape.worldPosition )
-			else
-				sm.effect.playEffect( "Action - Chest_Open", self.shape.worldPosition )
-			end
-			self.network:sendToServer("sv_openChestAnim")
+	if not state then return end
+	local container = self.shape.interactable:getContainer(0)
+	if container then
+		self.cl.containerGui = sm.gui.createContainerGui(true)
+		if self.data.title then
+			self.cl.containerGui:setText("UpperName", self.data.title)
+		else
+			self.cl.containerGui:setText("UpperName", "#{CONTAINER_TITLE_GENERIC}")
 		end
+		self.cl.containerGui:setVisible("TakeAll", true)
+		self.cl.containerGui:setContainer("UpperGrid", container);
+		self.cl.containerGui:setText("LowerName", "#{INVENTORY_TITLE}")
+		self.cl.containerGui:setContainer("LowerGrid", sm.localPlayer.getInventory())
+		self.cl.containerGui:setOnCloseCallback("cl_guiClosed")
+		self.cl.containerGui:open()
+
+		if self.data.openSound then
+			sm.effect.playEffect( self.data.openSound, self.shape.worldPosition )
+		else
+			sm.effect.playEffect( "Action - Chest_Open", self.shape.worldPosition )
+		end
+		self.network:sendToServer("sv_openChestAnim")
 	end
 end
 
@@ -138,10 +143,24 @@ end
 
 function Chest.cl_openChestAnim(self)
 	self.cl.chestAnimDirection = 1
+	if self.cl.isInWater then
+		if self.data.uwOpenEffect then
+			sm.effect.playEffect( self.data.uwOpenEffect, self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+		else
+			sm.effect.playEffect( "Chests - Large_chest_bubbles_open", self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+		end
+	end
 end
 
 function Chest.cl_closeChestAnim(self)
 	self.cl.chestAnimDirection = -1
+	if self.cl.isInWater then
+		if self.data.uwCloseEffect then
+			sm.effect.playEffect( self.data.uwCloseEffect, self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+		else
+			sm.effect.playEffect( "Chests - Large_chest_bubbles_close", self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+		end
+	end
 end
 
 function Chest.client_onUpdate(self, dt)

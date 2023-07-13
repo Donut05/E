@@ -20,7 +20,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_antenna.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_antenna.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -59,7 +59,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_backwindow.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_backwindow.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -98,7 +98,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_base.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_base.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -137,7 +137,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_beveledcube.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_beveledcube.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNor",
@@ -175,7 +175,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_frontcornerlower.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_frontcornerlower.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -214,7 +214,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_frontcornerupper.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_frontcornerupper.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -253,7 +253,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_grill.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_grill.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -293,7 +293,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_hubcap.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_hubcap.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -332,7 +332,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_roof.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_roof.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -377,7 +377,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_roofcorner.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_roofcorner.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNor",
@@ -415,7 +415,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_roofside.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_roofside.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNor",
@@ -453,7 +453,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_sidevent.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_sidevent.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -492,7 +492,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_trunkbase.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_trunkbase.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -531,7 +531,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_trunkextension.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_trunkextension.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNor",
@@ -569,7 +569,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_trunkside.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_trunkside.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -608,7 +608,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_wheelhousecenter.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_wheelhousecenter.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNorAo",
@@ -647,7 +647,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_vehicle_windscreen.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/farmer_car_parts/obj_vehicle_windscreen.fbx",
                   "subMeshList" : [
                      {
                         "material" : "Glass",
@@ -693,7 +693,7 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_industrial_staircasewedgecorner.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/decorative/obj_industrial_staircasewedgecorner.fbx",
                   "subMeshList" : [
                      {
                         "material" : "DifAsgNor",

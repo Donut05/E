@@ -95,15 +95,18 @@
             "durability" : 3,
             "friction" : 4
          },
-         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive/obj_interactive_locker.rend",
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/locker_new.rend",
          "rotationSet" : "PropY",
          "scripted" : {
             "classname" : "Chest",
             "data" : {
-               "closeSound" : "Action - Locker_close",
-               "openSound" : "Action - Locker_open",
+               "closeSound" : "Action - Locker",
+               "openSound" : "Action - Locker",
                "slots" : 4,
-               "title" : "LOCKER"
+               "title" : "LOCKER",
+               "uwCloseEffect" : "Chests - Locker_bubbles_close",
+               "uwLoopingEffect" : "Chests - Locker_bubbles_loop",
+               "uwOpenEffect" : "Chests - Locker_bubbles_open"
             },
             "filename" : "$CONTENT_DATA/Scripts/interactive/Chest.lua"
          },
@@ -164,7 +167,10 @@
             "classname" : "Chest",
             "data" : {
                "slots" : 20,
-               "title" : "CHEST"
+               "title" : "CHEST",
+               "uwCloseEffect" : "Chests - Small_chest_bubbles_close",
+               "uwLoopingEffect" : "Chests - Small_chest_bubbles_loop",
+               "uwOpenEffect" : "Chests - Small_chest_bubbles_open"
             },
             "filename" : "$CONTENT_DATA/Scripts/interactive/Chest.lua"
          },

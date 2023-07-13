@@ -20,8 +20,8 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_interactive_backlight_off.fbx",
-                  "pose0" : "$CONTENT_DATA/Objects/Mesh/obj_interactive_backlight_on.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/interactive/obj_interactive_backlight_off.fbx",
+                  "pose0" : "$CONTENT_DATA/Objects/Mesh/interactive/obj_interactive_backlight_on.fbx",
                   "subMeshList" : [
                      {
                         "material" : "PoseAnimDifAsgNor",
@@ -69,8 +69,8 @@
          "renderable" : {
             "lodList" : [
                {
-                  "mesh" : "$CONTENT_DATA/Objects/Mesh/obj_interactive_blinker_off.fbx",
-                  "pose0" : "$CONTENT_DATA/Objects/Mesh/obj_interactive_blinker_on.fbx",
+                  "mesh" : "$CONTENT_DATA/Objects/Mesh/interactive/obj_interactive_blinker_off.fbx",
+                  "pose0" : "$CONTENT_DATA/Objects/Mesh/interactive/obj_interactive_blinker_on.fbx",
                   "subMeshList" : [
                      {
                         "material" : "PoseAnimDifAsgNor",
