@@ -27,7 +27,7 @@
       {
          "offsetX" : 0,
          "offsetY" : 0,
-         "path" : "$CONTENT_8a783b23-83b9-4e56-b04b-282d00cdbfdf/testing_tile.tile",
+         "path" : "$CONTENT_DATA/Terrain/Tiles/testing_tile.tile",
          "rotation" : 0,
          "x" : 0,
          "y" : 0

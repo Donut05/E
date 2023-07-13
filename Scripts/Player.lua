@@ -1,6 +1,7 @@
 
 dofile "$SURVIVAL_DATA/Scripts/game/SurvivalPlayer.lua"
 
+---@class Player : PlayerClass
 Player = class( SurvivalPlayer )
 
 function Player.server_onCreate( self )
@@ -11,4 +12,10 @@ end
 function Player.client_onCreate( self )
     SurvivalPlayer.client_onCreate( self )
     print("Player.client_onCreate")
+end
+
+function Player:server_onExplosion(center, destructionLevel)
+    if (self.player.character.worldPosition - center):length() < 2 then
+        g_sillyManager:Sv_OnScoreEvent("explode", self.player)
+    end
 end

@@ -71,6 +71,8 @@ function SurvivalGame.server_onCreate( self )
 
 	g_WeatherManager = sm.scriptableObject.createScriptableObject( sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld )
 
+	sm.scriptableObject.createScriptableObject( sm.uuid.new("d696f6ae-615f-499b-b22a-20e8cea14831") )
+
 	g_respawnManager = RespawnManager()
 	g_respawnManager:sv_onCreate( self.sv.saved.overworld )
 
