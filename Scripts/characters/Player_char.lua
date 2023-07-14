@@ -14,7 +14,7 @@ end
 function PlayerChar.client_onCreate( self )
     MechanicCharacter.client_onCreate( self )
     self.previousTick = sm.game.getCurrentTick()
-    falling = sm.effect.createEffect( "Player - Anime_lines", self.character )
+    falling = sm.effect.createEffect( "Player - Anime_lines" )
     print("PlayerChar.client_onCreate")
 end
 
@@ -23,58 +23,16 @@ function PlayerChar.client_onFixedUpdate( self, dt )
         return
     end
     if not ( sm.localPlayer.getPlayer() == self.character:getPlayer() ) then return end
-    if self.previousTick + 5 == sm.game.getCurrentTick() then
-        self.previousTick = sm.game.getCurrentTick()
-        self.previousVelocity = self.character.velocity.z
-    end
     if falling ~= nil then
-        --[[
-        local lockingInteractable = self.character:getLockingInteractable()
-        local isDriving = false
-        local velocity = 0
-        local fast
-        if lockingInteractable then
-            fast = sm.effect.createEffect( "Player - Anime_lines", lockingInteractable )
-            velocity = lockingInteractable.shape.velocity:length()
-            isDriving = true
-        else
-            velocity = self.character.velocity:length()
-        end
-        if velocity > 20 then
-            local offset
-            if isDriving then
-                if lockingInteractable and fast ~= nil then
-                    local rotate = sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), sm.vec3.new( 0, 0, 1 ) )
-                    offset = ( rotate * lockingInteractable.shape.worldRotation )
-                    fast:setOffsetRotation(offset)
-                    fast:start()
-                end
-            else
-                offset = sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.character:getVelocity() )
-                falling:setOffsetRotation(offset)
-                falling:start()
-            end
-        ]]
-        if math.abs( self.character.velocity.z ) > 20 then
-            if self.character.velocity.z > 20 then
-                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, -1, 0 ), ( self.character:getVelocity() * -1 ) ))
-            elseif self.character.velocity.z < 20 then
-                falling:setOffsetRotation(sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.character:getVelocity() ))
-            end
+        if math.abs( self.character.velocity.x ) > 20 or math.abs( self.character.velocity.y ) > 20 or math.abs( self.character.velocity.z ) > 20 then
+            falling:setPosition( sm.camera.getPosition() + sm.camera.getDirection() )
+            local rotation = sm.camera.getRotation() * sm.vec3.getRotation( sm.vec3.new( 0, 0, -1 ), sm.vec3.new( 0, 1, 0 ) )
+            falling:setRotation( rotation )
             falling:start()
         else
             if falling:isPlaying() then
                 falling:stop()
-                if self.previousVelocity < 20 then
-                    sm.effect.playEffect( "Player - Slam", self.character.worldPosition )
-                end
             end
-            --[[
-            if fast ~= nil and fast:isPlaying() then
-                fast:stop()
-                fast:destroy()
-            end
-            ]]
         end
     end
 end

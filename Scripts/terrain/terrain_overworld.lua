@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global, param-type-mismatch, lowercase-global
 dofile( "$SURVIVAL_DATA/Scripts/terrain/terrain_util2.lua" )
 
 BORDER_START = 512

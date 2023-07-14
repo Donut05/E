@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 
 dofile "$SURVIVAL_DATA/Scripts/game/SurvivalPlayer.lua"
 

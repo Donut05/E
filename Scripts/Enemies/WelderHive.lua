@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil
+---@diagnostic disable: need-check-nil, deprecated, lowercase-global
 ---@diagnostic disable: param-type-mismatch
 
 WelderHive = class(nil)

@@ -291,6 +291,14 @@
          }
       ]
    },
+   "Sounds - Metal_pipe" : {
+      "effectList" : [
+         {
+            "type" : "audio",
+            "name" : "MetalPipe"
+         }
+      ]
+   },
    "Thruster - Exhaust" : {
       "effectList" : [
          {

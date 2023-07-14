@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-doc-param
 ---@class VisualizedTrigger
 ---@field trigger AreaTrigger
 ---@field effect Effect
@@ -10,9 +11,9 @@
 ---@field hide function
 
 ---Create an AreaTrigger that has a visualization
----@param position Vec3
----@param scale Vec3
----@param filter integer
+---@param position Vec3 position of the trigger in the world
+---@param scale Vec3 scale of the trigger
+---@param filter integer filters for the trigger, see sm.areaTrigger.filter
 ---@return VisualizedTrigger
 
 function CreateVisualizedTrigger(position, scale, filter)

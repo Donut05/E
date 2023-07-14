@@ -1,3 +1,4 @@
+---@diagnostic disable: need-check-nil, undefined-global
 dofile( "$SURVIVAL_DATA/Scripts/game/survival_constants.lua" )
 dofile( "$SURVIVAL_DATA/Scripts/util.lua" )
 

@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 dofile("$SURVIVAL_DATA/Scripts/game/util/Timer.lua")
 
 ---@class SillyManager : ScriptableObjectClass

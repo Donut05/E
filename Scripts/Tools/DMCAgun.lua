@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil
+---@diagnostic disable: need-check-nil, undefined-global, deprecated, lowercase-global
 dofile( "$GAME_DATA/Scripts/game/AnimationUtil.lua" )
 dofile( "$SURVIVAL_DATA/Scripts/util.lua" )
 dofile( "$CONTENT_DATA/Scripts/visualised_trigger.lua" )

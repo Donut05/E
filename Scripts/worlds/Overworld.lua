@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global, undefined-field, deprecated, param-type-mismatch, lowercase-global
 dofile( "$SURVIVAL_DATA/Scripts/game/worlds/BaseWorld.lua")
 
 
@@ -49,6 +50,9 @@ end
 function Overworld.client_onCreate( self )
 	BaseWorld.client_onCreate( self )
 	print( "Overworld.client_onCreate" )
+
+	g_slam_position = sm.vec3.zero()
+	g_slam_velocity = 0
 
 	self.ambienceEffect = sm.effect.createEffect( "OutdoorAmbience" )
 	self.ambienceEffect:start()
@@ -120,7 +124,7 @@ end
 
 function Overworld.client_onUpdate( self, deltaTime )
 	BaseWorld.client_onUpdate( self, deltaTime )
-	
+
 	g_unitManager:cl_onWorldUpdate( self, deltaTime )
 
 	local night = 1.0 - getDayCycleFraction()
@@ -136,7 +140,7 @@ function Overworld.client_onUpdate( self, deltaTime )
 		if not g_survivalMusic:isPlaying() then
 			g_survivalMusic:start()
 		end
-		
+
 		local time = sm.game.getTimeOfDay()
 
 		if time > 0.21 and time < 0.5 then -- dawn
@@ -148,6 +152,18 @@ function Overworld.client_onUpdate( self, deltaTime )
 		end
 	end
 
+end
+
+function Overworld.client_onCollision( self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal )
+	if type(objectA) == "Shape" then
+		if sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 1000) == 0) then
+			sm.effect.playEffect( "Sounds - Metal_pipe", position )
+		end
+	elseif type(objectA) == "Character" then
+		if sm.exists(objectA) and objectA:isPlayer() and math.abs(pointVelocityA.z) > 20 then
+			sm.effect.playEffect( "Player - Slam", objectA.worldPosition )
+		end
+	end
 end
 
 function Overworld.cl_n_unitMsg( self, msg )

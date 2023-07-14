@@ -1,4 +1,4 @@
----@diagnostic disable: lowercase-global, undefined-global
+---@diagnostic disable: lowercase-global, undefined-global, deprecated
 
 dofile( "$SURVIVAL_DATA/Scripts/game/managers/BeaconManager.lua" )
 
