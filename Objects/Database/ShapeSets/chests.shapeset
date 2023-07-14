@@ -138,7 +138,10 @@
                "closeSound" : "Action - File_cabinet_close",
                "openSound" : "Action - File_cabinet_open",
                "slots" : 3,
-               "title" : "FILE CABINET"
+               "title" : "FILE CABINET",
+               "uwCloseEffect" : "Chests - Filecabinet_bubbles_close",
+               "uwLoopingEffect" : "Chests - Filecabinet_bubbles_loop",
+               "uwOpenEffect" : "Chests - Filecabinet_bubbles_open"
             },
             "filename" : "$CONTENT_DATA/Scripts/interactive/Chest.lua"
          },

@@ -89,7 +89,6 @@ function Chest:client_onCreate()
 	self.cl.chestAnimDirection = -1
 	self.cl.isInWater = false
 	if self.data.uwLoopingEffect then
-		print("creating custom loop effect")
 		self.cl.bubblesLooping = sm.effect.createEffect( self.data.uwLoopingEffect, self.interactable )
 	else
 		self.cl.bubblesLooping = sm.effect.createEffect( "Chests - Large_chest_bubbles_loop", self.interactable )

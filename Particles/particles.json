@@ -17,6 +17,9 @@
       "particles/underwaterChestParitcles/locker/locker_bubbles_close.json",
       "particles/underwaterChestParitcles/smallChest/small_chest_bubbles_loop.json",
       "particles/underwaterChestParitcles/smallChest/small_chest_bubbles_open.json",
-      "particles/underwaterChestParitcles/smallChest/small_chest_bubbles_close.json"
+      "particles/underwaterChestParitcles/smallChest/small_chest_bubbles_close.json",
+      "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_loop.json",
+      "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_open.json",
+      "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_close.json"
    ]
 }
