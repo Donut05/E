@@ -69,7 +69,7 @@ function SurvivalGame.server_onCreate( self )
 	g_elevatorManager = ElevatorManager()
 	g_elevatorManager:sv_onCreate()
 
-	g_WeatherManager = sm.scriptableObject.createScriptableObject( sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld )
+
 
 	sm.scriptableObject.createScriptableObject( sm.uuid.new("d696f6ae-615f-499b-b22a-20e8cea14831") )
 
@@ -280,6 +280,10 @@ function SurvivalGame.loadCraftingRecipes( self )
 end
 
 function SurvivalGame.server_onFixedUpdate( self, timeStep )
+	if sm.exists(self.sv.saved.overworld) and not g_WeatherManager then
+		g_WeatherManager = sm.scriptableObject.createScriptableObject( sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld )
+	end
+
 	-- Update time
 
 	local prevTime = self.sv.time.timeOfDay
