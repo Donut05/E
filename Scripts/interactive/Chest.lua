@@ -47,7 +47,7 @@ function Chest:server_onFixedUpdate()
 	self.sv.cachedPos = self.shape.worldPosition
 
 	if self.shape.body:isOnLift() then
-		Chest.setIsInWater( self, false )
+		Chest.setIsInWater(self, false)
 	end
 end
 
@@ -82,18 +82,18 @@ end
 --------------------
 
 local chestOpeningSpeed = 8.0
-local effectRoationFix = sm.vec3.getRotation( sm.vec3.new( 0, 0, 1 ), sm.vec3.new( 0, 1, 0 ) )
+local effectRoationFix = sm.vec3.getRotation(sm.vec3.new(0, 0, 1), sm.vec3.new(0, 1, 0))
 
 function Chest:client_onCreate()
 	self.cl = {}
 	self.cl.chestAnimDirection = -1
 	self.cl.isInWater = false
 	if self.data.uwLoopingEffect then
-		self.cl.bubblesLooping = sm.effect.createEffect( self.data.uwLoopingEffect, self.interactable )
+		self.cl.bubblesLooping = sm.effect.createEffect(self.data.uwLoopingEffect, self.interactable)
 	else
-		self.cl.bubblesLooping = sm.effect.createEffect( "Chests - Large_chest_bubbles_loop", self.interactable )
+		self.cl.bubblesLooping = sm.effect.createEffect("Chests - Large_chest_bubbles_loop", self.interactable)
 	end
-	self.cl.bubblesLooping:setOffsetRotation( effectRoationFix )
+	self.cl.bubblesLooping:setOffsetRotation(effectRoationFix)
 end
 
 function Chest.client_onInteract(self, character, state)
@@ -114,9 +114,9 @@ function Chest.client_onInteract(self, character, state)
 		self.cl.containerGui:open()
 
 		if self.data.openSound then
-			sm.effect.playEffect( self.data.openSound, self.shape.worldPosition )
+			sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
 		else
-			sm.effect.playEffect( "Action - Chest_Open", self.shape.worldPosition )
+			sm.effect.playEffect("Action - Chest_Open", self.shape.worldPosition)
 		end
 		self.network:sendToServer("sv_openChestAnim")
 	end
@@ -125,9 +125,9 @@ end
 function Chest.cl_guiClosed(self)
 	self.network:sendToServer("sv_closeChestAnim")
 	if self.data.closeSound then
-		sm.effect.playEffect( self.data.closeSound, self.shape.worldPosition )
+		sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
 	else
-		sm.effect.playEffect( "Action - Chest_Close", self.shape.worldPosition )
+		sm.effect.playEffect("Action - Chest_Close", self.shape.worldPosition)
 	end
 end
 
@@ -144,9 +144,11 @@ function Chest.cl_openChestAnim(self)
 	self.cl.chestAnimDirection = 1
 	if self.cl.isInWater then
 		if self.data.uwOpenEffect then
-			sm.effect.playEffect( self.data.uwOpenEffect, self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+			sm.effect.playEffect(self.data.uwOpenEffect, self.shape.worldPosition, nil,
+				self.shape.worldRotation * effectRoationFix)
 		else
-			sm.effect.playEffect( "Chests - Large_chest_bubbles_open", self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+			sm.effect.playEffect("Chests - Large_chest_bubbles_open", self.shape.worldPosition, nil,
+				self.shape.worldRotation * effectRoationFix)
 		end
 	end
 end
@@ -155,9 +157,11 @@ function Chest.cl_closeChestAnim(self)
 	self.cl.chestAnimDirection = -1
 	if self.cl.isInWater then
 		if self.data.uwCloseEffect then
-			sm.effect.playEffect( self.data.uwCloseEffect, self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+			sm.effect.playEffect(self.data.uwCloseEffect, self.shape.worldPosition, nil,
+				self.shape.worldRotation * effectRoationFix)
 		else
-			sm.effect.playEffect( "Chests - Large_chest_bubbles_close", self.shape.worldPosition, nil, self.shape.worldRotation * effectRoationFix )
+			sm.effect.playEffect("Chests - Large_chest_bubbles_close", self.shape.worldPosition, nil,
+				self.shape.worldRotation * effectRoationFix)
 		end
 	end
 end
@@ -184,7 +188,7 @@ end
 -- #region Custom
 --------------------
 
-function Chest.setIsInWater( self, isInWater )
+function Chest.setIsInWater(self, isInWater)
 	self.cl.isInWater = isInWater
 end
 

@@ -18,7 +18,7 @@
 
 function CreateVisualizedTrigger(position, scale, filter)
     local effect = sm.effect.createEffect("ShapeRenderable")
-    effect:setParameter("uuid", sm.uuid.new( "5f41af56-df4c-4837-9b3c-10781335757f" ))
+    effect:setParameter("uuid", sm.uuid.new("5f41af56-df4c-4837-9b3c-10781335757f"))
     effect:setParameter("visualization", true)
     effect:setScale(scale)
     effect:setPosition(position)

@@ -3,6 +3,10 @@
       "MetalPipe": {
         "path": "$CONTENT_DATA/Effects/Audio/metal_pipe.mp3",
         "is3D": true
+      },
+      "MeetTheSniper": {
+        "path": "$CONTENT_DATA/Effects/Audio/meet_the_sniper.mp3",
+        "is3D": false
       }
     }
   }

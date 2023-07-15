@@ -1,16 +1,15 @@
 ---@diagnostic disable: undefined-global, param-type-mismatch, lowercase-global
-dofile( "$SURVIVAL_DATA/Scripts/terrain/terrain_util2.lua" )
+dofile("$SURVIVAL_DATA/Scripts/terrain/terrain_util2.lua")
 
 BORDER_START = 512
-local EmptyTile = sm.uuid.new( "2dec0797-4b8d-44bf-8a34-709615172d74" )
+local EmptyTile = sm.uuid.new("2dec0797-4b8d-44bf-8a34-709615172d74")
 
 function Init()
-	print( "Init terrain" )
+	print("Init terrain")
 end
 
-function Create( xMin, xMax, yMin, yMax, seed, data )
-
-	g_uuidToPath = { [tostring( EmptyTile )] = "$CONTENT_DATA/Terrain/Tiles/small_empty_tile.tile" }
+function Create(xMin, xMax, yMin, yMax, seed, data)
+	g_uuidToPath = { [tostring(EmptyTile)] = "$CONTENT_DATA/Terrain/Tiles/small_empty_tile.tile" }
 	g_cellData = {
 		bounds = { xMin = xMin, xMax = xMax, yMin = yMin, yMax = yMax },
 		seed = seed,
@@ -35,10 +34,10 @@ function Create( xMin, xMax, yMin, yMax, seed, data )
 		end
 	end
 
-	local jWorld = sm.json.open( "$CONTENT_DATA/Terrain/Worlds/test_world.world")
-	for _, cell in pairs( jWorld.cellData ) do
+	local jWorld = sm.json.open("$CONTENT_DATA/Terrain/Worlds/test_world.world")
+	for _, cell in pairs(jWorld.cellData) do
 		if cell.path ~= "" then
-			local uid = sm.terrainTile.getTileUuid( cell.path )
+			local uid = sm.terrainTile.getTileUuid(cell.path)
 			g_cellData.uid[cell.y][cell.x] = uid
 			g_cellData.xOffset[cell.y][cell.x] = cell.offsetX
 			g_cellData.yOffset[cell.y][cell.x] = cell.offsetY
@@ -48,7 +47,7 @@ function Create( xMin, xMax, yMin, yMax, seed, data )
 		end
 	end
 
-	sm.terrainData.save( { g_uuidToPath, g_cellData } )
+	sm.terrainData.save({ g_uuidToPath, g_cellData })
 end
 
 function Load()
@@ -61,104 +60,104 @@ function Load()
 	return false
 end
 
-function GetTilePath( uid )
+function GetTilePath(uid)
 	if not uid:isNil() then
 		return g_uuidToPath[tostring(uid)]
 	end
 	return ""
 end
 
-function GetCellTileUidAndOffset( cellX, cellY )
-	if InsideCellBounds( cellX, cellY ) then
-		return	g_cellData.uid[cellY][cellX],
-				g_cellData.xOffset[cellY][cellX],
-				g_cellData.yOffset[cellY][cellX]
+function GetCellTileUidAndOffset(cellX, cellY)
+	if InsideCellBounds(cellX, cellY) then
+		return g_cellData.uid[cellY][cellX],
+			g_cellData.xOffset[cellY][cellX],
+			g_cellData.yOffset[cellY][cellX]
 	end
 	return EmptyTile, 0, 0
 end
 
-function GetTileLoadParamsFromWorldPos( x, y, lod )
-	local cellX, cellY = GetCell( x, y )
-	local uid, tileCellOffsetX, tileCellOffsetY = GetCellTileUidAndOffset( cellX, cellY )
-	local rx, ry = InverseRotateLocal( cellX, cellY, x - cellX * CELL_SIZE, y - cellY * CELL_SIZE )
+function GetTileLoadParamsFromWorldPos(x, y, lod)
+	local cellX, cellY = GetCell(x, y)
+	local uid, tileCellOffsetX, tileCellOffsetY = GetCellTileUidAndOffset(cellX, cellY)
+	local rx, ry = InverseRotateLocal(cellX, cellY, x - cellX * CELL_SIZE, y - cellY * CELL_SIZE)
 	if lod then
-		return  uid, tileCellOffsetX, tileCellOffsetY, lod, rx, ry
+		return uid, tileCellOffsetX, tileCellOffsetY, lod, rx, ry
 	else
-		return  uid, tileCellOffsetX, tileCellOffsetY, rx, ry
+		return uid, tileCellOffsetX, tileCellOffsetY, rx, ry
 	end
 end
 
-function GetTileLoadParamsFromCellPos( cellX, cellY, lod )
-	local uid, tileCellOffsetX, tileCellOffsetY = GetCellTileUidAndOffset( cellX, cellY )
+function GetTileLoadParamsFromCellPos(cellX, cellY, lod)
+	local uid, tileCellOffsetX, tileCellOffsetY = GetCellTileUidAndOffset(cellX, cellY)
 	if lod then
-		return  uid, tileCellOffsetX, tileCellOffsetY, lod
+		return uid, tileCellOffsetX, tileCellOffsetY, lod
 	else
-		return  uid, tileCellOffsetX, tileCellOffsetY
+		return uid, tileCellOffsetX, tileCellOffsetY
 	end
 end
 
-function GetHeightAt( x, y, lod )
-	return sm.terrainTile.getHeightAt( GetTileLoadParamsFromWorldPos( x, y, lod ) )
+function GetHeightAt(x, y, lod)
+	return sm.terrainTile.getHeightAt(GetTileLoadParamsFromWorldPos(x, y, lod))
 end
 
-function GetColorAt( x, y, lod )
-	return sm.terrainTile.getColorAt( GetTileLoadParamsFromWorldPos( x, y, lod ) )
+function GetColorAt(x, y, lod)
+	return sm.terrainTile.getColorAt(GetTileLoadParamsFromWorldPos(x, y, lod))
 end
 
-function GetMaterialAt( x, y, lod )
-	return sm.terrainTile.getMaterialAt( GetTileLoadParamsFromWorldPos( x, y, lod ) )
+function GetMaterialAt(x, y, lod)
+	return sm.terrainTile.getMaterialAt(GetTileLoadParamsFromWorldPos(x, y, lod))
 end
 
-function GetClutterIdxAt( x, y )
-	return sm.terrainTile.getClutterIdxAt( GetTileLoadParamsFromWorldPos( x, y ) )
+function GetClutterIdxAt(x, y)
+	return sm.terrainTile.getClutterIdxAt(GetTileLoadParamsFromWorldPos(x, y))
 end
 
-function GetAssetsForCell( cellX, cellY, lod )
-	local assets = sm.terrainTile.getAssetsForCell( GetTileLoadParamsFromCellPos( cellX, cellY, lod ) )
-	for _, asset in ipairs( assets ) do
-		local rx, ry = RotateLocal( cellX, cellY, asset.pos.x, asset.pos.y )
-		asset.pos = sm.vec3.new( rx, ry, asset.pos.z )
-		asset.rot = GetRotationQuat( cellX, cellY ) * asset.rot
+function GetAssetsForCell(cellX, cellY, lod)
+	local assets = sm.terrainTile.getAssetsForCell(GetTileLoadParamsFromCellPos(cellX, cellY, lod))
+	for _, asset in ipairs(assets) do
+		local rx, ry = RotateLocal(cellX, cellY, asset.pos.x, asset.pos.y)
+		asset.pos = sm.vec3.new(rx, ry, asset.pos.z)
+		asset.rot = GetRotationQuat(cellX, cellY) * asset.rot
 	end
 	return assets
 end
 
-function GetNodesForCell( cellX, cellY )
-	local nodes = sm.terrainTile.getNodesForCell( GetTileLoadParamsFromCellPos( cellX, cellY ) )
-	for _, node in ipairs( nodes ) do
-		local rx, ry = RotateLocal( cellX, cellY, node.pos.x, node.pos.y )
-		node.pos = sm.vec3.new( rx, ry, node.pos.z )
-		node.rot = GetRotationQuat( cellX, cellY ) * node.rot
+function GetNodesForCell(cellX, cellY)
+	local nodes = sm.terrainTile.getNodesForCell(GetTileLoadParamsFromCellPos(cellX, cellY))
+	for _, node in ipairs(nodes) do
+		local rx, ry = RotateLocal(cellX, cellY, node.pos.x, node.pos.y)
+		node.pos = sm.vec3.new(rx, ry, node.pos.z)
+		node.rot = GetRotationQuat(cellX, cellY) * node.rot
 	end
 	return nodes
 end
 
-function GetHarvestablesForCell( cellX, cellY, lod )
-	local harvestables = sm.terrainTile.getHarvestablesForCell( GetTileLoadParamsFromCellPos( cellX, cellY, lod ) )
-	for _, harvestable in ipairs( harvestables ) do
-		local rx, ry = RotateLocal( cellX, cellY, harvestable.pos.x, harvestable.pos.y )
-		harvestable.pos = sm.vec3.new( rx, ry, harvestable.pos.z )
-		harvestable.rot = GetRotationQuat( cellX, cellY ) * harvestable.rot
+function GetHarvestablesForCell(cellX, cellY, lod)
+	local harvestables = sm.terrainTile.getHarvestablesForCell(GetTileLoadParamsFromCellPos(cellX, cellY, lod))
+	for _, harvestable in ipairs(harvestables) do
+		local rx, ry = RotateLocal(cellX, cellY, harvestable.pos.x, harvestable.pos.y)
+		harvestable.pos = sm.vec3.new(rx, ry, harvestable.pos.z)
+		harvestable.rot = GetRotationQuat(cellX, cellY) * harvestable.rot
 	end
 	return harvestables
 end
 
-function GetKinematicsForCell( cellX, cellY, lod )
-	local kinematics = sm.terrainTile.getKinematicsForCell( GetTileLoadParamsFromCellPos( cellX, cellY, lod ) )
-	for _, kinematic in ipairs( kinematics ) do
-		local rx, ry = RotateLocal( cellX, cellY, kinematic.pos.x, kinematic.pos.y )
-		kinematic.pos = sm.vec3.new( rx, ry, kinematic.pos.z )
-		kinematic.rot = GetRotationQuat( cellX, cellY ) * kinematic.rot
+function GetKinematicsForCell(cellX, cellY, lod)
+	local kinematics = sm.terrainTile.getKinematicsForCell(GetTileLoadParamsFromCellPos(cellX, cellY, lod))
+	for _, kinematic in ipairs(kinematics) do
+		local rx, ry = RotateLocal(cellX, cellY, kinematic.pos.x, kinematic.pos.y)
+		kinematic.pos = sm.vec3.new(rx, ry, kinematic.pos.z)
+		kinematic.rot = GetRotationQuat(cellX, cellY) * kinematic.rot
 	end
 	return kinematics
 end
 
-function GetDecalsForCell( cellX, cellY, lod )
-	local decals = sm.terrainTile.getDecalsForCell( GetTileLoadParamsFromCellPos( cellX, cellY, lod ) )
-	for _, decal in ipairs( decals ) do
-		local rx, ry = RotateLocal( cellX, cellY, decal.pos.x, decal.pos.y )
-		decal.pos = sm.vec3.new( rx, ry, decal.pos.z )
-		decal.rot = GetRotationQuat( cellX, cellY ) * decal.rot
+function GetDecalsForCell(cellX, cellY, lod)
+	local decals = sm.terrainTile.getDecalsForCell(GetTileLoadParamsFromCellPos(cellX, cellY, lod))
+	for _, decal in ipairs(decals) do
+		local rx, ry = RotateLocal(cellX, cellY, decal.pos.x, decal.pos.y)
+		decal.pos = sm.vec3.new(rx, ry, decal.pos.z)
+		decal.rot = GetRotationQuat(cellX, cellY) * decal.rot
 	end
 	return decals
 end

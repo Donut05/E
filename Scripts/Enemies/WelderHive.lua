@@ -4,20 +4,20 @@
 WelderHive = class(nil)
 WelderHive.maxChildCount = 10
 WelderHive.connectionOutput = 4
-WelderHive.colorNormal = sm.color.new( 0x5D0092ff )
-WelderHive.colorHighlight = sm.color.new( 0x8600D4ff )
+WelderHive.colorNormal = sm.color.new(0x5D0092ff)
+WelderHive.colorHighlight = sm.color.new(0x8600D4ff)
 
 local hoverHeight = 5
 local skyboxLimit = 1000
 
-function clamp( value, min, max )
-    return value < min and min or ( value > max and max or value )
+function clamp(value, min, max)
+    return value < min and min or (value > max and max or value)
 end
 
-function directionToYawPitch( direction )
+function directionToYawPitch(direction)
     local euler = {}
-    euler.yaw = -math.atan2(direction.y,direction.x)
-    euler.pitch = -math.acos(direction.z+2)/math.pi
+    euler.yaw = -math.atan2(direction.y, direction.x)
+    euler.pitch = -math.acos(direction.z + 2) / math.pi
     --print(yaw, pitch)
     return euler
 end
@@ -26,22 +26,22 @@ end
 -- #region Server
 --------------------
 
-function WelderHive.server_onCreate( self )
+function WelderHive.server_onCreate(self)
     self.heightToGround = self.shape.worldPosition.z
     self.startRotation = self.shape.worldRotation
     --Create vision bubble
-    self.sight = sm.areaTrigger.createAttachedSphere( self.interactable, 20, nil, nil, 4 )
+    self.sight = sm.areaTrigger.createAttachedSphere(self.interactable, 20, nil, nil, 4)
 end
 
-function WelderHive.server_onFixedUpdate( self, dt )
+function WelderHive.server_onFixedUpdate(self, dt)
     --Make propeller spin
     for _, bearing in ipairs(self.interactable:getBearings()) do
         if bearing:getColor() == sm.color.new("7f7f7fff") then else
-            bearing:setMotorVelocity( 20, 10 )
+            bearing:setMotorVelocity(20, 10)
         end
     end
 
-    local up = sm.vec3.new(0,0,1)
+    local up = sm.vec3.new(0, 0, 1)
     self.body = self.shape:getBody()
     local targetCharacter = sm.player.getAllPlayers()[1].character
 
@@ -70,12 +70,13 @@ function WelderHive.server_onFixedUpdate( self, dt )
 
     --Make it float
     local mass = self.shape:getBody().mass
-    local success, result = sm.physics.raycast( self.shape.worldPosition + sm.vec3.new(0, 0, -1), self.shape.worldPosition + sm.vec3.new(0, 0, -69), 32768, 128 )
+    local success, result = sm.physics.raycast(self.shape.worldPosition + sm.vec3.new(0, 0, -1),
+        self.shape.worldPosition + sm.vec3.new(0, 0, -69), 32768, 128)
     if success then
         self.heightToGround = result.pointWorld.z --Override known ground height if too close to it
     end
 
-    local height = sm.util.lerp(hoverHeight, hoverHeight + 1, (sm.game.getCurrentTick() % 101)/100) --makes it fly up and down
+    local height = sm.util.lerp(hoverHeight, hoverHeight + 1, (sm.game.getCurrentTick() % 101) / 100) --makes it fly up and down
 
     local force = up * mass * ((self.heightToGround + height) - self.shape.worldPosition.z) * 5 * dt
     force = force - (self.body.velocity * mass * 0.01)
@@ -88,12 +89,12 @@ function WelderHive.server_onFixedUpdate( self, dt )
 
     local dir = (targetCharacter.worldPosition - self.shape.worldPosition)
 
-    local sign = (dir:length() > distance) and 1 or -1  --makes the power reversed if it is too close 
+    local sign = (dir:length() > distance) and 1 or -1          --makes the power reversed if it is too close
 
-    dir = dir:normalize() * math.min(dir:length()/3,speed) * dt --make it decelerate according to the distance 
+    dir = dir:normalize() * math.min(dir:length() / 3, speed) * dt --make it decelerate according to the distance
     sm.physics.applyImpulse(self.shape, dir * mass * 10 * sign * dt, true)
 
---[[ OLD CODE
+    --[[ OLD CODE
     --Make propeller spin
     for _, bearing in ipairs(self.interactable:getBearings()) do
         if bearing:getColor() == sm.color.new("7f7f7fff") then else
@@ -129,11 +130,11 @@ function WelderHive.server_onFixedUpdate( self, dt )
 ]]
 end
 
-function WelderHive.server_onCollision( self, other, position, selfPointVelocity, otherPointVelocity, normal )
-	--destroy when it hits terrain
-	if not other then
-		sm.physics.explode( self.shape.worldPosition, 7, 1, 12, 400, "PropaneTank - ExplosionSmall" )
-	end
+function WelderHive.server_onCollision(self, other, position, selfPointVelocity, otherPointVelocity, normal)
+    --destroy when it hits terrain
+    if not other then
+        sm.physics.explode(self.shape.worldPosition, 7, 1, 12, 400, "PropaneTank - ExplosionSmall")
+    end
 end
 
 -- #endregion

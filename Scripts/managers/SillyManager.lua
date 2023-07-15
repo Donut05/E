@@ -63,20 +63,27 @@ function SillyManager:client_onFixedUpdate(dt)
     end
 end
 
-function SillyManager:cl_getScorePercentage()
-    return math.floor(100*self.cl.sillyScore/maxSillyScore/10)*10
+function SillyManager:server_onFixedUpdate(dt)
+    for i, _ in ipairs(self.sv.sillyScores) do
+        self.sv.sillyScores[i] = math.max(0, self.sv.sillyScores[i] - 0.5 / 40)
+        --sm.gui.chatMessage(tostring(self.sv.sillyScores[i]))
+    end
 end
 
 function SillyManager:Cl_OnScoreEvent(eventType)
     g_sillyManager:cl_onScoreEvent(eventType)
 end
 
-function SillyManager:cl_onScoreEvent(eventType)
-    self:cl_increaseSillyScore(eventScores[eventType])
+function SillyManager:sv_onScoreEvent(eventType, caller)
+    self:sv_increaseSillyScore({ plr = caller, amount = self.eventScores[eventType] })
 end
 
----@param amount number
-function SillyManager:cl_increaseSillyScore(amount)
-    self.cl.sillyScore = math.min(self.cl.sillyScore + amount, maxSillyScore)
-    self.cl.scoreLossCooldown = scoreLossCooldown
+---@param params IncreaseSillyScoreParams
+function SillyManager:sv_increaseSillyScore(params, caller)
+    if caller then return end
+    self.sv.sillyScores[params.plr.id] = (self.sv.sillyScores[params.plr.id] or 0) + params.amount
 end
+
+---@class IncreaseSillyScoreParams
+---@field plr Player
+---@field amount integer

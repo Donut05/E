@@ -1,104 +1,97 @@
 ---@diagnostic disable: need-check-nil, undefined-global
-dofile( "$SURVIVAL_DATA/Scripts/game/survival_items.lua" )
-dofile( "$SURVIVAL_DATA/Scripts/game/survival_projectiles.lua" )
+dofile("$SURVIVAL_DATA/Scripts/game/survival_items.lua")
+dofile("$SURVIVAL_DATA/Scripts/game/survival_projectiles.lua")
 
-ConsumableContainer = class( nil )
+ConsumableContainer = class(nil)
 ConsumableContainer.maxChildCount = 255
 
 local ContainerSize = 5
 
-function ConsumableContainer.server_onCreate( self )
-	local container = self.shape.interactable:getContainer( 0 )
+function ConsumableContainer.server_onCreate(self)
+	local container = self.shape.interactable:getContainer(0)
 	if not container then
-		container = self.shape:getInteractable():addContainer( 0, ContainerSize, self.data.stackSize )
+		container = self.shape:getInteractable():addContainer(0, ContainerSize, self.data.stackSize)
 	end
 	if self.data.filterUid then
-		local filters = { sm.uuid.new( self.data.filterUid ) }
-		container:setFilters( filters )
+		local filters = { sm.uuid.new(self.data.filterUid) }
+		container:setFilters(filters)
 	end
 end
 
-function ConsumableContainer.client_canCarry( self )
-	local container = self.shape.interactable:getContainer( 0 )
-	if container and sm.exists( container ) then
+function ConsumableContainer.client_canCarry(self)
+	local container = self.shape.interactable:getContainer(0)
+	if container and sm.exists(container) then
 		return not container:isEmpty()
 	end
 	return false
 end
 
-function ConsumableContainer.client_onInteract( self, character, state )
+function ConsumableContainer.client_onInteract(self, character, state)
 	if state == true then
-		local container = self.shape.interactable:getContainer( 0 )
+		local container = self.shape.interactable:getContainer(0)
 		if container then
 			local gui = nil
 
 			local shapeUuid = self.shape:getShapeUuid()
 
 			if shapeUuid == obj_container_ammo then
-				gui = sm.gui.createAmmunitionContainerGui( true )
-
+				gui = sm.gui.createAmmunitionContainerGui(true)
 			elseif shapeUuid == obj_container_battery then
-				gui = sm.gui.createBatteryContainerGui( true )
-
+				gui = sm.gui.createBatteryContainerGui(true)
 			elseif shapeUuid == obj_container_chemical then
-				gui = sm.gui.createChemicalContainerGui( true )
-
+				gui = sm.gui.createChemicalContainerGui(true)
 			elseif shapeUuid == obj_container_fertilizer then
-				gui = sm.gui.createFertilizerContainerGui( true )
-
+				gui = sm.gui.createFertilizerContainerGui(true)
 			elseif shapeUuid == obj_container_gas then
-				gui = sm.gui.createGasContainerGui( true )
-
+				gui = sm.gui.createGasContainerGui(true)
 			elseif shapeUuid == obj_container_seed then
-				gui = sm.gui.createSeedContainerGui( true )
-
+				gui = sm.gui.createSeedContainerGui(true)
 			elseif shapeUuid == obj_container_water then
-				gui = sm.gui.createWaterContainerGui( true )
+				gui = sm.gui.createWaterContainerGui(true)
 			end
 
 			if gui == nil then
-				gui = sm.gui.createContainerGui( true )
-				gui:setText( "UpperName", "#{CONTAINER_TITLE_GENERIC}" )
+				gui = sm.gui.createContainerGui(true)
+				gui:setText("UpperName", "#{CONTAINER_TITLE_GENERIC}")
 			end
 
-			gui:setContainer( "UpperGrid", container )
-			gui:setText( "LowerName", "#{INVENTORY_TITLE}" )
-			gui:setContainer( "LowerGrid", sm.localPlayer.getInventory() )
+			gui:setContainer("UpperGrid", container)
+			gui:setText("LowerName", "#{INVENTORY_TITLE}")
+			gui:setContainer("LowerGrid", sm.localPlayer.getInventory())
 			gui:open()
 		end
 	end
 end
 
-function ConsumableContainer.client_onUpdate( self, dt )
-
-	local container = self.shape.interactable:getContainer( 0 )
+function ConsumableContainer.client_onUpdate(self, dt)
+	local container = self.shape.interactable:getContainer(0)
 	if container and self.data.stackSize then
-		local quantities = sm.container.quantity( container )
+		local quantities = sm.container.quantity(container)
 
 		local quantity = 0
-		for _,q in ipairs( quantities ) do
+		for _, q in ipairs(quantities) do
 			quantity = quantity + q
 		end
 
-		local frame = ContainerSize - math.ceil( quantity / self.data.stackSize )
-		self.interactable:setUvFrameIndex( frame )
+		local frame = ContainerSize - math.ceil(quantity / self.data.stackSize)
+		self.interactable:setUvFrameIndex(frame)
 	end
 end
 
-SeedContainer = class( ConsumableContainer )
+SeedContainer = class(ConsumableContainer)
 
-function SeedContainer.server_onCreate( self )
-	local container = self.shape.interactable:getContainer( 0 )
+function SeedContainer.server_onCreate(self)
+	local container = self.shape.interactable:getContainer(0)
 	if not container then
-		container =	self.shape:getInteractable():addContainer( 0, ContainerSize, self.data.stackSize )
+		container = self.shape:getInteractable():addContainer(0, ContainerSize, self.data.stackSize)
 	end
-	container:setFilters( sm.item.getPlantableUuids() )
+	container:setFilters(sm.item.getPlantableUuids())
 end
 
-WaterContainer = class( ConsumableContainer )
+WaterContainer = class(ConsumableContainer)
 WaterContainer.connectionOutput = sm.interactable.connectionType.water
-WaterContainer.colorNormal = sm.color.new( 0x84ff32ff )
-WaterContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
+WaterContainer.colorNormal = sm.color.new(0x84ff32ff)
+WaterContainer.colorHighlight = sm.color.new(0xa7ff4fff)
 
 -- function WaterContainer.server_onProjectile( self, hitPos, hitTime, hitVelocity, _, attacker, damage, userData, hitNormal, projectileUuid )
 -- 	if projectileUuid == projectile_water and ( self.hitTick == nil or self.hitTick <= sm.game.getCurrentTick() - 4 ) then
@@ -111,21 +104,21 @@ WaterContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
 -- 	end
 -- end
 
-BatteryContainer = class( ConsumableContainer )
+BatteryContainer = class(ConsumableContainer)
 BatteryContainer.connectionOutput = sm.interactable.connectionType.electricity
-BatteryContainer.colorNormal = sm.color.new( 0x84ff32ff )
-BatteryContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
+BatteryContainer.colorNormal = sm.color.new(0x84ff32ff)
+BatteryContainer.colorHighlight = sm.color.new(0xa7ff4fff)
 
-GasolineContainer = class( ConsumableContainer )
+GasolineContainer = class(ConsumableContainer)
 GasolineContainer.connectionOutput = sm.interactable.connectionType.gasoline
-GasolineContainer.colorNormal = sm.color.new( 0x84ff32ff )
-GasolineContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
+GasolineContainer.colorNormal = sm.color.new(0x84ff32ff)
+GasolineContainer.colorHighlight = sm.color.new(0xa7ff4fff)
 
 local isThruster = {
 	thruster = true,
 	survivalThruster = true
 }
-function GasolineContainer.server_onFixedUpdate( self, dt )
+function GasolineContainer.server_onFixedUpdate(self, dt)
 	local children = self.shape.interactable:getChildren()
 	for _, interactable in ipairs(children) do --if table is empty, for loop doesnt run
 		if interactable.active and isThruster[interactable.type] == true then
@@ -134,21 +127,21 @@ function GasolineContainer.server_onFixedUpdate( self, dt )
 				pos = shape.worldPosition + shape.up,
 				rot = shape.worldRotation
 			}
-			self.network:sendToClients( "cl_createTrail", data )
+			self.network:sendToClients("cl_createTrail", data)
 		end
 	end
 end
 
-function GasolineContainer.cl_createTrail( self, data )
-	sm.effect.playEffect( "Thruster - Exhaust", data.pos, nil, data.rot )
+function GasolineContainer.cl_createTrail(self, data)
+	sm.effect.playEffect("Thruster - Exhaust", data.pos, nil, data.rot)
 end
 
-AmmoContainer = class( ConsumableContainer )
+AmmoContainer = class(ConsumableContainer)
 AmmoContainer.connectionOutput = sm.interactable.connectionType.ammo
-AmmoContainer.colorNormal = sm.color.new( 0x84ff32ff )
-AmmoContainer.colorHighlight = sm.color.new( 0xa7ff4fff )
+AmmoContainer.colorNormal = sm.color.new(0x84ff32ff)
+AmmoContainer.colorHighlight = sm.color.new(0xa7ff4fff)
 
-FoodContainer = class( ConsumableContainer )
+FoodContainer = class(ConsumableContainer)
 
 local FoodUuids = {
 	obj_plantables_banana,
@@ -169,12 +162,12 @@ local FoodUuids = {
 	obj_resource_corn,
 }
 
-function FoodContainer.server_onCreate( self )
-	local container = self.shape.interactable:getContainer( 0 )
+function FoodContainer.server_onCreate(self)
+	local container = self.shape.interactable:getContainer(0)
 	if not container then
-		container =	self.shape:getInteractable():addContainer( 0, 20 )
+		container = self.shape:getInteractable():addContainer(0, 20)
 	end
-	container:setFilters( FoodUuids )
+	container:setFilters(FoodUuids)
 end
 
 FoodContainer.client_onUpdate = nil

@@ -294,8 +294,20 @@
    "Sounds - Metal_pipe" : {
       "effectList" : [
          {
-            "type" : "audio",
-            "name" : "MetalPipe"
+            "name" : "MetalPipe",
+            "parameters" : [ "DLM_Pitch" ],
+            "type" : "audio"
+         }
+      ],
+      "parameterList" : {
+         "DLM_Pitch" : 1.0
+      }
+   },
+   "Sounds - TapeBot_headshot_sound" : {
+      "effectList" : [
+         {
+            "name" : "MeetTheSniper",
+            "type" : "audio"
          }
       ]
    },
