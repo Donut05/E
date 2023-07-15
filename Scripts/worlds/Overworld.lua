@@ -154,7 +154,7 @@ end
 
 function Overworld.client_onCollision(self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal)
 	if type(objectA) == "Shape" then
-		if (sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 0) == 0)) and sm.dlm_injected then
+		if (sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 1000) == 0)) and sm.dlm_injected then
 			local pitch = 3.0 - math.min(objectA.mass / 200, 2.5)
 			print(pitch)
 			sm.effect.playEffect("Sounds - Metal_pipe", position, nil, nil, nil,

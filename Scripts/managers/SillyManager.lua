@@ -1,12 +1,12 @@
----@diagnostic disable: lowercase-global
+---@diagnostic disable: lowercase-global, undefined-field
 dofile("$SURVIVAL_DATA/Scripts/game/util/Timer.lua")
 
 ---@class SillyManager : ScriptableObjectClass
 SillyManager = class()
 
 local maxSillyScore = 10000000000000000 --donut decided on this
-local scoreLossCooldown = 5*40
-local scoreLoss = maxSillyScore/50
+local scoreLossCooldown = 5 * 40
+local scoreLoss = maxSillyScore / 50
 local eventScores = {
     toilet = 69420690000000,
     explode = 745510000000000
@@ -26,7 +26,7 @@ function SillyManager:client_onCreate()
         isOverlapped = false,
         backgroundAlpha = 0.0,
     })
-	assert(g_sillyMeterHud)
+    assert(g_sillyMeterHud)
 end
 
 function SillyManager:server_onCreate()
@@ -48,7 +48,7 @@ function SillyManager:client_onFixedUpdate(dt)
             g_sillyMeterHud:open()
         end
         local percentage = self:cl_getScorePercentage()
-        g_sillyMeterHud:setImage("SillyMeter", "$CONTENT_DATA/Gui/Images/SillyMeter/"..tostring(percentage)..".png")
+        g_sillyMeterHud:setImage("SillyMeter", "$CONTENT_DATA/Gui/Images/SillyMeter/" .. tostring(percentage) .. ".png")
     elseif g_sillyMeterHud:isActive() then
         g_sillyMeterHud:close()
     end
