@@ -17,6 +17,6 @@ end
 
 function Player:server_onExplosion(center, destructionLevel)
     if (self.player.character.worldPosition - center):length() < 2 then
-        g_sillyManager:Sv_OnScoreEvent("explode", self.player)
+        g_sillyManager:Cl_OnScoreEvent("explode")
     end
 end
