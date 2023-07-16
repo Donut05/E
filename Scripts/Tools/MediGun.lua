@@ -7,7 +7,15 @@ local defaultDir = sm.vec3.new(1, 0, 0)
 local cycles = 20
 local range = 100
 
+---@param target Character
 function Medi.sv_updateTarget(self, target)
+    if target then
+        target:setTumbling(true)
+        target:getUnit().publicData.mediBeamActive = true
+    elseif self.target then
+        self.target:getUnit().publicData.mediBeamActive = false
+    end
+
     self.network:sendToClients("cl_updateTarget", target)
 end
 
@@ -19,9 +27,16 @@ function Medi.client_onCreate(self)
     end
 end
 
+function Medi:client_onDestroy()
+    self:cl_stopFx()
+end
+
 function Medi.client_onUpdate(self)
-    if not self.target or not sm.exists(self.target) or not self.tool:isEquipped() then
+    if not sm.exists(self.target) then
         self.target = nil
+    end
+
+    if not self.target or not self.tool:isEquipped() then
         self:cl_stopFx()
         return
     end
@@ -29,13 +44,12 @@ function Medi.client_onUpdate(self)
     local owner = self.tool:getOwner().character
     local start = owner.worldPosition
     local _end = self.target.worldPosition
-    if (_end - start):length2() > range then --longer than 10 meters, discard
-        self.target = nil
+    if self.tool:isLocal() and (_end - start):length2() > range then
+        self.network:sendToServer("sv_updateTarget", nil)
         return
     end
 
     local mid = start + owner.direction * 5
-    --local oldTick = sm.game.getCurrentTick()
 
     ---@diagnostic disable-next-line: param-type-mismatch
     local hit, result = sm.physics.raycast(start, mid, owner)
@@ -57,32 +71,9 @@ function Medi.client_onUpdate(self)
         if nextPos then
             effect:setRotation(sm.vec3.getRotation(defaultDir, nextPos - pos))
         end
-        effect:start()
+
+        if not effect:isPlaying() then effect:start() end
     end
-
-    --donur i still dont understand this smh
-    --[[for i = 1, cycles do
-        local pos = posCache[i]
-        local effect = sm.effect.createEffect( "Medi - Beam_segment" )
-        effect:setPosition( pos )
-
-        local nextPos = posCache[i + 1]
-        if nextPos then
-            effect:setRotation( sm.vec3.getRotation((nextPos - pos):normalize(), defaultDir) )
-        end
-        effect:start()
-
-        self.effects[#self.effects+1] = effect
-    end
-
-    if sm.game.getCurrentTick() > oldTick then --Clears old particles
-        if #self.effects > 0 then
-            for _, effect in ipairs(self.effects) do
-                effect:stopImmediate()
-            end
-            self.effects = {}
-        end
-    end]]
 end
 
 function Medi.server_onFixedUpdate(self)
@@ -94,8 +85,13 @@ function Medi.server_onFixedUpdate(self)
             hpGain = 1
         }
         sm.event.sendToPlayer(self.target:getPlayer(), "sv_e_eat", edibleParams)
-    else
-        self.target:setTumbling(true)
+    end
+end
+
+
+function Medi:client_onUnequip()
+    if self.tool:isLocal() then
+        self.network:sendToServer("sv_updateTarget", nil)
     end
 end
 

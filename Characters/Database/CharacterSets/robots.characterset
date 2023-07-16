@@ -84,7 +84,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "TapebotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/TapeBotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/TapeBotUnit.lua"
          },
          "uuid" : "9dbbd2fb-7726-4e8f-8eb4-0dab228a561d"
       },
@@ -128,7 +128,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "TapebotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/TapeBotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/TapeBotUnit.lua"
          },
          "uuid" : "fcb2e8ce-ca94-45e4-a54b-b5acc156170b"
       },
@@ -172,7 +172,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "TapebotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/TapeBotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/TapeBotUnit.lua"
          },
          "uuid" : "68d3b2f3-ed4b-4967-9d22-8ee6f555df63"
       },
@@ -218,7 +218,7 @@
                "explosiveProjectile" : true
             },
             "scriptClass" : "TapebotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/TapeBotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/TapeBotUnit.lua"
          },
          "uuid" : "c3d31c47-0c9b-4b07-9bd4-8f022dc4333e"
       },
@@ -271,7 +271,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "TotebotGreenUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/TotebotGreenUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/TotebotGreenUnit.lua"
          },
          "uuid" : "8984bdbf-521e-4eed-b3c4-2b5e287eb879"
       },
@@ -322,7 +322,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "HaybotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/HaybotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/HaybotUnit.lua"
          },
          "uuid" : "c8bfb8f3-7efc-49ac-875a-eb85ac0614db"
       },
@@ -371,7 +371,7 @@
          "unit" : {
             "data" : {},
             "scriptClass" : "FarmbotUnit",
-            "scriptPath" : "$SURVIVAL_DATA/Scripts/game/units/FarmbotUnit.lua"
+            "scriptPath" : "$CONTENT_DATA/Scripts/units/FarmbotUnit.lua"
          },
          "uuid" : "9f4fde94-312f-4417-b13b-84029c5d6b52"
       }
