@@ -174,6 +174,10 @@ function TapebotUnit.server_onCreate(self)
 	self.currentState = self.idleState
 	self.currentState:start()
 
+	self.unit.publicData = {
+		mediBeamActive = false,
+	}
+
 	print("-- TapebotUnit created --")
 end
 
@@ -203,8 +207,10 @@ function TapebotUnit.server_onFixedUpdate(self, dt)
 		self:sv_onDeath(sm.vec3.new(0, 0, 0))
 	end
 
-	updateTumble(self)
-	updateAirTumble(self, self.idleState)
+	if not self.unit.publicData.mediBeamActive then
+		updateTumble( self )
+		updateAirTumble( self, self.idleState )
+	end
 
 	if self.currentState then
 		self.canShootTarget = self:updateAim(dt)
