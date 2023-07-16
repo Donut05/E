@@ -7,7 +7,7 @@ function WeatherManager.client_onCreate(self)
     self.rainSoundOffset = sm.vec3.zero()
     self.rain = sm.effect.createEffect("Environment - Rain")
     self.rainSound = sm.effect.createEffect("Environment - Rain_sound")
-    self.rain:setOffsetRotation(sm.vec3.getRotation(sm.vec3.new(0, 1, 0), sm.vec3.new(0, 0, -1)))
+    --self.rain:setOffsetRotation(sm.vec3.getRotation(sm.vec3.new(0, 1, 0), sm.vec3.new(0, 0, -1)))
 end
 
 function WeatherManager.client_onUpdate(self, dt)
