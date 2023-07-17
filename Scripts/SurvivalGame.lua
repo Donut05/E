@@ -84,12 +84,12 @@ function SurvivalGame.server_onCreate(self)
 	g_unitManager:sv_onCreate(self.sv.saved.overworld)
 
 	self.sv.questEntityManager = sm.scriptableObject.createScriptableObject(sm.uuid.new(
-	"c6988ecb-0fc1-4d45-afde-dc583b8b75ee"))
+		"c6988ecb-0fc1-4d45-afde-dc583b8b75ee"))
 
 	self.sv.questManager = sm.storage.load(STORAGE_CHANNEL_QUESTMANAGER)
 	if not self.sv.questManager then
 		self.sv.questManager = sm.scriptableObject.createScriptableObject(sm.uuid.new(
-		"83b0cc7e-b164-47b8-a83c-0d33ba5f72ec"))
+			"83b0cc7e-b164-47b8-a83c-0d33ba5f72ec"))
 		sm.storage.save(STORAGE_CHANNEL_QUESTMANAGER, self.sv.questManager)
 	end
 
@@ -297,7 +297,12 @@ end
 function SurvivalGame.server_onFixedUpdate(self, timeStep)
 	if sm.exists(self.sv.saved.overworld) and not g_WeatherManager then
 		g_WeatherManager = sm.scriptableObject.createScriptableObject(
-		sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld)
+			sm.uuid.new("88c4f979-0feb-44d3-8b59-51da00338430"), nil, self.sv.saved.overworld)
+	end
+
+	if sm.exists(self.sv.saved.overworld) and not g_SkyManager then
+		g_SkyManager = sm.scriptableObject.createScriptableObject(
+			sm.uuid.new("cd770721-1acb-400e-a175-28cd6511010f"), nil, self.sv.saved.overworld)
 	end
 
 	-- Update time
@@ -366,7 +371,7 @@ function SurvivalGame.client_onUpdate(self, dt)
 	local light = 0.0
 	if index < #DAYCYCLE_LIGHTING_TIMES then
 		local p = (self.cl.time.timeOfDay - DAYCYCLE_LIGHTING_TIMES[index]) /
-		(DAYCYCLE_LIGHTING_TIMES[index + 1] - DAYCYCLE_LIGHTING_TIMES[index])
+			(DAYCYCLE_LIGHTING_TIMES[index + 1] - DAYCYCLE_LIGHTING_TIMES[index])
 		light = sm.util.lerp(DAYCYCLE_LIGHTING_VALUES[index], DAYCYCLE_LIGHTING_VALUES[index + 1], p)
 	else
 		light = DAYCYCLE_LIGHTING_VALUES[index]
@@ -433,8 +438,11 @@ function SurvivalGame.cl_onChatCommand(self, params)
 			{ player = sm.localPlayer.getPlayer(), item = obj_survivalobject_keycard, quantity = 1 })
 	elseif params[1] == "/camera" then
 		self.network:sendToServer("sv_giveItem",
-			{ player = sm.localPlayer.getPlayer(), item = sm.uuid.new("5bbe87d3-d60a-48b5-9ca9-0086c80ebf7f"),
-				quantity = 1 })
+			{
+				player = sm.localPlayer.getPlayer(),
+				item = sm.uuid.new("5bbe87d3-d60a-48b5-9ca9-0086c80ebf7f"),
+				quantity = 1
+			})
 	elseif params[1] == "/powercore" then
 		self.network:sendToServer("sv_giveItem",
 			{ player = sm.localPlayer.getPlayer(), item = obj_survivalobject_powercore, quantity = 1 })
@@ -510,9 +518,12 @@ function SurvivalGame.cl_onChatCommand(self, params)
 			elseif params[2] then
 				harvestableUuid = sm.uuid.new(params[2])
 			end
-			local spawnParams = { world = character:getWorld(), uuid = harvestableUuid,
+			local spawnParams = {
+				world = character:getWorld(),
+				uuid = harvestableUuid,
 				position = character.worldPosition,
-				quat = sm.vec3.getRotation(sm.vec3.new(0, 1, 0), sm.vec3.new(0, 0, 1)) }
+				quat = sm.vec3.getRotation(sm.vec3.new(0, 1, 0), sm.vec3.new(0, 0, 1))
+			}
 			self.network:sendToServer("sv_spawnHarvestable", spawnParams)
 		end
 	elseif params[1] == "/cleardebug" then
@@ -598,8 +609,11 @@ function SurvivalGame.client_onLoadingScreenLifted(self)
 	self.network:sendToServer("sv_n_loadingScreenLifted")
 	if self.cl.playIntroCinematic then
 		local callbacks = {}
-		callbacks[#callbacks + 1] = { fn = "cl_onCinematicEvent",
-			params = { cinematicName = "cinematic.survivalstart01" }, ref = self }
+		callbacks[#callbacks + 1] = {
+			fn = "cl_onCinematicEvent",
+			params = { cinematicName = "cinematic.survivalstart01" },
+			ref = self
+		}
 		g_effectManager:cl_playNamedCinematic("cinematic.survivalstart01", callbacks)
 	end
 end
@@ -910,8 +924,10 @@ function SurvivalGame.sv_e_createElevatorDestination(self, params)
 		warehouse.exits = params.exits
 		warehouse.maxLevels = params.maxLevels
 		warehouse.index = #self.sv.warehouses + 1
-		warehouse.restrictions = { erasable = { name = "erasable", state = false },
-			connectable = { name = "connectable", state = false } }
+		warehouse.restrictions = {
+			erasable = { name = "erasable", state = false },
+			connectable = { name = "connectable", state = false }
+		}
 		self.sv.warehouses[#self.sv.warehouses + 1] = warehouse
 		sm.storage.save(STORAGE_CHANNEL_WAREHOUSES, self.sv.warehouses)
 	end

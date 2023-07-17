@@ -291,6 +291,15 @@
          }
       ]
    },
+   "Skybox - Moon" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "moon" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "Sounds - Metal_pipe" : {
       "effectList" : [
          {

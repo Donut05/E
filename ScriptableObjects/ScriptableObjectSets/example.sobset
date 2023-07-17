@@ -11,6 +11,12 @@
          "filename" : "$CONTENT_DATA/Scripts/managers/SillyManager.lua",
          "name" : "SillyManager",
          "uuid" : "d696f6ae-615f-499b-b22a-20e8cea14831"
+      },
+      {
+         "classname" : "SkyManager",
+         "filename" : "$CONTENT_DATA/Scripts/managers/SkyManager.lua",
+         "name" : "SkyManager",
+         "uuid" : "cd770721-1acb-400e-a175-28cd6511010f"
       }
    ]
 }
