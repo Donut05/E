@@ -1,38 +1,49 @@
 ---@diagnostic disable: need-check-nil, undefined-global
 
 SkyManager = class(nil)
+SkyManager.moonStartTime = 0.9
+SkyManager.moonEndTime = 0.185
+
+local function calculateProgress(value, minValue, maxValue)
+    local range = maxValue - minValue
+    local progress = (value - minValue) % range
+    local result = progress / range
+    return (result-1)*-1
+end
 
 function SkyManager.client_onCreate(self)
-    self.effects = {}
-    self.moon = {}
+    self.effects = self.effects or {}
+    self.moon = { previousPosition = sm.vec3.zero(), angle = 0 }
     self.effects.moon = sm.effect.createEffect("Skybox - Moon")
 end
 
-function SkyManager.client_onFixedUpdate(self, dt)
+function SkyManager:client_onFixedUpdate(dt)
+    self.moon.angle = sm.util.lerp(-5, 185, calculateProgress(self.time, self.moonStartTime, self.moonEndTime))
+end
+
+function SkyManager.client_onUpdate(self, dt)
+    if not sm.localPlayer.getPlayer().character then return end
+
     self.time = sm.game.getTimeOfDay()
     -- Sun disappears shortly after 0.8
-    if self.time > 0.8 then
-        print("moon")
-        self.moon.previousPosition = sm.localPlayer.getPlayer().character.worldPosition
+    if self.time > self.moonStartTime or self.time <= self.moonEndTime then
         if not self.effects.moon:isPlaying() then
             self.effects.moon:start()
         end
-        local position = sm.localPlayer.getPlayer().character.worldPosition
-        self.effects.moon:setPosition(sm.vec3.lerp(self.moon.previousPosition, position, dt * 2))
-    elseif self.time > 0.185 then
-        print("no moon")
+        local angle = self.moon.angle *math.pi/180
+        local radius = 1000
+        local rotationOffset = sm.vec3.new(math.cos(angle)*radius, 0, math.sin(angle)*radius)
+        local position = sm.localPlayer.getPlayer().character.worldPosition + rotationOffset
+        self.moon.previousPosition = sm.vec3.lerp(self.moon.previousPosition, position, dt * 50)
+        self.effects.moon:setPosition(self.moon.previousPosition)
+    elseif self.time > self.moonEndTime then
         if self.effects.moon:isPlaying() then
             self.effects.moon:stopImmediate()
+            self.moon.angle = 0
         end
     end
-    local angle = (self.time - 0.8) / (1.8 - 0.8) * math.pi
-    local scaledY = math.sin(angle)
-    local scaledZ = math.cos(angle)
-    local rotator = sm.vec3.new(0, scaledY, scaledZ)
-    self.effects.moon:setRotation( sm.vec3.getRotation(sm.vec3.new(0, 0, 1), rotator) )
 end
 
 function SkyManager.client_onRefresh(self)
-    self.effects.moon:destroy()
-    self:client_onCreate()
+    self.moon.angle = 0
 end
