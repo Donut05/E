@@ -22,12 +22,12 @@ function SkyManager.client_onCreate(self)
 end
 
 function SkyManager:client_onFixedUpdate(dt)
+    if not self.time then return end
     self.moon.angle = sm.util.lerp(-5, 185, calculateProgress(self.time, self.moonStartTime, self.moonEndTime))
 end
 
 function SkyManager.client_onUpdate(self, dt)
     if not sm.localPlayer.getPlayer().character then return end
-    if not self.time then return end
 
     self.time = sm.game.getTimeOfDay()
     if self.time > self.moonStartTime or self.time <= self.moonEndTime then
