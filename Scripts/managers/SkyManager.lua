@@ -1,6 +1,10 @@
 ---@diagnostic disable: need-check-nil, undefined-global
 
 SkyManager = class(nil)
+
+-- Sun disappears shortly after 0.8 and appears after 0.185
+-- Moon and sun intentionally have a bit of an overlap for cool screenshot potential
+-- Note: This WILL require an update once QMark makes moving sun into a dll plugin
 SkyManager.moonStartTime = 0.9
 SkyManager.moonEndTime = 0.185
 
@@ -8,7 +12,7 @@ local function calculateProgress(value, minValue, maxValue)
     local range = maxValue - minValue
     local progress = (value - minValue) % range
     local result = progress / range
-    return (result-1)*-1
+    return (result - 1) * -1
 end
 
 function SkyManager.client_onCreate(self)
@@ -23,16 +27,16 @@ end
 
 function SkyManager.client_onUpdate(self, dt)
     if not sm.localPlayer.getPlayer().character then return end
+    if not self.time then return end
 
     self.time = sm.game.getTimeOfDay()
-    -- Sun disappears shortly after 0.8
     if self.time > self.moonStartTime or self.time <= self.moonEndTime then
         if not self.effects.moon:isPlaying() then
             self.effects.moon:start()
         end
-        local angle = self.moon.angle *math.pi/180
+        local angle = self.moon.angle * math.pi / 180
         local radius = 1000
-        local rotationOffset = sm.vec3.new(math.cos(angle)*radius, 0, math.sin(angle)*radius)
+        local rotationOffset = sm.vec3.new(math.cos(angle) * radius, 0, math.sin(angle) * radius)
         local position = sm.localPlayer.getPlayer().character.worldPosition + rotationOffset
         self.moon.previousPosition = sm.vec3.lerp(self.moon.previousPosition, position, dt * 50)
         self.effects.moon:setPosition(self.moon.previousPosition)
