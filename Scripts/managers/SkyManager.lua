@@ -2,18 +2,11 @@
 
 SkyManager = class(nil)
 
--- Sun disappears shortly after 0.8 and appears after 0.185
+-- Sun disappears shortly after 0.85 and disappears after 0.16
 -- Moon and sun intentionally have a bit of an overlap for cool screenshot potential
 -- Note: This WILL require an update once QMark makes moving sun into a dll plugin
-SkyManager.moonStartTime = 0.9
-SkyManager.moonEndTime = 0.185
-
-local function calculateProgress(value, minValue, maxValue)
-    local range = maxValue - minValue
-    local progress = (value - minValue) % range
-    local result = progress / range
-    return (result - 1) * -1
-end
+SkyManager.moonStartTime = 0.85 --Please don't change these values, I beg you
+SkyManager.moonEndTime = 0.16
 
 function SkyManager.client_onCreate(self)
     self.effects = self.effects or {}
@@ -23,7 +16,10 @@ end
 
 function SkyManager:client_onFixedUpdate(dt)
     if not self.time then return end
-    self.moon.angle = sm.util.lerp(-5, 185, calculateProgress(self.time, self.moonStartTime, self.moonEndTime))
+
+    local offsetAngle = 70 --please don't change any of these either
+    local maxAngleMul = 2
+    self.moon.angle = sm.util.lerp(0, 360*maxAngleMul, self.time) + offsetAngle
 end
 
 function SkyManager.client_onUpdate(self, dt)
