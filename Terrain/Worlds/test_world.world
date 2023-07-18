@@ -3,7 +3,7 @@
       {
          "offsetX" : 0,
          "offsetY" : 0,
-         "path" : "$CONTENT_e83c4ab8-f5b3-4b3e-b04a-c8a9355b6523/small_pit.tile",
+         "path" : "$CONTENT_DATA/Terrain/Tiles/small_pit.tile",
          "rotation" : 2,
          "x" : -1,
          "y" : -1
@@ -27,7 +27,7 @@
       {
          "offsetX" : 0,
          "offsetY" : 0,
-         "path" : "$CONTENT_8a783b23-83b9-4e56-b04b-282d00cdbfdf/testing_tile.tile",
+         "path" : "$CONTENT_DATA/Terrain/Tiles/testing_tile.tile",
          "rotation" : 0,
          "x" : 0,
          "y" : 0
