@@ -8,6 +8,8 @@ SkyManager = class(nil)
 SkyManager.moonStartTime = 0.8 --0.85 --Please don't change these values, I beg you
 SkyManager.moonEndTime = 0.185 --0.16
 SkyManager.moonDistance = 1500
+SkyManager.moonStartAngle = -5
+SkyManager.moonEndAngle = 185
 
 function SkyManager.client_onCreate(self)
     self.effects = self.effects or {}
@@ -18,23 +20,21 @@ end
 function convertToValue(floatValue, minRange, maxRange)
     local value = 0
 
-    -- Handling the range [0.8, 1.0]
     if floatValue >= 0.8 and floatValue <= 1.0 then
-        value = minRange + (floatValue - 0.8) * ((maxRange - minRange) / 0.2) -- Linear interpolation
+        value = minRange + (floatValue - 0.8) * ((maxRange - minRange) / 0.2)
     end
 
-    -- Handling the range [0.0, 0.185]
     if floatValue > 0.0 and floatValue <= 0.185 then
-        value = maxRange - (floatValue - 1.0) * ((maxRange - minRange) / 0.185) -- Linear interpolation
+        value = maxRange - (floatValue - 1.0) * ((maxRange - minRange) / 0.185)
     end
 
-    return value * -1
+    return value
 end
 
 function SkyManager:client_onFixedUpdate(dt)
     if not self.time then return end
 
-    self.moon.angle = convertToValue(self.time, SkyManager.moonStartTime, SkyManager.moonEndTime)
+    self.moon.angle = convertToValue(self.time, SkyManager.moonStartAngle, SkyManager.moonEndAngle)
     print(self.moon.angle)
 end
 
