@@ -21,6 +21,8 @@
       "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_loop.json",
       "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_open.json",
       "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_close.json",
-      "particles/skybox/moon.json"
+      "particles/skybox/moon.json",
+      "particles/skybox/star_sky.json",
+      "particles/skybox/cargo_ships.json"
    ]
 }

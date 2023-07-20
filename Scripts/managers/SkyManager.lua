@@ -10,11 +10,14 @@ SkyManager.moonEndTime = 0.21  -- When the moon despawns
 SkyManager.moonDistance = 1500
 SkyManager.moonStartAngle = -5
 SkyManager.moonEndAngle = 182
+SkyManager.starEndTime = 0.09
 
 function SkyManager.client_onCreate(self)
     self.effects = self.effects or {}
     self.moon = { previousPosition = sm.vec3.zero(), angle = 0 }
     self.effects.moon = sm.effect.createEffect("Skybox - Moon")
+    self.effects.stars = sm.effect.createEffect("Skybox - Stars")
+    self.effects.ships = sm.effect.createEffect("Skybox - Cargo_ships")
 end
 
 local function convertToValue(floatValue, minRange, maxRange)
@@ -40,6 +43,11 @@ end
 function SkyManager.client_onUpdate(self, dt)
     if not sm.localPlayer.getPlayer().character then return end
 
+    if not self.effects.ships:isPlaying() then
+        self.effects.ships:start()
+    end
+    self.effects.ships:setPosition(sm.localPlayer.getPlayer().character.worldPosition)
+
     self.time = sm.game.getTimeOfDay()
     if self.time > self.moonStartTime or self.time <= self.moonEndTime then
         if not self.effects.moon:isPlaying() then
@@ -58,11 +66,25 @@ function SkyManager.client_onUpdate(self, dt)
             self.effects.moon:stopImmediate()
         end
     end
+    if self.time > self.moonStartTime or self.time <= self.starEndTime then
+        if not self.effects.stars:isPlaying() then
+            self.effects.stars:start()
+        end
+        self.effects.stars:setPosition(sm.localPlayer.getPlayer().character.worldPosition)
+    elseif self.time > self.starEndTime then
+        if self.effects.stars:isPlaying() then
+            self.effects.stars:stop()
+        end
+    end
 end
 
 function SkyManager.client_onRefresh(self)
     self.moon.angle = 0
     self.effects.moon:stopImmediate()
     self.effects.moon:destroy()
+    self.effects.stars:stopImmediate()
+    self.effects.stars:destroy()
+    self.effects.ships:stopImmediate()
+    self.effects.ships:destroy()
     SkyManager.client_onCreate(self)
 end
