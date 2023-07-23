@@ -14,7 +14,7 @@ SkyManager.starEndTime = 0.09
 
 function SkyManager.client_onCreate(self)
     self.effects = self.effects or {}
-    self.moon = { previousPosition = sm.vec3.zero(), angle = 0 }
+    self.moon = { angle = 0 }
     self.effects.moon = sm.effect.createEffect("Skybox - Moon")
     self.effects.stars = sm.effect.createEffect("Skybox - Stars")
     self.effects.ships = sm.effect.createEffect("Skybox - Cargo_ships")
@@ -43,12 +43,20 @@ end
 function SkyManager.client_onUpdate(self, dt)
     if not sm.localPlayer.getPlayer().character then return end
 
+    self.time = sm.game.getTimeOfDay()
+
+    --------------------
+    -- #region Cargo_ship_effect
+    --------------------
     if not self.effects.ships:isPlaying() then
         self.effects.ships:start()
     end
     self.effects.ships:setPosition(sm.localPlayer.getPlayer().character.worldPosition)
+    -- #endregion
 
-    self.time = sm.game.getTimeOfDay()
+    --------------------
+    -- #region Moon_effect
+    --------------------
     if self.time > self.moonStartTime or self.time <= self.moonEndTime then
         if not self.effects.moon:isPlaying() then
             self.effects.moon:start()
@@ -58,7 +66,7 @@ function SkyManager.client_onUpdate(self, dt)
         local angle = 1 * (math.pi / 12)
         local rotation = sm.quat.angleAxis(angle, sm.vec3.new(0, 0, 1))
         rotation = rotation * sm.quat.angleAxis(-math.rad(self.moon.angle / 2), sm.vec3.new(0, 1, 0))
-        local final_direction = rotation * sm.vec3.new(1, 0, 0) * SkyManager.moonDistance
+        local final_direction = rotation * sm.vec3.new(1, 0, 0) * self.moonDistance
 
         self.effects.moon:setPosition(offset_pos + final_direction)
     elseif self.time > self.moonEndTime then
@@ -66,6 +74,11 @@ function SkyManager.client_onUpdate(self, dt)
             self.effects.moon:stopImmediate()
         end
     end
+    -- #endregion
+
+    --------------------
+    -- #region Stars_effect
+    --------------------
     if self.time > self.moonStartTime or self.time <= self.starEndTime then
         if not self.effects.stars:isPlaying() then
             self.effects.stars:start()
@@ -76,15 +89,24 @@ function SkyManager.client_onUpdate(self, dt)
             self.effects.stars:stop()
         end
     end
+    -- #endregion
 end
 
 function SkyManager.client_onRefresh(self)
+
+    self.eclipse.angle = 0
+    self.effects.eclipse:stopImmediate()
+    self.effects.eclipse:destroy()
+
     self.moon.angle = 0
     self.effects.moon:stopImmediate()
     self.effects.moon:destroy()
+
     self.effects.stars:stopImmediate()
     self.effects.stars:destroy()
+
     self.effects.ships:stopImmediate()
     self.effects.ships:destroy()
+
     SkyManager.client_onCreate(self)
 end

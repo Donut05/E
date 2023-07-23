@@ -21,7 +21,8 @@ function Init()
 end
 
 function InitTerrainSeedGlobals(seed)
-	g_terrainSeed = seed
+	--g_terrainSeed = seed
+	g_terrainSeed = 153241084
 	g_terrainSeed_3 = g_terrainSeed + 3
 	g_terrainSeed_4 = g_terrainSeed + 4
 	g_terrainSeed_5 = g_terrainSeed + 5
