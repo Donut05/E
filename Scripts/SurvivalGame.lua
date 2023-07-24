@@ -224,9 +224,9 @@ function SurvivalGame.bindChatCommands(self)
 			"Create a harvestable: 'tree', 'stone'")
 		sm.game.bindChatCommand("/cleardebug", {}, "cl_onChatCommand", "Clear debug draw objects")
 		sm.game.bindChatCommand("/export", { { "string", "name", false } }, "cl_onChatCommand",
-			"Exports blueprint $SURVIVAL_DATA/LocalBlueprints/<name>.blueprint")
+			"Exports blueprint $CONTENT_DATA/LocalBlueprints/<name>.blueprint")
 		sm.game.bindChatCommand("/import", { { "string", "name", false } }, "cl_onChatCommand",
-			"Imports blueprint $SURVIVAL_DATA/LocalBlueprints/<name>.blueprint")
+			"Imports blueprint $CONTENT_DATA/LocalBlueprints/<name>.blueprint")
 		sm.game.bindChatCommand("/starterkit", {}, "cl_onChatCommand", "Spawn a starter kit")
 		sm.game.bindChatCommand("/mechanicstartkit", {}, "cl_onChatCommand",
 			"Spawn a starter kit for starting at mechanic station")
@@ -597,14 +597,16 @@ function SurvivalGame.cl_n_onJoined(self, params)
 end
 
 function SurvivalGame.client_onLoadingScreenLifted(self)
-	local spawnParams = {
+	local Params = {
 		uuid = sm.uuid.new("8984bdbf-521e-4eed-b3c4-2b5e287eb879"),
 		world = sm.localPlayer.getPlayer().character:getWorld(),
 		position = sm.localPlayer.getPlayer().character.worldPosition,
 		yaw = 0.0,
-		amount = 1
+		amount = 1,
+		name = "flat"
 	}
-	self.network:sendToServer("sv_spawnUnit", spawnParams)
+	self.network:sendToServer("sv_spawnUnit", Params)
+	self.network:sendToServer("sv_importCreation", Params)
 	g_effectManager:cl_onLoadingScreenLifted()
 	self.network:sendToServer("sv_n_loadingScreenLifted")
 	if self.cl.playIntroCinematic then

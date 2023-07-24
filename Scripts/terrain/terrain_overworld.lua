@@ -21,8 +21,8 @@ function Init()
 end
 
 function InitTerrainSeedGlobals(seed)
-	--g_terrainSeed = seed
-	g_terrainSeed = 153241084
+	g_terrainSeed = seed
+	--g_terrainSeed = 153241084
 	g_terrainSeed_3 = g_terrainSeed + 3
 	g_terrainSeed_4 = g_terrainSeed + 4
 	g_terrainSeed_5 = g_terrainSeed + 5
@@ -70,11 +70,19 @@ local function CalculateTerrainHeight(x, y)
 	local y_h = y * 0.5
 
 	--Water Noise
-	local water_noise = _math_abs(_sm_noise_octaveNoise2d(x_h, y_h, 12, g_terrainSeed)) * 100
+	local water_noise = _math_abs(_sm_noise_octaveNoise2d(x_h, y_h, 12, g_terrainSeed)) * 50
 
 	--Calculate Terrain Height
 	local height_limiter = _sm_noise_octaveNoise2d(x_h, y_h, 9, g_terrainSeed) * 3
-	local height_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed_10) * 50)
+	local smoothness_coefficient = 2
+	local height_pre_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed_10) * 50)
+	local height_pos_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50)
+	local height_neg_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50)
+	local height_pos_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50)
+	local height_neg_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50)
+	local height_clamped_1 = _util_clamp(height_pre_final, height_neg_x_neg_y, height_pos_x_pos_y)
+	local height_clamped_2 = _util_clamp( height_pre_final, height_neg_x_pos_y, height_pos_x_neg_y)
+	local height_final = _util_clamp(height_pre_final, height_clamped_1, height_clamped_2)
 
 	--Calculate Mountain Height
 	if height_limiter > 0.05 then --Skip mountain calculations if height_limiter < 0.05
@@ -365,7 +373,7 @@ function GetAssetsForCell( cellX, cellY, lod )
 	local y_pos = cellY * 64
 
 	--make 10 samples of random points and check if they actually have the fitting values to place a tree
-	for iter = 0, 10 do
+	for iter = 0, 50 do
 		local terrain_seed_iter = g_terrainSeed + iter
 
 		local x_local = _math_abs(_sm_noise_octaveNoise2d(x_pos * 0.5, y_pos * 0.5, 1, terrain_seed_iter)) * 64

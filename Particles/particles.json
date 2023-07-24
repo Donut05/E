@@ -23,6 +23,7 @@
       "particles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_close.json",
       "particles/skybox/moon.json",
       "particles/skybox/star_sky.json",
-      "particles/skybox/cargo_ships.json"
+      "particles/skybox/cargo_ships.json",
+      "particles/player/p_enviroment_fallingeffect_01.json"
    ]
 }
