@@ -85,6 +85,7 @@ local chestOpeningSpeed = 8.0
 local effectRoationFix = sm.vec3.getRotation(sm.vec3.new(0, 0, 1), sm.vec3.new(0, 1, 0))
 
 function Chest:client_onCreate()
+---@diagnostic disable-next-line: missing-fields
 	self.cl = {}
 	self.cl.chestAnimDirection = -1
 	self.cl.isInWater = false

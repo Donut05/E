@@ -234,6 +234,19 @@
          }
       ]
    },
+   "Enemies - Bee_swarm" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "bee_swarm" ],
+            "type" : "particle"
+         },
+         {
+            "audio" : [ "event:/props/beehive" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "Environment - Rain" : {
       "effectList" : [
          {

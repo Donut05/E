@@ -7,6 +7,10 @@
       "MeetTheSniper": {
         "path": "$CONTENT_DATA/Effects/Audio/meet_the_sniper.mp3",
         "is3D": false
+      },
+      "BeeSwarmBuzz": {
+        "path": "$CONTENT_DATA/Effects/Audio/bees.mp3",
+        "is3D": true
       }
     }
   }

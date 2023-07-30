@@ -1,3 +1,21 @@
 {
-    "meleeAttacks": []
+   "meleeAttacks" : [
+      {
+         "destruction" : {
+            "destructionLevels" : [
+               {
+                  "chance" : 1.0,
+                  "qualityLevel" : 10
+               }
+            ]
+         },
+         "hitBox" : {
+            "halfHeight" : 0.40,
+            "halfWidth" : 0.40
+         },
+         "impactEffect" : "",
+         "name" : "Destroy",
+         "uuid" : "38fe8287-d408-492f-a3a0-996f5f13ecda"
+      }
+   ]
 }

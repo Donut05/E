@@ -24,6 +24,7 @@
       "particles/skybox/moon.json",
       "particles/skybox/star_sky.json",
       "particles/skybox/cargo_ships.json",
-      "particles/player/p_enviroment_fallingeffect_01.json"
+      "particles/player/p_enviroment_fallingeffect_01.json",
+      "particles/enemies/bees/bee_swarm.json"
    ]
 }

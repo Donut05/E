@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 --[[
 	Script copied from 'Creative Terrain Overhaul'
 	Link: https://steamcommunity.com/sharedfiles/filedetails/?id=2839940307
@@ -21,8 +22,10 @@ function Init()
 end
 
 function InitTerrainSeedGlobals(seed)
-	g_terrainSeed = seed
-	--g_terrainSeed = 153241084
+	--g_terrainSeed = seed
+	--g_terrainSeed = 385382296 -- Maoutain start to test spawning under the map prevention
+	--g_terrainSeed = 15324108410 -- Island start
+	g_terrainSeed = 927677459 -- Weird terrain to test rocks on cliffs
 	g_terrainSeed_3 = g_terrainSeed + 3
 	g_terrainSeed_4 = g_terrainSeed + 4
 	g_terrainSeed_5 = g_terrainSeed + 5
@@ -47,7 +50,7 @@ function Load()
 	if sm.terrainData.exists() then
 		local saved_seed = sm.terrainData.load()
 		InitTerrainSeedGlobals(saved_seed)
-		
+
 		return true
 	end
 
@@ -59,6 +62,7 @@ function GetTilePath( uid )
 end
 
 local _util_clamp = sm.util.clamp
+local _util_smoother_step = sm.util.smootherstep
 local _sm_noise_octaveNoise2d = sm.noise.octaveNoise2d
 local _math_abs = math.abs
 local _math_min = math.min
@@ -74,15 +78,68 @@ local function CalculateTerrainHeight(x, y)
 
 	--Calculate Terrain Height
 	local height_limiter = _sm_noise_octaveNoise2d(x_h, y_h, 9, g_terrainSeed) * 3
-	local smoothness_coefficient = 2
-	local height_pre_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed_10) * 50)
-	local height_pos_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50)
-	local height_neg_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50)
-	local height_pos_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50)
-	local height_neg_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50)
-	local height_clamped_1 = _util_clamp(height_pre_final, height_neg_x_neg_y, height_pos_x_pos_y)
-	local height_clamped_2 = _util_clamp( height_pre_final, height_neg_x_pos_y, height_pos_x_neg_y)
-	local height_final = _util_clamp(height_pre_final, height_clamped_1, height_clamped_2)
+	local height_pre_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed_10) ) --* 50)
+	-- Terrain smoothing start
+	local smoothness_coefficient = 10
+	-- Get offsets so we can smooth the terrain if the bump on the noise map is insgnificant
+	local height_pos_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_neg_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_pos_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_neg_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_pos_x_0_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_neg_x_0_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_0_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	local height_0_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
+	-- Graph legend: + is where we are, O is the offsets we smooth from, Y is up, X is right
+	-- Note: If someone uses auto formatting on this, I will smack you
+	--[[
+			|
+			O
+			|
+	--------+--------
+			|
+			O
+			|
+	]]
+	local height_clamped = _util_smoother_step(height_0_x_pos_y, height_0_x_neg_y, height_pre_final)
+	--[[
+			|
+			|
+			|
+	---O----+----O---
+			|
+			|
+			|
+	]]
+	height_clamped = _util_smoother_step(height_pos_x_0_y, height_neg_x_0_y, height_clamped)
+	--[[
+			|
+			|   O
+			|
+	--------+--------
+			|
+		O   |
+			|
+	]]
+	height_clamped = _util_smoother_step(height_pos_x_pos_y, height_neg_x_neg_y, height_clamped)
+	--[[
+			|
+		O   |
+			|
+	--------+--------
+			|
+			|   O
+			|
+	]]
+	local height_final = _util_smoother_step(height_pos_x_neg_y, height_neg_x_pos_y, height_clamped)
+	-- Terrain smoothing end
+
+	--[[reivers ig CUT FOR NOW
+	local river = _util_clamp(_sm_noise_octaveNoise2d( x, y, 1, g_terrainSeed_192 ), 0, 1)
+	local height = _util_clamp(height_final, 0, 1)
+	if height > river then
+		height_final = height_final - 25
+	end]]
 
 	--Calculate Mountain Height
 	if height_limiter > 0.05 then --Skip mountain calculations if height_limiter < 0.05

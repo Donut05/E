@@ -1,8 +1,7 @@
 ---@diagnostic disable: undefined-global, undefined-field, deprecated, param-type-mismatch, lowercase-global
 dofile("$SURVIVAL_DATA/Scripts/game/worlds/BaseWorld.lua")
-
-
-
+dofile("$CONTENT_DATA/Scripts/terrain/terrain_overworld.lua")
+dofile("$CONTENT_DATA/Scripts/SurvivalGame.lua")
 dofile("$CONTENT_DATA/Scripts/managers/WaterManager.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/managers/PackingStationManager.lua")
 
@@ -150,11 +149,12 @@ function Overworld.client_onUpdate(self, deltaTime)
 			g_survivalMusic:setParameter("music", 4)
 		end
 	end
+	--print(sm.localPlayer.getPlayer().character.worldPosition)
 end
 
 function Overworld.client_onCollision(self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal)
 	if type(objectA) == "Shape" then
-		if (sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 1000) == 0)) and sm.dlm_injected then
+		if (sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 1000) == 0)) and sm.dlm_injected and objectA.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectA.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f") then
 			local pitch = 3.0 - math.min(objectA.mass / 200, 2.5)
 			print(pitch)
 			sm.effect.playEffect("Sounds - Metal_pipe", position, nil, nil, nil,
@@ -397,6 +397,8 @@ function Overworld.sv_spawnNewCharacter(self, params)
 		local spawnDirection = spawnNode.rotation * sm.vec3.new(0, 0, 1)
 		--pitch = math.asin( spawnDirection.z )
 		yaw = math.atan2(spawnDirection.y, spawnDirection.x) - math.pi / 2
+	else
+		spawnPosition.z = SurvivalGame.sv_requestZ()
 	end
 
 	local character = sm.character.createCharacter(params.player, self.world, spawnPosition, yaw, pitch)
