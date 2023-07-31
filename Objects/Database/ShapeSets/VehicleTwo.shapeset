@@ -429,7 +429,7 @@
                }
             ]
          },
-         "rotationSet" : "PropXZ",
+         "rotationSet" : "PropZX",
          "showInInventory" : false,
          "sticky" : "-X+X+Y-Y-Z+Z",
          "uuid" : "71b2a025-d5ed-44cb-98f5-9e82517a9c04"

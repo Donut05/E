@@ -196,23 +196,7 @@
             "durability" : 3,
             "friction" : 5
          },
-         "renderable" : {
-            "lodList" : [
-               {
-                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/spaceship/obj_spaceship_microwave.mesh",
-                  "subMeshList" : [
-                     {
-                        "material" : "DifAsgNor",
-                        "textureList" : [
-                           "$SURVIVAL_DATA/Objects/Textures/spaceship/obj_spaceship_microwave_dif.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/spaceship/obj_spaceship_microwave_asg.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/spaceship/obj_spaceship_microwave_nor.tga"
-                        ]
-                     }
-                  ]
-               }
-            ]
-         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/microwave_new.rend",
          "rotationSet" : "PropYZ",
          "scripted" : {
             "classname" : "Chest",
