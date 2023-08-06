@@ -398,7 +398,7 @@ function Overworld.sv_spawnNewCharacter(self, params)
 		--pitch = math.asin( spawnDirection.z )
 		yaw = math.atan2(spawnDirection.y, spawnDirection.x) - math.pi / 2
 	else
-		spawnPosition.z = SurvivalGame.sv_requestZ()
+		spawnPosition.z = SurvivalGame.sv_requestZ() + 0.5
 	end
 
 	local character = sm.character.createCharacter(params.player, self.world, spawnPosition, yaw, pitch)

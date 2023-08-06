@@ -22,10 +22,11 @@ function Init()
 end
 
 function InitTerrainSeedGlobals(seed)
-	--g_terrainSeed = seed
-	--g_terrainSeed = 385382296 -- Maoutain start to test spawning under the map prevention
+	g_terrainSeed = seed
+	--g_terrainSeed = 577078633 -- Shallow waters
 	--g_terrainSeed = 15324108410 -- Island start
-	g_terrainSeed = 927677459 -- Weird terrain to test rocks on cliffs
+	--g_terrainSeed = 927677459 -- Weird terrain to test fixing weird terrain height jumps
+	--g_terrainSeed = 385382296 -- Mountain start to test spawning under the map prevention
 	g_terrainSeed_3 = g_terrainSeed + 3
 	g_terrainSeed_4 = g_terrainSeed + 4
 	g_terrainSeed_5 = g_terrainSeed + 5
@@ -69,7 +70,25 @@ local _math_min = math.min
 local _math_floor = math.floor
 
 --Height: terrain_height + mountain_height - water_noise
-local function CalculateTerrainHeight(x, y)
+local function CalculateTerrainHeight(x, y, seed)
+
+	if seed then
+		g_terrainSeed = seed
+		g_terrainSeed_3 = g_terrainSeed + 3
+		g_terrainSeed_4 = g_terrainSeed + 4
+		g_terrainSeed_5 = g_terrainSeed + 5
+		g_terrainSeed_10 = g_terrainSeed + 10
+		g_terrainSeed_12 = g_terrainSeed + 12
+		g_terrainSeed_45 = g_terrainSeed + 45
+		g_terrainSeed_58 = g_terrainSeed + 58
+		g_terrainSeed_59 = g_terrainSeed + 59
+		g_terrainSeed_92 = g_terrainSeed + 92
+		g_terrainSeed_192 = g_terrainSeed + 192
+		g_terrainSeed_371 = g_terrainSeed + 371
+		g_terrainSeed_712 = g_terrainSeed + 712
+		g_terrainSeed_981 = g_terrainSeed + 981
+	end
+
 	local x_h = x * 0.5
 	local y_h = y * 0.5
 
@@ -78,68 +97,7 @@ local function CalculateTerrainHeight(x, y)
 
 	--Calculate Terrain Height
 	local height_limiter = _sm_noise_octaveNoise2d(x_h, y_h, 9, g_terrainSeed) * 3
-	local height_pre_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed_10) ) --* 50)
-	-- Terrain smoothing start
-	local smoothness_coefficient = 10
-	-- Get offsets so we can smooth the terrain if the bump on the noise map is insgnificant
-	local height_pos_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_pos_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_pos_x_0_y = height_limiter * (_sm_noise_octaveNoise2d(x + smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_0_y = height_limiter * (_sm_noise_octaveNoise2d(x - smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_0_x_pos_y = height_limiter * (_sm_noise_octaveNoise2d(x, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_0_x_neg_y = height_limiter * (_sm_noise_octaveNoise2d(x, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	-- Graph legend: + is where we are, O is the offsets we smooth from, Y is up, X is right
-	-- Note: If someone uses auto formatting on this, I will smack you
-	--[[
-			|
-			O
-			|
-	--------+--------
-			|
-			O
-			|
-	]]
-	local height_clamped = _util_smoother_step(height_0_x_pos_y, height_0_x_neg_y, height_pre_final)
-	--[[
-			|
-			|
-			|
-	---O----+----O---
-			|
-			|
-			|
-	]]
-	height_clamped = _util_smoother_step(height_pos_x_0_y, height_neg_x_0_y, height_clamped)
-	--[[
-			|
-			|   O
-			|
-	--------+--------
-			|
-		O   |
-			|
-	]]
-	height_clamped = _util_smoother_step(height_pos_x_pos_y, height_neg_x_neg_y, height_clamped)
-	--[[
-			|
-		O   |
-			|
-	--------+--------
-			|
-			|   O
-			|
-	]]
-	local height_final = _util_smoother_step(height_pos_x_neg_y, height_neg_x_pos_y, height_clamped)
-	-- Terrain smoothing end
-
-	--[[reivers ig CUT FOR NOW
-	local river = _util_clamp(_sm_noise_octaveNoise2d( x, y, 1, g_terrainSeed_192 ), 0, 1)
-	local height = _util_clamp(height_final, 0, 1)
-	if height > river then
-		height_final = height_final - 25
-	end]]
+	local height_final = height_limiter * (_sm_noise_octaveNoise2d(x, y, 10, g_terrainSeed) ) --* 50)
 
 	--Calculate Mountain Height
 	if height_limiter > 0.05 then --Skip mountain calculations if height_limiter < 0.05
@@ -149,6 +107,12 @@ local function CalculateTerrainHeight(x, y)
 
 		height_final = height_final + mountain_height
 	end
+
+	--[[rivers
+	local river = _sm_noise_octaveNoise2d(x, y, 1, g_terrainSeed_192)
+	if river > 0.5 then
+		height_final = height_final * river
+	end]]
 
 	return _util_clamp(height_final - water_noise, -50, 1000)
 end
@@ -161,8 +125,8 @@ local function isInDesert(x, y)
 	return (_sm_noise_octaveNoise2d(x, y, 12, g_terrainSeed_371) > 0.3)
 end
 
-function GetHeightAt( x, y, lod )
-	return CalculateTerrainHeight(x, y)
+function GetHeightAt( x, y, lod, seed )
+	return CalculateTerrainHeight(x, y, seed)
 end
 
 local function isInFarLands(x, y)
@@ -564,6 +528,10 @@ function GetHarvestablesForCell( cellX, cellY, lod )
 	local y_pos = cellY * 64
 
 	local terrain_seed_offset = g_terrainSeed_712
+	local is_forest = false
+	if _sm_noise_octaveNoise2d(x_pos, y_pos, 1, g_terrainSeed_371) > 0.5 then
+		is_forest = true
+	end
 	for iter = 0, 10 do
 		local terrain_seed_iter = terrain_seed_offset + iter
 
@@ -576,7 +544,11 @@ function GetHarvestablesForCell( cellX, cellY, lod )
 		local hvs_height = CalculateTerrainHeight(g_x, g_y)
 		if not isInWaterHeight(hvs_height) and not isTooSteep(g_x, g_y, hvs_height) and not isInDesert(g_x, g_y) then
 			local hvs_noise = HarvestableNoise(g_x, g_y)
-			if (hvs_noise > 0.0002 and hvs_noise < 0.00026) or (hvs_noise > 0.3 and hvs_noise < 0.35) then
+			if is_forest then
+				if math.random(0, 20) == 0 then
+					AddHarvestable(hvs_output, g_x, g_y, hvs_height, x_local, y_local, hvs_tree_table, hvs_tree_table_sz)
+				end
+			elseif (hvs_noise > 0.0002 and hvs_noise < 0.00026) or (hvs_noise > 0.3 and hvs_noise < 0.35) then
 				AddHarvestable(hvs_output, g_x, g_y, hvs_height + 2.0, x_local, y_local, hvs_rock_table, hvs_rock_table_sz)
 			elseif hvs_noise > 0.012 then
 				AddHarvestable(hvs_output, g_x, g_y, hvs_height, x_local, y_local, hvs_tree_table, hvs_tree_table_sz)

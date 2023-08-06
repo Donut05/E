@@ -1,9 +1,6 @@
 ---@diagnostic disable: lowercase-global, undefined-global, deprecated
 
 dofile("$SURVIVAL_DATA/Scripts/game/managers/BeaconManager.lua")
-
-
-
 dofile("$SURVIVAL_DATA/Scripts/game/managers/EffectManager.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/managers/ElevatorManager.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/managers/QuestManager.lua")
@@ -19,9 +16,7 @@ dofile("$SURVIVAL_DATA/Scripts/game/util/recipes.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/util/Timer.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/managers/QuestEntityManager.lua")
 dofile("$GAME_DATA/Scripts/game/managers/EventManager.lua")
-
-
-
+dofile("$CONTENT_DATA/Scripts/terrain/terrain_overworld.lua")
 
 ---@class SurvivalGame : GameClass
 ---@field sv table
@@ -39,112 +34,6 @@ local IntroFadeDuration = 1.1
 local IntroEndFadeDuration = 1.1
 local IntroFadeTimeout = 5.0
 
---------------------
--- #region ShitFuck2000
---------------------
-
-local function CalculateTerrainHeight(x, y, seed)
-
-	g_terrainSeed = seed
-	g_terrainSeed_3 = g_terrainSeed + 3
-	g_terrainSeed_4 = g_terrainSeed + 4
-	g_terrainSeed_5 = g_terrainSeed + 5
-	g_terrainSeed_10 = g_terrainSeed + 10
-	g_terrainSeed_12 = g_terrainSeed + 12
-	g_terrainSeed_45 = g_terrainSeed + 45
-	g_terrainSeed_58 = g_terrainSeed + 58
-	g_terrainSeed_59 = g_terrainSeed + 59
-	g_terrainSeed_92 = g_terrainSeed + 92
-	g_terrainSeed_192 = g_terrainSeed + 192
-	g_terrainSeed_371 = g_terrainSeed + 371
-	g_terrainSeed_712 = g_terrainSeed + 712
-	g_terrainSeed_981 = g_terrainSeed + 981
-
-	local x_h = x * 0.5
-	local y_h = y * 0.5
-
-	--Water Noise
-	local water_noise = math.abs(sm.noise.octaveNoise2d(x_h, y_h, 12, g_terrainSeed)) * 50
-
-	--Calculate Terrain Height
-	local height_limiter = sm.noise.octaveNoise2d(x_h, y_h, 9, g_terrainSeed) * 3
-	local height_pre_final = height_limiter * (sm.noise.octaveNoise2d(x, y, 10, g_terrainSeed_10) ) --* 50)
-	-- Terrain smoothing start
-	local smoothness_coefficient = 10
-	-- Get offsets so we can smooth the terrain if the bump on the noise map is insgnificant
-	local height_pos_x_pos_y = height_limiter * (sm.noise.octaveNoise2d(x + smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_pos_y = height_limiter * (sm.noise.octaveNoise2d(x - smoothness_coefficient, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_pos_x_neg_y = height_limiter * (sm.noise.octaveNoise2d(x + smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_neg_y = height_limiter * (sm.noise.octaveNoise2d(x - smoothness_coefficient, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_pos_x_0_y = height_limiter * (sm.noise.octaveNoise2d(x + smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_neg_x_0_y = height_limiter * (sm.noise.octaveNoise2d(x - smoothness_coefficient, y, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_0_x_pos_y = height_limiter * (sm.noise.octaveNoise2d(x, y + smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	local height_0_x_neg_y = height_limiter * (sm.noise.octaveNoise2d(x, y - smoothness_coefficient, 10, g_terrainSeed_10) * 50) - smoothness_coefficient
-	-- Graph legend: + is where we are, O is the offsets we smooth from, Y is up, X is right
-	-- Note: If someone uses auto formatting on this, I will smack you
-	--[[
-			|
-			O
-			|
-	--------+--------
-			|
-			O
-			|
-	]]
-	local height_clamped = sm.util.smootherstep(height_0_x_pos_y, height_0_x_neg_y, height_pre_final)
-	--[[
-			|
-			|
-			|
-	---O----+----O---
-			|
-			|
-			|
-	]]
-	height_clamped = sm.util.smootherstep(height_pos_x_0_y, height_neg_x_0_y, height_clamped)
-	--[[
-			|
-			|   O
-			|
-	--------+--------
-			|
-		O   |
-			|
-	]]
-	height_clamped = sm.util.smootherstep(height_pos_x_pos_y, height_neg_x_neg_y, height_clamped)
-	--[[
-			|
-		O   |
-			|
-	--------+--------
-			|
-			|   O
-			|
-	]]
-	local height_final = sm.util.smootherstep(height_pos_x_neg_y, height_neg_x_pos_y, height_clamped)
-	-- Terrain smoothing end
-
-	--[[reivers ig CUT FOR NOW
-	local river = sm.util.clamp(sm.noise.octaveNoise2d( x, y, 1, g_terrainSeed_192 ), 0, 1)
-	local height = sm.util.clamp(height_final, 0, 1)
-	if height > river then
-		height_final = height_final - 25
-	end]]
-
-	--Calculate Mountain Height
-	if height_limiter > 0.05 then --Skip mountain calculations if height_limiter < 0.05
-		local clamped_mountains = math.min(height_limiter - 0.05, 1) * 500
-		local mountain_limiter = sm.noise.octaveNoise2d(x, y, 10, g_terrainSeed) * clamped_mountains
-		local mountain_height = sm.util.clamp(sm.noise.octaveNoise2d(x * 0.2, y * 0.2, 7, g_terrainSeed) * mountain_limiter, 0, 500)
-
-		height_final = height_final + mountain_height
-	end
-
-	return sm.util.clamp(height_final - water_noise, -50, 1000)
-end
-
--- #endregion
-
 function SurvivalGame.server_onCreate(self)
 	print("SurvivalGame.server_onCreate")
 	self.sv = {}
@@ -154,7 +43,7 @@ function SurvivalGame.server_onCreate(self)
 		self.sv.saved = {}
 		self.sv.saved.data = self.data
 		printf("Seed: %.0f", self.sv.saved.data.seed)
-		g_spawnZ = CalculateTerrainHeight(0, 0, self.sv.saved.data.seed)
+		g_spawnZ = GetHeightAt(0, 0, nil, self.sv.saved.data.seed)
 		self.sv.saved.overworld = sm.world.createWorld("$CONTENT_DATA/Scripts/worlds/Overworld.lua", "Overworld",
 			{ dev = self.sv.saved.data.dev }, self.sv.saved.data.seed)
 		self.storage:save(self.sv.saved)

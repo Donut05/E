@@ -201,6 +201,10 @@
          "scripted" : {
             "classname" : "Chest",
             "data" : {
+               "closeSound" : "Action - Microwave_close",
+               "closeSound2" : "Action - Microwave_close2",
+               "openSound" : "Action - Microwave_open",
+               "openSound2" : "Action - Microwave_open2",
                "slots" : 1,
                "title" : "BROKEN MICROVAWE"
             },

@@ -1,15 +1,35 @@
 {
    "effectSetList" : [
       {
-         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/example.effectset",
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Enemies.effectset",
          "showInEditor" : true
       },
       {
-         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/MyStuff.json",
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Environment.effectset",
          "showInEditor" : true
       },
       {
-         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/thrusters.json",
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Interactibles.effectset",
+         "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Player.effectset",
+         "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Projectiles.effectset",
+         "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/SoundEvents.effectset",
+         "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Tools.effectset",
+         "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/UnderwaterChestEffects.effectset",
          "showInEditor" : true
       }
    ]

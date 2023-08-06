@@ -1,16 +1,32 @@
 {
-    "soundList": {
-      "MetalPipe": {
-        "path": "$CONTENT_DATA/Effects/Audio/metal_pipe.mp3",
-        "is3D": true
-      },
-      "MeetTheSniper": {
-        "path": "$CONTENT_DATA/Effects/Audio/meet_the_sniper.mp3",
-        "is3D": false
-      },
-      "BeeSwarmBuzz": {
-        "path": "$CONTENT_DATA/Effects/Audio/bees.mp3",
-        "is3D": true
-      }
+  "soundList": {
+    "MetalPipe": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/generic/metal_pipe.mp3",
+      "is3D": true
+    },
+    "MeetTheSniper": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/memes/meet_the_sniper.mp3",
+      "is3D": false
+    },
+    "BeeSwarmBuzz": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/env/bees.mp3",
+      "is3D": true
+    },
+    "MicrowaveOpen01": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/microwave/microwave_open_01.mp3",
+      "is3D": true
+    },
+    "MicrowaveOpen02": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/microwave/microwave_open_02.mp3",
+      "is3D": true
+    },
+    "MicrowaveClose01": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/microwave/microwave_close_01.mp3",
+      "is3D": true
+    },
+    "MicrowaveClose02": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/microwave/microwave_close_02.mp3",
+      "is3D": true
     }
   }
+}

@@ -1,0 +1,72 @@
+{
+    "Environment - Rain": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "rain"
+                ],
+                "type": "particle"
+            }
+        ]
+    },
+    "Environment - Rain_sound": {
+        "effectList": [
+            {
+                "audio": [
+                    "event:/coll/dust_rocket"
+                ],
+                "type": "audio"
+            }
+        ]
+    },
+    "Skybox - Cargo_ships": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "cargo_ships"
+                ],
+                "type": "particle"
+            }
+        ]
+    },
+    "Skybox - Moon": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "moon"
+                ],
+                "type": "particle"
+            }
+        ]
+    },
+    "Skybox - Stars": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "star_sky"
+                ],
+                "type": "particle"
+            }
+        ]
+    }
+}

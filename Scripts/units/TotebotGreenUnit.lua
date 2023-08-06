@@ -53,11 +53,11 @@ function TotebotGreenUnit.server_onCreate(self)
 			self.homePosition = self.params.tetherPoint + sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
 			if self.params.ambush == true then
 				self.ambushPosition = self.params.tetherPoint +
-				sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
+					sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
 			end
 			if self.params.raider == true then
 				self.saved.raidPosition = self.params.tetherPoint +
-				sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
+					sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
 			end
 		end
 		if self.params.raider then
@@ -88,9 +88,9 @@ function TotebotGreenUnit.server_onCreate(self)
 
 	self.unit.eyeHeight = self.unit.character:getHeight() * 0.75
 	self.unit.visionFrustum = {
-		{ 3.0,  math.rad(80.0),   math.rad(80.0) },
-		{ 20.0, math.rad(40.0),   math.rad(35.0) },
-		{ 40.0, math.rad(20.0),   math.rad(20.0) }
+		{ 3.0,  math.rad(80.0), math.rad(80.0) },
+		{ 20.0, math.rad(40.0), math.rad(35.0) },
+		{ 40.0, math.rad(20.0), math.rad(20.0) }
 	}
 	self.unit:setWhiskerData(3, math.rad(60.0), 1.5, 5.0)
 	self.noiseScale = 1.0
@@ -384,7 +384,7 @@ function TotebotGreenUnit.server_onUnitUpdate(self, dt)
 		for _, allyUnit in ipairs(sm.unit.getAllUnits()) do
 			if sm.exists(allyUnit) and self.unit ~= allyUnit and allyUnit.character and isAnyOf(allyUnit.character:getCharacterType(), g_robots) and InSameWorld(self.unit, allyUnit) then
 				local inAllyRange = (allyUnit.character.worldPosition - self.unit.character.worldPosition):length() <=
-				AllyRange
+					AllyRange
 				if inAllyRange or InSameGroup(allyUnit, self.unit) then
 					local sameTeam = true
 					if not SurvivalGame then
@@ -470,7 +470,7 @@ function TotebotGreenUnit.server_onUnitUpdate(self, dt)
 		inCombatAttackRange = fromToTarget:length() - targetRadius <= CombatAttackRange
 
 		local attackDirection = (desiredDirection:length() >= FLT_EPSILON) and desiredDirection:normalize() or
-		self.unit.character.direction
+			self.unit.character.direction
 		self.combatAttackState:sv_setAttackDirection(attackDirection) -- Turn ongoing attacks toward moving players
 		self.combatApproachState.desiredPosition = self.lastTargetPosition
 		self.combatApproachState.desiredDirection = fromToTarget:normalize()
@@ -538,7 +538,7 @@ function TotebotGreenUnit.server_onUnitUpdate(self, dt)
 			local currentTargetPosition = self.target.worldPosition
 			if type(self.target) == "Harvestable" then
 				currentTargetPosition = self.target.worldPosition +
-				sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
+					sm.vec3.new(0, 0, self.unit.character:getHeight() * 0.5)
 			end
 			self.pathingState:sv_setDestination(currentTargetPosition)
 		elseif self.lastTargetPosition then
@@ -619,7 +619,7 @@ function TotebotGreenUnit.server_onUnitUpdate(self, dt)
 		elseif self.currentState == self.pathingState and result == "failed" then
 			self.avoidState.desiredDirection = self.unit.character.direction
 			self.avoidState.desiredPosition = self.unit.character.worldPosition -
-			self.avoidState.desiredDirection:normalize() * 2
+				self.avoidState.desiredDirection:normalize() * 2
 			self.currentState = self.avoidState
 		elseif self.isInCombat then
 			-- Select combat state
@@ -913,6 +913,9 @@ function TotebotGreenUnit.sv_spawnParts(self, impact)
 				sm.vec3.new(0, 1, 0), sm.vec3.new(-1, 0, 0), true)
 			headShape.color = color
 			sm.physics.applyImpulse(headShape, impact * headShape.mass, true)
+		else
+			---@diagnostic disable-next-line: param-type-mismatch
+			sm.effect.playEffect("Enemies - Fake_totebot_head", bodyPos, nil, nil, nil, { Color = color })
 		end
 	end
 end

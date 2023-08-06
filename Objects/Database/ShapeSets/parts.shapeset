@@ -18,161 +18,12 @@
          "uuid" : "99e7b2b9-b760-4273-ada0-b15d8d93a120"
       },
       {
-         "autoTool" : "2bff990a-0e74-43c7-b7dc-889b3a086fa3",
-         "color" : "f0c909",
-         "consumable" : true,
-         "edible" : {
-            "foodGain" : 40,
-            "hpGain" : 0,
-            "waterGain" : 15
-         },
-         "flammable" : true,
-         "hull" : {
-            "col" : "$SURVIVAL_DATA/Objects/Collision/obj_plantables_banana.obj",
-            "x" : 1,
-            "y" : 1,
-            "z" : 3
-         },
-         "name" : "obj_plantables_banana",
-         "physicsMaterial" : "Fruit",
-         "ratings" : {
-            "buoyancy" : 4,
-            "density" : 1,
-            "durability" : 1,
-            "friction" : 4
-         },
-         "renderable" : {
-            "lodList" : [
-               {
-                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/plantables/obj_plantables_banana.fbx",
-                  "subMeshList" : [
-                     {
-                        "material" : "DifAsgNor",
-                        "textureList" : [
-                           "$SURVIVAL_DATA/Objects/Textures/plantables/obj_plantables_banana_dif.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/plantables/obj_plantables_banana_asg.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/plantables/obj_plantables_banana_nor.tga"
-                        ]
-                     }
-                  ]
-               }
-            ]
-         },
-         "rotationSet" : "PropYX",
-         "showInInventory" : false,
-         "stackSize" : 10,
-         "sticky" : "-X+X-Y",
-         "uuid" : "aa4c9c5e-7fc6-4c27-967f-c550e551c872"
-      },
-      {
-         "autoTool" : "3ef5412a-7044-45ae-9592-9ce86bd99081",
-         "color" : "3a9c51",
-         "consumable" : true,
-         "flammable" : true,
-         "hull" : {
-            "col" : "$SURVIVAL_DATA/Objects/Collision/obj_consumable_soilbag.obj",
-            "x" : 3,
-            "y" : 1,
-            "z" : 5
-         },
-         "itemStack" : {},
-         "name" : "obj_consumable_soilbag",
-         "physicsMaterial" : "Sand",
-         "ratings" : {
-            "buoyancy" : 7,
-            "density" : 2,
-            "durability" : 2,
-            "friction" : 4
-         },
-         "renderable" : {
-            "lodList" : [
-               {
-                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/consumable/obj_consumable_soilbag.fbx",
-                  "subMeshList" : [
-                     {
-                        "material" : "DifAsgNor",
-                        "textureList" : [
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_soilbag_dif.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_soilbag_asg.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_soilbag_nor.tga"
-                        ]
-                     }
-                  ]
-               }
-            ]
-         },
-         "restrictions" : {
-            "erasable" : true
-         },
-         "rotationSet" : "PropY",
-         "showInInventory" : false,
-         "stackSize" : 5,
-         "sticky" : "-Y+Y-X+X",
-         "uuid" : "9a3e478c-2224-44fa-887c-239965bd05ad"
-      },
-      {
-         "autoTool" : "fa1b499e-c40e-4e55-9f73-27ae1cba6c15",
-         "color" : "a42039",
-         "consumable" : true,
-         "flammable" : true,
-         "hull" : {
-            "col" : "$SURVIVAL_DATA/Objects/Collision/obj_seed_redbeet.obj",
-            "x" : 2,
-            "y" : 2,
-            "z" : 2
-         },
-         "itemStack" : {},
-         "name" : "obj_seed_redbeet",
-         "physicsMaterial" : "Plastic",
-         "plantable" : {
-            "harvestable" : "18efedc5-8706-4ecb-afd4-e9294d3f1052"
-         },
-         "ratings" : {
-            "buoyancy" : 3,
-            "density" : 3,
-            "durability" : 2,
-            "friction" : 4
-         },
-         "renderable" : {
-            "lodList" : [
-               {
-                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/consumable/obj_consumable_seed.fbx",
-                  "subMeshList" : [
-                     {
-                        "idx" : 1,
-                        "material" : "DifAsgNor",
-                        "textureList" : [
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_seedbag_redbeet_dif.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_seedbag_asg.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_consumable_seedbag_nor.tga"
-                        ]
-                     },
-                     {
-                        "idx" : 0,
-                        "material" : "DifAsgNor",
-                        "textureList" : [
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_seed_tag_dif.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_seed_tag_asg.tga",
-                           "$SURVIVAL_DATA/Objects/Textures/consumable/obj_seed_tag_nor.tga"
-                        ]
-                     }
-                  ]
-               }
-            ]
-         },
-         "rotationSet" : "PropY",
-         "showInInventory" : false,
-         "stackSize" : 20,
-         "sticky" : "-Y",
-         "uuid" : "64051718-a3f1-422b-bda3-277efa0c4545"
-      },
-      {
          "box" : {
             "x" : 1,
             "y" : 1,
             "z" : 1
          },
-         "name" : "Amogus_twerk_block",
+         "name" : "Amogus twerk block",
          "physicsMaterial" : "Plastic",
          "renderable" : "$CONTENT_DATA/Objects/Renderables/invis_wall.rend",
          "rotationSet" : "Default",
@@ -181,6 +32,71 @@
             "filename" : "$CONTENT_DATA/Scripts/interactive/amogus.lua"
          },
          "uuid" : "d04badce-fc8a-46da-9389-f3bade34fb7d"
+      },
+      {
+         "hull" : {
+            "pointList" : [
+               {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : 1
+               },
+               {
+                  "x" : -1,
+                  "y" : -1,
+                  "z" : 1
+               },
+               {
+                  "x" : 1,
+                  "y" : -1,
+                  "z" : 1
+               },
+               {
+                  "x" : -1,
+                  "y" : 1,
+                  "z" : 1
+               },
+               {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : -1
+               },
+               {
+                  "x" : -1,
+                  "y" : -1,
+                  "z" : -1
+               },
+               {
+                  "x" : 1,
+                  "y" : -1,
+                  "z" : -1
+               },
+               {
+                  "x" : -1,
+                  "y" : 1,
+                  "z" : -1
+               }
+            ],
+            "x" : 1,
+            "y" : 1,
+            "z" : 1
+         },
+         "name" : "Auto connector",
+         "physicsMaterial" : "Mechanical",
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 2,
+            "durability" : 3,
+            "friction" : 5
+         },
+         "renderable" : "$GAME_DATA/Character/Char_Tools/Char_connecttool/char_connecttool.rend",
+         "rotationSet" : "Default",
+         "scripted" : {
+            "classname" : "Connector",
+            "filename" : "$CONTENT_DATA/Scripts/interactive/AutoConnector.lua"
+         },
+         "sticky" : "-Y",
+         "uuid" : "aab8866b-9f00-412d-ba45-0cadee45956e"
       }
    ]
 }

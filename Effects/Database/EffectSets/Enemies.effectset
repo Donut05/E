@@ -1,0 +1,38 @@
+{
+    "Enemies - Bee_swarm": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "bee_swarm"
+                ],
+                "type": "particle"
+            },
+            {
+                "audio": [
+                    "event:/props/beehive"
+                ],
+                "type": "audio"
+            }
+        ]
+    },
+    "Enemies - Fake_totebot_head": {
+        "effectList": [
+            {
+                "offset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "particles": [
+                    "fake_head"
+                ],
+                "type": "particle"
+            }
+        ]
+    }
+}

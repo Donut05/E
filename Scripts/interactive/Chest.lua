@@ -85,7 +85,7 @@ local chestOpeningSpeed = 8.0
 local effectRoationFix = sm.vec3.getRotation(sm.vec3.new(0, 0, 1), sm.vec3.new(0, 1, 0))
 
 function Chest:client_onCreate()
----@diagnostic disable-next-line: missing-fields
+	---@diagnostic disable-next-line: missing-fields
 	self.cl = {}
 	self.cl.chestAnimDirection = -1
 	self.cl.isInWater = false
@@ -115,7 +115,15 @@ function Chest.client_onInteract(self, character, state)
 		self.cl.containerGui:open()
 
 		if self.data.openSound then
-			sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
+			if self.data.openSound2 then
+				if math.random(0, 1) == 0 then
+					print("1")
+					sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
+				else
+					sm.effect.playEffect(self.data.openSound2, self.shape.worldPosition)
+					print("2")
+				end
+			end
 		else
 			sm.effect.playEffect("Action - Chest_Open", self.shape.worldPosition)
 		end
@@ -126,7 +134,15 @@ end
 function Chest.cl_guiClosed(self)
 	self.network:sendToServer("sv_closeChestAnim")
 	if self.data.closeSound then
-		sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
+		if self.data.closeSound2 then
+			if math.random(0, 1) == 0 then
+				print("3")
+				sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
+			else
+				print("4")
+				sm.effect.playEffect(self.data.closeSound2, self.shape.worldPosition)
+			end
+		end
 	else
 		sm.effect.playEffect("Action - Chest_Close", self.shape.worldPosition)
 	end
