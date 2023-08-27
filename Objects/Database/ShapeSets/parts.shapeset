@@ -90,7 +90,7 @@
             "friction" : 5
          },
          "renderable" : "$GAME_DATA/Character/Char_Tools/Char_connecttool/char_connecttool.rend",
-         "rotationSet" : "Default",
+         "rotationSet" : "PropY",
          "scripted" : {
             "classname" : "Connector",
             "filename" : "$CONTENT_DATA/Scripts/interactive/AutoConnector.lua"

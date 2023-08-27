@@ -1,4 +1,7 @@
 ---@diagnostic disable: need-check-nil, lowercase-global
+---@class Connector : ShapeClass
+
+dofile("$CONTENT_DATA/Scripts/visualised_trigger.lua")
 
 Connector = class(nil)
 Connector.maxParentCount = 1
@@ -8,6 +11,8 @@ Connector.colorHighlight = sm.color.new("f6e857")
 
 local defaultDir = sm.vec3.new(0, 0, 1)
 local segments = 14
+local previousTick = sm.game.getCurrentTick()
+local trigger = nil --Becuase fuck this
 
 function Connector.client_onCreate(self)
     self.pointer = sm.effect.createEffect("Connector - Pointer", self.interactable)
@@ -42,15 +47,28 @@ function Connector.client_onUpdate(self, dt)
         self.pointer:stop()
     end
 
-    local pos = self.interactable.shape:transformLocalPoint(sm.vec3.new(0, 0.2, 0.5))
-    --sm.particle.createParticle("construct_welding", pos)
-    local sucess, result = sm.physics.raycast(pos, pos + sm.vec3.new(0, 0, 2.22))
+    local pos = self.interactable:getWorldBonePosition("pipe")
+    local pos2 = self.interactable.shape:transformLocalPoint(sm.vec3.new(0, 0.2, 2.72))
+    local sucess, result = sm.physics.raycast(pos, pos2)
     if sucess then
         if result.type == "body" then
-            local trigger = sm.areaTrigger.createBox(sm.vec3.new(0.01, 0.01, 0.01), result.pointWorld)
-            if #trigger:getContents() == 1 then
-                print(trigger:getContents()[1])
-                --print(_G[sm.item.getFeatureData(result:getShapes()[1].interactable.shape.uuid).classname].connectionOutput)
+            if not trigger then
+                print("DF")
+                trigger = CreateVisualizedTrigger(result.pointWorld, sm.vec3.new(0.1, 0.1, 0.1))--sm.areaTrigger.createBox(sm.vec3.new(0.1, 0.1, 0.1), result.pointWorld)
+            end
+            if previousTick + 10 == sm.game.getCurrentTick() then
+                previousTick = sm.game.getCurrentTick()
+                if trigger then
+                    print(trigger:getContents())
+                    if #trigger:getContents() == 1 then
+                        print(trigger:getContents()[1])
+                        --print(_G[sm.item.getFeatureData(result:getShapes()[1].interactable.shape.uuid).classname].connectionOutput)
+                    end
+                end
+                if sm.exists(trigger) then
+                    sm.areaTrigger.destroy(trigger)
+                    trigger = nil
+                end
             end
         end
     end
@@ -68,4 +86,8 @@ end
 
 function Connector.client_onRefresh(self)
     Connector.client_onCreate(self)
+    if sm.exists(trigger) then
+        sm.areaTrigger.destroy(trigger)
+        trigger = nil
+    end
 end
