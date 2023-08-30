@@ -30,6 +30,7 @@
       "particles/skybox/star_sky.json",
       "particles/skybox/cargo_ships.json",
       "particles/enemies/bees/bee_swarm.json",
-      "particles/enemies/totebotGreen/fake_head.json"
+      "particles/enemies/totebotGreen/fake_head.json",
+      "particles/enemies/drillship/drillship_dig_out.json"
    ]
 }

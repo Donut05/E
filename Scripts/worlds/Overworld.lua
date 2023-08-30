@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-global, undefined-field, deprecated, param-type-mismatch, lowercase-global
+---@diagnostic disable: undefined-global, undefined-field, deprecated, param-type-mismatch, lowercase-global, inject-field
 dofile("$SURVIVAL_DATA/Scripts/game/worlds/BaseWorld.lua")
 dofile("$CONTENT_DATA/Scripts/terrain/terrain_overworld.lua")
 dofile("$CONTENT_DATA/Scripts/SurvivalGame.lua")
@@ -165,6 +165,10 @@ function Overworld.client_onCollision(self, objectA, objectB, position, pointVel
 			sm.effect.playEffect("Player - Slam", objectA.worldPosition)
 		end
 	end
+end
+
+function Overworld.cl_playDigEffect(self, data)
+	sm.effect.playEffect("Enemies - DrillSpawner", data.position, nil, sm.vec3.getRotation(sm.vec3.new(0, 0, 1), data.rotation))
 end
 
 function Overworld.cl_n_unitMsg(self, msg)

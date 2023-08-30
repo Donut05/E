@@ -268,6 +268,7 @@ function SurvivalGame.bindChatCommands(self)
 			"Reload cells at self or {x,y}")
 		sm.game.bindChatCommand("/tutorialstartkit", {}, "cl_onChatCommand",
 			"Spawn a starter kit for building a scrap car")
+		sm.game.bindChatCommand("/spawndrill", {}, "cl_onChatCommand", "Spawns a drillship where the player is looking")
 	end
 end
 
@@ -490,6 +491,85 @@ function SurvivalGame.cl_onChatCommand(self, params)
 				spawnParams.amount = params[3]
 			end
 			self.network:sendToServer("sv_spawnUnit", spawnParams)
+		end
+	elseif params[1] == "/spawndrill" then
+		local hit, result = sm.localPlayer.getRaycast(1000)
+		if hit then
+			if result.type == "terrainSurface" then
+				sm.event.sendToWorld(sm.localPlayer.getPlayer().character:getWorld(), "cl_playDigEffect", {position = result.pointWorld, rotation = result.normalWorld})
+				local totebot_params = {
+						uuid = sm.uuid.new("8984bdbf-521e-4eed-b3c4-2b5e287eb879"),
+						world = sm.localPlayer.getPlayer().character:getWorld(),
+						position = result.pointWorld,
+						yaw = 0.0,
+						amount = math.random(1, 10),
+					}
+				local haybot_params = {
+					uuid = sm.uuid.new("c8bfb8f3-7efc-49ac-875a-eb85ac0614db"),
+					world = sm.localPlayer.getPlayer().character:getWorld(),
+					position = result.pointWorld,
+					yaw = 0.0,
+					amount = math.random(1, 5),
+				}
+				local amount = math.random(0, 3)
+				for i = 0, amount do
+					local type = math.random(0, 3)
+					if type == 0 then
+						local tapebot_params = {
+							uuid = sm.uuid.new("04761b4a-a83e-4736-b565-120bc776edb2"),
+							world = sm.localPlayer.getPlayer().character:getWorld(),
+							position = result.pointWorld,
+							yaw = 0.0,
+							amount = 1,
+						}
+					elseif type == 1 then
+						local tapebot_params = {
+							uuid = sm.uuid.new("9dbbd2fb-7726-4e8f-8eb4-0dab228a561d"),
+							world = sm.localPlayer.getPlayer().character:getWorld(),
+							position = result.pointWorld,
+							yaw = 0.0,
+							amount = 1,
+						}
+					elseif type == 2 then
+						local tapebot_params = {
+							uuid = sm.uuid.new("fcb2e8ce-ca94-45e4-a54b-b5acc156170b"),
+							world = sm.localPlayer.getPlayer().character:getWorld(),
+							position = result.pointWorld,
+							yaw = 0.0,
+							amount = 1,
+						}
+					elseif type == 3 then
+						local tapebot_params = {
+							uuid = sm.uuid.new("68d3b2f3-ed4b-4967-9d22-8ee6f555df63"),
+							world = sm.localPlayer.getPlayer().character:getWorld(),
+							position = result.pointWorld,
+							yaw = 0.0,
+							amount = 1,
+						}
+					end
+					if math.random(0, 10) == 0 then
+						self.network:sendToServer("sv_spawnUnit", tapebot_params)
+					end
+				end
+				local farmbot_params = {
+					uuid = sm.uuid.new("9f4fde94-312f-4417-b13b-84029c5d6b52"),
+					world = sm.localPlayer.getPlayer().character:getWorld(),
+					position = result.pointWorld,
+					yaw = 0.0,
+					amount = math.random(0, 1),
+				}
+				if math.random(0, 1) == 0 then
+					self.network:sendToServer("sv_spawnUnit", totebot_params)
+				end
+				if math.random(0, 3) == 0 then
+					self.network:sendToServer("sv_spawnUnit", haybot_params)
+				end
+				if math.random(0, 30) == 0 then
+					self.network:sendToServer("sv_spawnUnit", farmbot_params)
+				end
+			else
+				sm.gui.displayAlertText("Drill can be spawned only on the terrain!", 5)
+			end
 		end
 	elseif params[1] == "/harvestable" then
 		local character = sm.localPlayer.getPlayer().character
