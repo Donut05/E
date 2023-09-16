@@ -31,6 +31,10 @@
       {
          "path" : "$CONTENT_DATA/Effects/Database/EffectSets/UnderwaterChestEffects.effectset",
          "showInEditor" : true
+      },
+      {
+         "path" : "$CONTENT_DATA/Effects/Database/EffectSets/Ui.effectset",
+         "showInEditor" : true
       }
    ]
 }

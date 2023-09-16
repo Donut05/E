@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil, undefined-global
+---@diagnostic disable: need-check-nil, undefined-global, undefined-field
 
 dofile "$SURVIVAL_DATA/Scripts/game/characters/MechanicCharacter.lua"
 
@@ -25,7 +25,7 @@ function PlayerChar.client_onFixedUpdate(self, dt)
     if not (sm.localPlayer.getPlayer() == self.character:getPlayer()) then return end
     if falling ~= nil then
         if math.abs(self.character.velocity.x) > 20 or math.abs(self.character.velocity.y) > 20 or math.abs(self.character.velocity.z) > 20 then
-            falling:setPosition(sm.camera.getPosition() + sm.camera.getDirection())
+            falling:setPosition(sm.camera.getPosition() + sm.camera.getDirection() / 2)
             local rotation = sm.camera.getRotation() *
             sm.vec3.getRotation(sm.vec3.new(0, 0, -1), sm.vec3.new(0, 1, 0))
             falling:setRotation(rotation)

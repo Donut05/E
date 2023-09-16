@@ -1,0 +1,20 @@
+{
+   "Hand - Closed" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "grab_hand_closed" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Hand - Open" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "grab_hand_open" ],
+            "type" : "particle"
+         }
+      ]
+   }
+}
