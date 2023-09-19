@@ -269,6 +269,7 @@ function SurvivalGame.bindChatCommands(self)
 		sm.game.bindChatCommand("/tutorialstartkit", {}, "cl_onChatCommand",
 			"Spawn a starter kit for building a scrap car")
 		sm.game.bindChatCommand("/spawndrill", {}, "cl_onChatCommand", "Spawns a drillship where the player is looking")
+		sm.game.bindChatCommand("/clear", {}, "cl_onChatCommand", "Clears the world")
 	end
 end
 
@@ -496,14 +497,15 @@ function SurvivalGame.cl_onChatCommand(self, params)
 		local hit, result = sm.localPlayer.getRaycast(1000)
 		if hit then
 			if result.type == "terrainSurface" then
-				sm.event.sendToWorld(sm.localPlayer.getPlayer().character:getWorld(), "cl_playDigEffect", {position = result.pointWorld, rotation = result.normalWorld})
+				sm.event.sendToWorld(sm.localPlayer.getPlayer().character:getWorld(), "cl_playDigEffect",
+					{ position = result.pointWorld, rotation = result.normalWorld })
 				local totebot_params = {
-						uuid = sm.uuid.new("8984bdbf-521e-4eed-b3c4-2b5e287eb879"),
-						world = sm.localPlayer.getPlayer().character:getWorld(),
-						position = result.pointWorld,
-						yaw = 0.0,
-						amount = math.random(1, 10),
-					}
+					uuid = sm.uuid.new("8984bdbf-521e-4eed-b3c4-2b5e287eb879"),
+					world = sm.localPlayer.getPlayer().character:getWorld(),
+					position = result.pointWorld,
+					yaw = 0.0,
+					amount = math.random(1, 10),
+				}
 				local haybot_params = {
 					uuid = sm.uuid.new("c8bfb8f3-7efc-49ac-875a-eb85ac0614db"),
 					world = sm.localPlayer.getPlayer().character:getWorld(),

@@ -22,7 +22,8 @@ function Init()
 end
 
 function InitTerrainSeedGlobals(seed)
-	g_terrainSeed = seed
+	--g_terrainSeed = seed
+	g_terrainSeed = 638289995 -- Flat sand island
 	--g_terrainSeed = 577078633 -- Shallow waters
 	--g_terrainSeed = 15324108410 -- Island start
 	--g_terrainSeed = 927677459 -- Weird terrain to test fixing weird terrain height jumps

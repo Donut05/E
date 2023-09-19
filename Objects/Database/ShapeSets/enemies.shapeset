@@ -81,6 +81,28 @@
             "diameter" : 1
          },
          "uuid" : "8df36720-5446-4c9a-96ad-98247a0a67a3"
+      },
+      {
+         "color" : "9f2600",
+         "flammable" : false,
+         "name" : "enemy_ball_spider_middle",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 5,
+            "density" : 4,
+            "durability" : 10,
+            "friction" : 3
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/PLACEHOLDER_ball.rend",
+         "rotationSet" : "Default",
+         "scripted" : {
+            "classname" : "BallSpider",
+            "filename" : "$CONTENT_DATA/Scripts/enemies/BallSpider.lua"
+         },
+         "sphere" : {
+            "diameter" : 5
+         },
+         "uuid" : "fc7920ef-7ea3-4e2a-8b86-a18781505c87"
       }
    ]
 }

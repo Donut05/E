@@ -424,6 +424,12 @@ function Overworld.sv_e_onChatCommand(self, params)
 	elseif params[1] == "/disableraids" then
 		print("Disable raids set to", params[2])
 		g_unitManager.disableRaids = params[2]
+	elseif params[1] == "/clear" then
+		for _, body in ipairs(sm.body.getAllBodies()) do
+			for _, shape in ipairs(body:getShapes()) do
+				shape:destroyShape()
+			end
+		end
 	end
 end
 

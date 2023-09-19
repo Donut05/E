@@ -33,6 +33,7 @@
       "particles/enemies/totebotGreen/fake_head.json",
       "particles/enemies/drillship/drillship_dig_out.json",
       "particles/ui/grab_hand_open.json",
-      "particles/ui/grab_hand_closed.json"
+      "particles/ui/grab_hand_closed.json",
+      "particles/projectiles/ballspider_laser_burst.json"
    ]
 }
