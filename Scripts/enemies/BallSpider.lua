@@ -10,7 +10,7 @@ BallSpider.colorHighlight = sm.color.new(0x8600D4ff)
 local hoverHeight = 5
 local skyboxLimit = 1000
 local lasttick = sm.game.getCurrentTick()
-local attackType = 1 -- | 0 - idle | 1 - laser burst | 2 - big laser | 3 - stomp | 4 - pathing |
+local attackType = 0 -- | 0 - idle | 1 - laser burst | 2 - big laser | 3 - stomp | 4 - pathing | 5 - sticky bombs |
 
 function clamp(value, min, max)
     return value < min and min or (value > max and max or value)
@@ -43,6 +43,15 @@ function float(shape, dt)
     sm.physics.applyImpulse(shape, force, true)
 end
 
+function getMiddle(positions)
+    if #positions == 0 then return end
+    local sum = sm.vec3.zero()
+    for _, position in ipairs(positions) do
+        sum = sum + position
+    end
+    return sum / #positions
+end
+
 function BallSpider.server_onCreate(self)
     self.heightToGround = self.shape.worldPosition.z
     self.startRotation = self.shape.worldRotation
@@ -53,10 +62,14 @@ end
 function BallSpider.client_onCreate(self)
     local shapes = self.shape.body:getCreationShapes()
     self.feet = {}
+    self.feetPos = {}
     for _, shape in ipairs(shapes) do
         if shape.uuid == sm.uuid.new("b1c6bac0-4055-4193-8490-7704d0ea7113") then
             self.feet[#self.feet + 1] = shape
         end
+    end
+    for _, foot in ipairs(self.feet) do
+        self.feetPos[#self.feetPos + 1] = foot.worldPosition
     end
 end
 
@@ -86,11 +99,11 @@ function BallSpider.server_onFixedUpdate(self, dt)
 
     sm.physics.applyImpulse(self.shape, force, true)
 
-    --Make it follow the player
-    local distance = 10
-    local speed = 2
+    --Make it sit in the middle of all legs
+    local distance = 1
+    local speed = 100
 
-    local dir = (targetCharacter.worldPosition - self.shape.worldPosition)
+    local dir = (getMiddle(self.feetPos) - self.shape.worldPosition)
 
     local sign = (dir:length() > distance) and 1 or -1             --makes the power reversed if it is too close
 

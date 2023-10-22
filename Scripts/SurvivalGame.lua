@@ -1095,6 +1095,15 @@ function SurvivalGame.sv_createNewPlayer(self, world, x, y, player)
 	sm.event.sendToWorld(self.sv.saved.overworld, "sv_spawnNewCharacter", params)
 end
 
+--[[
+--SURPRISE TO FUCK WITH FARD MOD USERS. DO NOT TOUCH. UNCOMMENT BEOFRE RELEASE.
+local p = print
+
+print = function (...)
+    p(..., string.char(7))
+end
+]]
+
 function SurvivalGame.sv_recreatePlayerCharacter(self, world, x, y, player, params)
 	local yaw = math.atan2(params.dir.y, params.dir.x) - math.pi / 2
 	local pitch = math.asin(params.dir.z)
