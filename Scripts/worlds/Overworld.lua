@@ -446,6 +446,32 @@ function Overworld:sv_spawnBlueprint(data)
 	end
 end
 
+function Overworld.cl_teleportToSpace(self, position)
+	self.network:sendToServer("sv_teleportToSpace", position)
+end
+
+function Overworld.sv_receieveWorld(self, world)
+	print("RECEIEVING THE WORLD FROM GAME SCRIPT!")
+	self.space = world
+	self:sv_teleportToSpace(self.positionCache)
+end
+
+function Overworld.sv_teleportToSpace(self, position)
+	self.positionCache = position
+	if not self.space then
+		sm.event.sendToGame("sv_createSpace", self.world)
+		print("CREATING WORLD!")
+		return
+		print("UH OH! SKIPPED RETURN!")
+	end
+	print("WORLD ALREADY EXISTS! CREATING OUR SIDE OF THE TELEPORT!")
+	local portal = sm.portal.createPortal(sm.vec3.new(1000, 1000, 1000))
+	portal:setOpeningA(position, sm.quat.identity())
+	sm.portal.addWorldPortalHook(self.space, "space_hole", portal)
+	print("CREATED OUR SIDE! SENDING DATA TO THE OTHER SIDE!")
+	sm.event.sendToWorld(self.space, "sv_receievePosition", position)
+end
+
 -- World cell callbacks
 
 function Overworld.server_onCellCreated(self, x, y)

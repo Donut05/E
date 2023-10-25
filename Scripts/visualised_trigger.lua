@@ -40,7 +40,7 @@ function CreateVisualizedTrigger(position, scale, filter)
             self.effect:setRotation(rotation)
         end,
         setScale = function(self, scale)
-            self.trigger:setScale(scale * 0.5)
+            self.trigger:setSize(scale * 0.5)
             self.effect:setScale(scale)
         end,
         destroy = function(self)

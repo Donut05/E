@@ -702,6 +702,15 @@ function SurvivalGame.sv_requestZ(self)
 	return g_spawnZ * -10
 end
 
+function SurvivalGame.sv_createSpace(self, world)
+	if not self.sv.saved.spaceWorld then
+		print("NO WORLD EXISTS! CREATING ONE!")
+		self.sv.saved.spaceWorld = sm.world.createWorld("$CONTENT_DATA/Scripts/worlds/Space.lua", "Space")
+	end
+	self.storage:save(self.sv.saved)
+	sm.event.sendToWorld(world, "sv_receieveWorld", self.sv.saved.spaceWorld)
+end
+
 function SurvivalGame.sv_n_loadingScreenLifted(self, _, player)
 	if not g_survivalDev then
 		QuestManager.Sv_TryActivateQuest("quest_tutorial")
