@@ -115,14 +115,14 @@ function Chest.client_onInteract(self, character, state)
 		self.cl.containerGui:open()
 
 		if self.data.openSound then
-			if self.data.openSound2 then
+			if self.data.openSound2 and sm.cae_injected then
 				if math.random(0, 1) == 0 then
-					print("1")
 					sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
 				else
 					sm.effect.playEffect(self.data.openSound2, self.shape.worldPosition)
-					print("2")
 				end
+			else
+				sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
 			end
 		else
 			sm.effect.playEffect("Action - Chest_Open", self.shape.worldPosition)
@@ -134,14 +134,14 @@ end
 function Chest.cl_guiClosed(self)
 	self.network:sendToServer("sv_closeChestAnim")
 	if self.data.closeSound then
-		if self.data.closeSound2 then
+		if self.data.closeSound2 and sm.cae_injected then
 			if math.random(0, 1) == 0 then
-				print("3")
 				sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
 			else
-				print("4")
 				sm.effect.playEffect(self.data.closeSound2, self.shape.worldPosition)
 			end
+		else
+			sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
 		end
 	else
 		sm.effect.playEffect("Action - Chest_Close", self.shape.worldPosition)

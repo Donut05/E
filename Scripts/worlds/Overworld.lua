@@ -51,6 +51,8 @@ function Overworld.client_onCreate(self)
 
 	g_slam_position = sm.vec3.zero()
 	g_slam_velocity = 0
+	self.pipeCooldown = false
+	self.pipeCooldownTick = sm.game.getCurrentTick()
 
 	self.ambienceEffect = sm.effect.createEffect("OutdoorAmbience")
 	self.ambienceEffect:start()
@@ -77,6 +79,10 @@ function Overworld.client_onDestroy(self)
 end
 
 function Overworld.server_onRefresh(self)
+end
+
+function Overworld.client_onRefresh(self)
+	Overworld.client_onCreate(self)
 end
 
 function Overworld.server_onFixedUpdate(self)
@@ -118,6 +124,11 @@ function Overworld.client_onFixedUpdate(self)
 			end
 		end
 	end
+
+	if sm.game.getCurrentTick() >= self.pipeCooldownTick + 200 then
+		self.pipeCooldown = false
+		self.pipeCooldownTick = sm.game.getCurrentTick()
+	end
 end
 
 function Overworld.client_onUpdate(self, deltaTime)
@@ -154,11 +165,14 @@ end
 
 function Overworld.client_onCollision(self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal)
 	if type(objectA) == "Shape" then
-		if (sm.exists(objectA) and (objectA.material == "Metal" or "Mechanical") and (math.random(0, 1000) == 0)) and sm.dlm_injected and objectA.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectA.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f") then
-			local pitch = 3.0 - math.min(objectA.mass / 200, 2.5)
-			print(pitch)
-			sm.effect.playEffect("Sounds - Metal_pipe", position, nil, nil, nil,
-				{ DLM_Pitch = pitch })
+		print(math.random(0, 250))
+		if (sm.exists(objectA) and sm.exists(objectB)) and ((objectA.material == "Metal" or "Mechanical") or (objectB.material == "Metal" or "Mechanical"))
+		and (math.random(0, 250) == 0) and sm.cae_injected and (not self.pipeCooldown)
+		and objectA.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectA.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f")
+		and objectB.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectB.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f") then
+			--local pitch = 3.0 - math.min(objectA.mass / 200, 2.5)
+			sm.effect.playEffect("Sounds - Metal_pipe", position)
+			self.pipeCooldown = true
 		end
 	elseif type(objectA) == "Character" then
 		if sm.exists(objectA) and objectA:isPlayer() and math.abs(pointVelocityA.z) > 20 then

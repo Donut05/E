@@ -27,6 +27,14 @@
     "MicrowaveClose02": {
       "path": "$CONTENT_DATA/Effects/Audio/sfx/parts/microwave/microwave_close_02.mp3",
       "is3D": true
+    },
+    "Rain": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/env/rain.mp3",
+      "is3D": true
+    },
+    "RainInside": {
+      "path": "$CONTENT_DATA/Effects/Audio/sfx/env/rain_inside.mp3",
+      "is3D": true
     }
   }
 }

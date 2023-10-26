@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil, undefined-global
+---@diagnostic disable: need-check-nil, undefined-global, undefined-field
 
 SkyManager = class(nil)
 

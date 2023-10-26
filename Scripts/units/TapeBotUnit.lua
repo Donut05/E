@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil, undefined-global
+---@diagnostic disable: need-check-nil, undefined-global, undefined-field
 dofile "$SURVIVAL_DATA/Scripts/game/units/unit_util.lua"
 dofile "$SURVIVAL_DATA/Scripts/game/util/Ticker.lua"
 dofile "$SURVIVAL_DATA/Scripts/game/util/Timer.lua"
@@ -642,7 +642,7 @@ function TapebotUnit.server_onProjectile(self, hitPos, hitTime, hitVelocity, _, 
 			if self:nearHead(hitPos) then
 				sm.effect.playEffect("TapeBot - HeadShot", hitPos, sm.vec3.zero(),
 					sm.vec3.getRotation(ZAxis, hitVelocity:normalize()))
-				if sm.dlm_injected then
+				if sm.cae_injected then
 					sm.effect.playEffect("Sounds - TapeBot_headshot_sound", hitPos)
 				end
 				self:sv_takeDamage(damage, impact, true)
