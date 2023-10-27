@@ -69,6 +69,7 @@ function SurvivalGame.server_onCreate(self)
 
 
 	sm.scriptableObject.createScriptableObject(sm.uuid.new("d696f6ae-615f-499b-b22a-20e8cea14831"))
+	sm.scriptableObject.createScriptableObject(sm.uuid.new("be34f6d8-0c1e-4fc0-b243-522da04a4409"))
 
 	g_respawnManager = RespawnManager()
 	g_respawnManager:sv_onCreate(self.sv.saved.overworld)

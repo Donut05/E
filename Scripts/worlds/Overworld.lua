@@ -165,7 +165,6 @@ end
 
 function Overworld.client_onCollision(self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal)
 	if type(objectA) == "Shape" then
-		print(math.random(0, 250))
 		if (sm.exists(objectA) and sm.exists(objectB)) and ((objectA.material == "Metal" or "Mechanical") or (objectB.material == "Metal" or "Mechanical"))
 		and (math.random(0, 250) == 0) and sm.cae_injected and (not self.pipeCooldown)
 		and objectA.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectA.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f")
