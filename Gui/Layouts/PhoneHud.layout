@@ -5,12 +5,6 @@
             <Property key="ImageTexture" value="iphone.png"/>
             <Widget type="ImageBox" skin="ImageBox" position="40 80 190 265" align="Center" name="SS_gameplay">
                 <Property key="ImageTexture" value="SS_test.jpg"/>
-                <Widget type="ImageBox" skin="ImageBox" position="-60 25 540 495" name="Crack">
-                    <Property key="ImageTexture" value="cracked_screen.png"/>
-                </Widget>
-                <Widget type="ImageBox" skin="ImageBox" position="-110 -80 200 200" name="Crack2">
-                    <Property key="ImageTexture" value="cracked_screen.png"/>
-                </Widget>
             </Widget>
         </Widget>
     </Widget>

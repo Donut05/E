@@ -65,7 +65,7 @@ function Grab.client_onEquippedUpdate(self, primaryState, secondaryState, forceB
         gui:setImage("HandIcon", "$CONTENT_DATA/Gui/Images/Ui/hand-heavy-icon.png")
     end
 
-    return true, true
+    return true, false
 end
 
 function Grab.client_onFixedUpdate(self, dt)
