@@ -5,7 +5,6 @@ WeatherManager = class(nil)
 function WeatherManager.client_onCreate(self)
     self.rainSoundInsideVolume = 0
     self.rainSoundVolume = 0
-    self.nexttick = sm.game.getCurrentTick()
     self.rain = sm.effect.createEffect("Environment - Rain")
     if sm.cae_injected then
         self.rainSound = sm.effect.createEffect("Environment - Rain_sound_DLL")
@@ -29,21 +28,24 @@ function WeatherManager.client_onUpdate(self, dt)
         hit5, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, -14, 0))
         if hit and hit2 and hit3 and hit4 and hit5 then
             if sm.cae_injected then
+                --Update inside ambient sound position
                 self.rainSoundInside:setPosition(result.pointWorld + sm.vec3.new(0, 0, 2))
-                if self.rainSoundVolume >= 0 then
-                    print(self.rainSoundVolume)
+                --Lower outside ambient sound volume
+                if self.rainSoundVolume > 0 then
                     self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume)
-                    self.rainSoundVolume = self.rainSoundVolume - 0.01
+                    self.rainSoundVolume = self.rainSoundVolume - 0.005
                 elseif self.rainSoundVolume <= 0 then
+                    self.rainSoundVolume = 0
+                    self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume) --Even though nothing bad should happen with negative volume, set it to 0 just in case because who the fuck knows
                     self.rainSound:stopImmediate()
                 end
-                print(self.rainSoundInsideVolume)
-                if self.rainSoundInsideVolume <= 0 then
-                    if not self.rainSoundInside:isPlaying() then
-                        self.rainSoundInside:start()
-                    end
+                --Boost inside ambient sound volume
+                if self.rainSoundInsideVolume >= 1 then
+                    self.rainSoundInsideVolume = 1
+                    self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundInsideVolume) --Set one more time to avoid ear rape
+                elseif self.rainSoundInsideVolume < 1 then
                     self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundInsideVolume)
-                    self.rainSoundInsideVolume = self.rainSoundInsideVolume + 0.01
+                    self.rainSoundInsideVolume = self.rainSoundInsideVolume + 0.005
                 end
             else
                 self.rainSound:setPosition(result.pointWorld + sm.vec3.new(0, 0, 2))
@@ -51,32 +53,56 @@ function WeatherManager.client_onUpdate(self, dt)
                     self.rainSound:start()
                 end
             end
-            if self.rainSoundInside:isDone() or not self.rainSoundInside:isPlaying() then
+            if self.rainSoundInside:isDone() or not self.rainSoundInside:isPlaying() then --This code loops the sound
                 self.rainSoundInside:start()
             end
         else
+            --Update outside ambient sound position
             self.rainSound:setPosition(player.character.worldPosition + sm.vec3.new(0, 0, 0.5))
             if sm.cae_injected then
-                if self.rainSoundInsideVolume >= 0 then
-                    self.rainSound:setParameter("CAE_Volume", self.rainSoundInsideVolume)
-                    self.rainSoundInsideVolume = self.rainSoundInsideVolume - 0.01
+                --Lower inside ambient sound volume
+                if self.rainSoundInsideVolume > 0 then
+                    self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundInsideVolume)
+                    self.rainSoundInsideVolume = self.rainSoundInsideVolume - 0.005
                 elseif self.rainSoundInsideVolume <= 0 then
-                    self.rainSoundInside:stop()
+                    self.rainSoundInsideVolume = 0
+                    self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundVolume)
+                    self.rainSoundInside:stopImmediate()
                 end
-                if self.rainSoundVolume <= 0 then
-                    if not self.rainSound:isPlaying() then
-                        self.rainSound:start()
-                    end
+                --Boost outside ambient sound volume
+                if self.rainSoundVolume >= 1 then
+                    self.rainSoundVolume = 1
                     self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume)
-                    self.rainSoundVolume = self.rainSoundVolume + 0.01
+                elseif self.rainSoundVolume < 1 then
+                    self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume)
+                    self.rainSoundVolume = self.rainSoundVolume + 0.005
                 end
             end
-        end
-        if sm.game.getCurrentTick() >= self.nexttick then
-            self.nexttick = sm.game.getCurrentTick() + 40
+            if self.rainSound:isDone() or not self.rainSound:isPlaying() then --This code loops the sound
+                self.rainSound:start()
+            end
         end
     else
-
+        if sm.cae_injected then
+            if self.rainSoundVolume > 0 then
+                self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume)
+                self.rainSoundVolume = self.rainSoundVolume - 0.005
+            elseif self.rainSoundVolume <= 0 then
+                self.rainSoundVolume = 0
+                self.rainSound:setParameter("CAE_Volume", self.rainSoundVolume)
+                self.rainSound:stopImmediate()
+            end
+            if self.rainSoundInsideVolume > 0 then
+                self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundInsideVolume)
+                self.rainSoundInsideVolume = self.rainSoundInsideVolume - 0.005
+            elseif self.rainSoundInsideVolume <= 0 then
+                self.rainSoundInsideVolume = 0
+                self.rainSoundInside:setParameter("CAE_Volume", self.rainSoundVolume)
+                self.rainSoundInside:stopImmediate()
+            end
+        else
+            self.rainSound:stop()
+        end
     end
 end
 
@@ -90,8 +116,6 @@ function WeatherManager.cl_toggle_rain(self)
         self.rain:start()
     else
         self.rain:stop()
-        self.rainSound:stop()
-        self.rainSoundInside:stop()
     end
     print(self.rainSwitch)
 end
