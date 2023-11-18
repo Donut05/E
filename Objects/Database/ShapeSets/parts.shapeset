@@ -97,6 +97,47 @@
          },
          "sticky" : "-Y",
          "uuid" : "aab8866b-9f00-412d-ba45-0cadee45956e"
+      },
+      {
+         "box" : {
+            "x" : 5,
+            "y" : 4,
+            "z" : 1
+         },
+         "color" : "8299AC",
+         "flammable" : false,
+         "name" : "Cloak field generator",
+         "physicsMaterial" : "Mechanical",
+         "ratings" : {
+            "buoyancy" : 3,
+            "density" : 3,
+            "durability" : 6,
+            "friction" : 6
+         },
+         "renderable" : {
+            "lodList" : [
+               {
+                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/interactive/obj_interactive_encryptor_connection.fbx",
+                  "subMeshList" : [
+                     {
+                        "material" : "DifAsgNor",
+                        "textureList" : [
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_encryptor_connection_dif.tga",
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_encryptor_connection_asg.tga",
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_encryptor_connection_nor.tga"
+                        ]
+                     }
+                  ]
+               }
+            ]
+         },
+         "rotationSet" : "PropZ",
+         "scripted" : {
+            "classname" : "Cloak",
+            "filename" : "$CONTENT_DATA/Scripts/interactive/Cloak.lua"
+         },
+         "sticky" : "-Z",
+         "uuid" : "eed6ea66-459b-4127-af37-45cbfa02c073"
       }
    ]
 }

@@ -15,6 +15,7 @@ SkyManager.starEndTime = 0.09
 function SkyManager.client_onCreate(self)
     self.effects = self.effects or {}
     self.moon = { angle = 0 }
+    self.starAngle = 0
     self.effects.moon = sm.effect.createEffect("Skybox - Moon")
     self.effects.stars = sm.effect.createEffect("Skybox - Stars")
     self.effects.ships = sm.effect.createEffect("Skybox - Cargo_ships")
@@ -89,14 +90,16 @@ function SkyManager.client_onUpdate(self, dt)
             self.effects.stars:stop()
         end
     end
+    if self.time > self.moonStartTime or self.time <= self.moonEndTime then
+        self.starAngle = self.starAngle + 0.0011
+        self.effects.stars:setRotation(sm.quat.angleAxis((self.starAngle * (math.pi/180)), sm.vec3.new(0, -1, 0)))
+    elseif self.time > self.moonEndTime then
+        self.starAngle = 0
+    end
     -- #endregion
 end
 
 function SkyManager.client_onRefresh(self)
-
-    self.eclipse.angle = 0
-    self.effects.eclipse:stopImmediate()
-    self.effects.eclipse:destroy()
 
     self.moon.angle = 0
     self.effects.moon:stopImmediate()

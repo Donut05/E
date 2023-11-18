@@ -6,6 +6,7 @@ function WeatherManager.client_onCreate(self)
     self.rainSoundInsideVolume = 0
     self.rainSoundVolume = 0
     self.rain = sm.effect.createEffect("Environment - Rain")
+    self.fakeRain = sm.effect.createEffect("Environment - Rain_fake")
     if sm.cae_injected then
         self.rainSound = sm.effect.createEffect("Environment - Rain_sound_DLL")
         self.rainSoundInside = sm.effect.createEffect("Environment - Rain_sound_inside_DLL")
@@ -19,14 +20,21 @@ end
 function WeatherManager.client_onUpdate(self, dt)
     if self.rainSwitch then
         local player = sm.localPlayer.getPlayer()
-        self.rain:setPosition(sm.vec3.new(player.character.worldPosition.x, player.character.worldPosition.y, 0) + sm.vec3.new(player.character.velocity.x / 10 + 0.5, player.character.velocity.y / 10 + 0.5, 0))
-        local hit, result = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, 0, 14))
-        local hit2, hit3, hit4, hit5, trash
-        hit2, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(14, 0, 0))
-        hit3, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(-14, 0, 0))
-        hit4, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, 14, 0))
-        hit5, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, -14, 0))
+        local rainPos = sm.vec3.new(player.character.worldPosition.x, player.character.worldPosition.y, 0) + sm.vec3.new(player.character.velocity.x, player.character.velocity.y, 0)
+        self.rain:setPosition(rainPos)
+        self.fakeRain:setPosition(rainPos)
+        local hit, result = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, 0, 100))
+        local hit2, hit3, hit4, hit5, hit_rainHeightLimitCheck, trash
+        hit2, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(100, 0, 0))
+        hit3, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(-100, 0, 0))
+        hit4, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, 100, 0))
+        hit5, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, -100, 0))
+        hit_rainHeightLimitCheck, trash = sm.physics.raycast(player.character.worldPosition, player.character.worldPosition + sm.vec3.new(0, 0, 14)) --Addtional height check for buildings bigger than the rain effect
         if hit and hit2 and hit3 and hit4 and hit5 then
+            if not hit_rainHeightLimitCheck then
+                self.rain:stopImmediate()
+                self.fakeRain:stopImmediate()
+            end
             if sm.cae_injected then
                 --Update inside ambient sound position
                 self.rainSoundInside:setPosition(result.pointWorld + sm.vec3.new(0, 0, 2))
@@ -53,8 +61,10 @@ function WeatherManager.client_onUpdate(self, dt)
                     self.rainSound:start()
                 end
             end
-            if self.rainSoundInside:isDone() or not self.rainSoundInside:isPlaying() then --This code loops the sound
-                self.rainSoundInside:start()
+            if sm.cae_injected then
+                if self.rainSoundInside:isDone() or not self.rainSoundInside:isPlaying() then --This code loops the sound
+                    self.rainSoundInside:start()
+                end
             end
         else
             --Update outside ambient sound position
@@ -80,6 +90,12 @@ function WeatherManager.client_onUpdate(self, dt)
             end
             if self.rainSound:isDone() or not self.rainSound:isPlaying() then --This code loops the sound
                 self.rainSound:start()
+            end
+            if not self.rain:isPlaying() then --Turn rain back on if we were in a building higher than the effect
+                self.rain:start()
+            end
+            if not self.fakeRain:isPlaying() then
+                self.fakeRain:start()
             end
         end
     else
@@ -114,8 +130,10 @@ function WeatherManager.cl_toggle_rain(self)
     self.rainSwitch = not self.rainSwitch
     if self.rainSwitch then
         self.rain:start()
+        self.fakeRain:start()
     else
         self.rain:stop()
+        self.fakeRain:stop()
     end
     print(self.rainSwitch)
 end

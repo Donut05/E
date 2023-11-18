@@ -323,7 +323,7 @@
                     50.0,
                     100.0
                 ],
-                "type": "hemisphere",
+                "type": "sphere",
                 "velocity": 0.0,
                 "width": 5.0
             }

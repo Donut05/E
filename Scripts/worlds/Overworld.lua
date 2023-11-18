@@ -164,6 +164,7 @@ function Overworld.client_onUpdate(self, deltaTime)
 end
 
 function Overworld.client_onCollision(self, objectA, objectB, position, pointVelocityA, pointVelocityB, normal)
+	--=METAL PIPE SOUND EFFECT=--
 	if type(objectA) == "Shape" then
 		if (sm.exists(objectA) and sm.exists(objectB)) and ((objectA.material == "Metal" or "Mechanical") or (objectB.material == "Metal" or "Mechanical"))
 		and (math.random(0, 250) == 0) and sm.cae_injected and (not self.pipeCooldown)
@@ -173,7 +174,28 @@ function Overworld.client_onCollision(self, objectA, objectB, position, pointVel
 			sm.effect.playEffect("Sounds - Metal_pipe", position)
 			self.pipeCooldown = true
 		end
-	elseif type(objectA) == "Character" then
+	end
+
+	--=COLLISION DESTRUCTION=--
+	if sm.exists(objectB) and type(objectB) == "Shape" then
+		print("bonk!")
+		if (pointVelocityA + pointVelocityB):length() > (sm.item.getQualityLevel(objectB.uuid) * 5) and math.random(0, sm.item.getQualityLevel(objectB.uuid)) == 0
+		and objectB.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectB.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f") then
+			print("destroy")
+			sm.melee.meleeAttack(sm.uuid.new("38fe8287-d408-492f-a3a0-996f5f13ecda"), 9999, position, sm.vec3.new(2, 2, 2), sm.localPlayer.getPlayer(), 0, 0)
+		end
+	end
+	if sm.exists(objectA) and type(objectA) == "Shape" then
+		print("bonk!")
+		if (pointVelocityA + pointVelocityB):length() > (sm.item.getQualityLevel(objectA.uuid) * 2) and math.random(0, sm.item.getQualityLevel(objectA.uuid)) == 0
+		and objectA.uuid ~= sm.uuid.new("69e362c3-32aa-4cd1-adc0-dcfc47b92c0d") and objectA.uuid ~= sm.uuid.new("db66f0b1-0c50-4b74-bdc7-771374204b1f") then
+			print("destroy")
+			sm.melee.meleeAttack(sm.uuid.new("38fe8287-d408-492f-a3a0-996f5f13ecda"), 9999, position, sm.vec3.new(2, 2, 2), sm.localPlayer.getPlayer(), 0, 0)
+		end
+	end
+
+		--=SLAM EFFECT=--
+	if type(objectA) == "Character" then
 		if sm.exists(objectA) and objectA:isPlayer() and math.abs(pointVelocityA.z) > 20 then
 			sm.effect.playEffect("Player - Slam", objectA.worldPosition)
 		end

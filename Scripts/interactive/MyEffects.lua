@@ -1,4 +1,5 @@
----@diagnostic disable: need-check-nil
+---@diagnostic disable: need-check-nil, undefined-field
+
 SusEffect = class(nil)
 SusEffect.maxParentCount = 1
 SusEffect.connectionInput = sm.interactable.connectionType.logic

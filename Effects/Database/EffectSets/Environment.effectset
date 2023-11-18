@@ -8,6 +8,15 @@
          }
       ]
    },
+   "Environment - Rain_fake" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "rain_fake" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "Skybox - Cargo_ships" : {
       "effectList" : [
          {

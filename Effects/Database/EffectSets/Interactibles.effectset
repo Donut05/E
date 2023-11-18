@@ -8,6 +8,15 @@
          }
       ]
    },
+   "Cloak_generator - Activation_plus_idle" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "invis_activate_plus_idle" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "Connector - Connection" : {
       "effectList" : [
          {
