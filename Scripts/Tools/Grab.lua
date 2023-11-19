@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil
+---@diagnostic disable: need-check-nil, duplicate-set-field
 ---@class Grab : ToolClass
 
 Grab = class()
@@ -7,6 +7,8 @@ Grab = class()
 local grabbing, mass, gui, previousBody = false, 0
 
 function Grab.client_onCreate(self)
+    self.hit = false
+    self.result = {}
     gui = sm.gui.createGuiFromLayout("$CONTENT_DATA/Gui/Layouts/GrabHandHud.layout", false, {
         isHud = true,
         isInteractive = false,
@@ -40,29 +42,38 @@ end
 
 function Grab.client_onEquippedUpdate(self, primaryState, secondaryState, forceBuild)
     ---@diagnostic disable-next-line: undefined-field
-    local hit, result = sm.physics.spherecast(sm.localPlayer.getRaycastStart(), sm.localPlayer.getRaycastStart() + sm.localPlayer.getDirection() * 2, 0.5, self.tool:getOwner().character)
-    if primaryState == 2 and hit and result.type == "body" and not (result:getBody():isStatic()) and GetBodyMass(result) < 1000 then
+    local testHit, testResult = sm.physics.raycast(sm.localPlayer.getRaycastStart(), sm.localPlayer.getRaycastStart() + sm.localPlayer.getDirection() * 2)
+    if primaryState == 1 and testHit then
+        self.hit, self.result = sm.physics.spherecast(sm.localPlayer.getRaycastStart(), sm.localPlayer.getRaycastStart() + sm.localPlayer.getDirection() * 2, 0.5, self.tool:getOwner().character)
+    end
+    if primaryState == 2 and self.hit and self.result.type == "body" and not (self.result:getBody():isStatic()) and GetBodyMass(self.result) < 1000 then
         grabbing = true
         if not previousBody then
-            previousBody = result:getBody()
-            mass = GetBodyMass(result)
+            previousBody = self.result:getBody()
+            mass = GetBodyMass(self.result)
         else
-            if previousBody ~= result:getBody() then
-                previousBody = result:getBody()
-                mass = GetBodyMass(result)
+            if previousBody ~= self.result:getBody() then
+                previousBody = self.result:getBody()
+                mass = GetBodyMass(self.result)
             end
         end
-    elseif not hit and not grabbing then
+    elseif not self.hit and not grabbing or not testHit then
         if sm.exists(gui) then
             gui:setImage("HandIcon", "$CONTENT_DATA/Gui/Images/empty.png")
         end
-    elseif hit and not grabbing and result.type == "body" then
+    elseif self.hit and not grabbing and self.result.type == "body" then
         gui:setImage("HandIcon", "$CONTENT_DATA/Gui/Images/Ui/hand-open-icon.png")
     else
         grabbing = false
     end
-    if primaryState == 2 and hit and result.type == "body" and not (result:getBody():isStatic()) and GetBodyMass(result) > 1000 then
+    if primaryState == 2 and self.hit and self.result.type == "body" and not (self.result:getBody():isStatic()) and GetBodyMass(self.result) > 1000 then
         gui:setImage("HandIcon", "$CONTENT_DATA/Gui/Images/Ui/hand-heavy-icon.png")
+    end
+    if primaryState == 2 and self.hit and self.result.type == "body" and self.result:getBody():isStatic() then
+        gui:setImage("HandIcon", "$CONTENT_DATA/Gui/Images/Ui/hand-heavy-icon.png")
+    end
+    if primaryState == 3 then
+        self.hit = false
     end
 
     return true, false
@@ -75,7 +86,7 @@ function Grab.client_onFixedUpdate(self, dt)
             local CooM = previousBody:getCenterOfMassPosition()
             local FinalDestination = sm.camera.getPosition() + sm.camera.getDirection() * 2
             local Direction = FinalDestination - CooM
-            sm.physics.applyImpulse(previousBody, (Direction * mass) - (previousBody:getVelocity() * (mass * 0.25)), true)
+            sm.physics.applyImpulse(previousBody, (Direction * mass) - (previousBody:getVelocity() * (mass * 0.1)), true)
             if Direction:length() > 10 then
                 grabbing = false
             end

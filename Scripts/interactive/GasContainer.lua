@@ -126,7 +126,9 @@ function GasolineContainer.server_onFixedUpdate(self, dt)
 			local shape = interactable.shape
 			local data = {
 				pos = shape.worldPosition + shape.up,
-				rot = shape.worldRotation
+				rot = shape.worldRotation,
+				vel = shape.velocity,
+				up = shape.up
 			}
 			self.network:sendToClients("cl_createTrail", data)
 		end
@@ -134,7 +136,13 @@ function GasolineContainer.server_onFixedUpdate(self, dt)
 end
 
 function GasolineContainer.cl_createTrail(self, data)
-	sm.effect.playEffect("Thruster - Exhaust", data.pos, nil, data.rot)
+	if data.vel then
+		if math.abs(data.vel:length()) < 3 then
+			sm.effect.playEffect("Thruster - Exhaust", data.pos, data.up * 10, data.rot)
+		else
+			sm.effect.playEffect("Thruster - Exhaust", data.pos, nil, data.rot)
+		end
+	end
 end
 
 AmmoContainer = class(ConsumableContainer)

@@ -26,6 +26,7 @@
             "classname" : "WelderHive",
             "filename" : "$CONTENT_DATA/Scripts/enemies/WelderHive.lua"
          },
+         "showInInventory" : false,
          "uuid" : "c6e64537-cbfe-4039-ad0b-73ec22d3727c"
       },
       {
@@ -76,7 +77,7 @@
             "classname" : "Bees",
             "filename" : "$CONTENT_DATA/Scripts/enemies/Bees.lua"
          },
-         "showInInventory" : true,
+         "showInInventory" : false,
          "sphere" : {
             "diameter" : 1
          },
@@ -99,6 +100,7 @@
             "classname" : "BallSpider",
             "filename" : "$CONTENT_DATA/Scripts/enemies/BallSpider.lua"
          },
+         "showInInventory" : false,
          "sphere" : {
             "diameter" : 5
          },

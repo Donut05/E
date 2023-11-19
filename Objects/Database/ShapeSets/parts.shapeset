@@ -95,6 +95,7 @@
             "classname" : "Connector",
             "filename" : "$CONTENT_DATA/Scripts/interactive/AutoConnector.lua"
          },
+         "showInInventory" : false,
          "sticky" : "-Y",
          "uuid" : "aab8866b-9f00-412d-ba45-0cadee45956e"
       },
@@ -136,6 +137,7 @@
             "classname" : "Cloak",
             "filename" : "$CONTENT_DATA/Scripts/interactive/Cloak.lua"
          },
+         "showInInventory" : false,
          "sticky" : "-Z",
          "uuid" : "eed6ea66-459b-4127-af37-45cbfa02c073"
       }
