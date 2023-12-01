@@ -41,7 +41,12 @@ local function rgb2hex(r, g, b)
 	return string.format("%02X%02X%02XFF", r, g, b)
 end
 
+local function fixTextColor(color)
+	return color:sub(1, -3)
+end
+
 function SusEffect.client_onCreate(self)
+	self.lastTick = sm.game.getCurrentTick()
 	self.h = 0
 	self.s = 0
 	self.effect = sm.effect.createEffect("SUS", self.interactable)
@@ -57,20 +62,24 @@ function SusEffect.client_onUpdate(self, dt)
 	if self.effect ~= nil then
 		if parent:isActive() then
 			if rgb_siwtch then
-				self.effect:stop()
-				if (self.h >= 1 or self.s >= 1) or (self.h <= -0.01 or self.s <= -0.01) then
-					reverse = not reverse
+				sm.gui.displayAlertText("#" .. fixTextColor(rgb2hex(hsl2rgb(self.h, self.s, 0.5))) .. "PARTY TIME!", 1)
+				if sm.game.getCurrentTick() >= self.lastTick + 2 then
+					self.effect:stop()
+					if (self.h >= 1 or self.s >= 1) or (self.h <= -0.01 or self.s <= -0.01) then
+						reverse = not reverse
+					end
+					if reverse then
+						self.effect:setParameter("Color", sm.color.new(rgb2hex(hsl2rgb(self.h, self.s, 0.5))))
+						self.h = self.h - 0.01
+						self.s = self.s - 0.01
+					else
+						self.effect:setParameter("Color", sm.color.new(rgb2hex(hsl2rgb(self.h, self.s, 0.5))))
+						self.h = self.h + 0.01
+						self.s = self.s + 0.01
+					end
+					self.effect:start()
+					self.lastTick = sm.game.getCurrentTick()
 				end
-				if reverse then
-					self.effect:setParameter("Color", sm.color.new(rgb2hex(hsl2rgb(self.h, self.s, 0.5))))
-					self.h = self.h - 0.01
-					self.s = self.s - 0.01
-				else
-					self.effect:setParameter("Color", sm.color.new(rgb2hex(hsl2rgb(self.h, self.s, 0.5))))
-					self.h = self.h + 0.01
-					self.s = self.s + 0.01
-				end
-				self.effect:start()
 			else
 				if not self.effect:isPlaying() then
 					self.effect:setParameter("Color", self.shape:getColor())

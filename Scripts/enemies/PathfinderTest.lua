@@ -141,6 +141,13 @@ function PathfinderTest.cl_effectShowPath(self, start, goal)
     end
 end
 
+local function Vec3isNear(vec3A, vec3B, errorWindow)
+    local distance = (vec3A - vec3B):length()
+    return distance <= errorWindow
+end
+
+local counter = 1
+
 function PathfinderTest.client_onFixedUpdate(self)
     local params = {
         ignore = self.shape:getBody()
@@ -199,12 +206,20 @@ function PathfinderTest.client_onFixedUpdate(self)
         getNeighborNodesParams = params             -- A table send to the getNeighborNodes function if necessary
     }
     local debug = {
-        debugPrint = true,                  -- A little bit of debugging
+        debugPrint = false,                  -- A little bit of debugging
         showCheckNode = false,              -- Show calculated nodes if showNodeCallback is defined
         showNodeCallback = showPathCallback -- A function that displays all nodes in a table
     }
 
-    local complete, path = aStar.aStar(dataTable, pos, params, debug) -- the magic
+    local storedPlayerPos, complete, path
+    if sm.exists(storedPlayerPos) then
+        storedPlayerPos = sm.localPlayer.getPlayer().character.worldPosition
+    end
+    if storedPlayerPos ~= sm.localPlayer.getPlayer().character.worldPosition then
+        counter = 1
+        startPos = sm.localPlayer.getPlayer().character.worldPosition
+        complete, path = aStar.aStar(dataTable, pos, params, debug) -- the magic
+    end
     if complete then
         --self:cl_showPath(path)
         self.cl.path = path
@@ -212,6 +227,20 @@ function PathfinderTest.client_onFixedUpdate(self)
             print(self.cl.path and #self.cl.path or nil)
         end
         self:cl_effectShowPath(self.shape.worldPosition, endPos)
+        if not self.shape.body:isStatic() then
+            if not path then return end
+            local nextNode = path[counter].vec3
+            local dir = nextNode - self.shape.worldPosition
+            if dir:length() > 0 then
+                sm.physics.applyImpulse(self.shape, dir, true)
+            end
+            if Vec3isNear(self.shape.worldPosition, nextNode, 0.2) then
+                counter = counter + 1
+                if counter >= #path then
+                    counter = 1
+                end
+            end
+        end
     end
 end
 
