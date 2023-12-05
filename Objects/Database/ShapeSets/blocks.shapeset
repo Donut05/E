@@ -35,6 +35,23 @@
          "stackSize" : 69420,
          "tiling" : 4,
          "uuid" : "bffad3d2-4b79-4287-9a43-bba7987650dd"
+      },
+      {
+         "asg" : "$CONTENT_DATA/Objects/Textures/peter_asg.tga",
+         "dif" : "$CONTENT_DATA/Objects/Textures/peter_dif.tga",
+         "flammable" : true,
+         "name" : "Peter block",
+         "nor" : "$CONTENT_DATA/Objects/Textures/peter_nor.tga",
+         "physicsMaterial" : "Fence",
+         "ratings" : {
+            "buoyancy" : 10,
+            "density" : 10,
+            "durability" : 4,
+            "friction" : 1
+         },
+         "stackSize" : 1652018,
+         "tiling" : 16,
+         "uuid" : "828bc42c-1f4a-4417-9d47-8fdcb67ff80e"
       }
    ]
 }
