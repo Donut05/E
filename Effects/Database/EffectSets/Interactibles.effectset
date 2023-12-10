@@ -53,6 +53,15 @@
          }
       ]
    },
+   "GasEngine - Exhaust" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_gas_exhaust" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "SUS" : {
       "effectList" : [
          {
