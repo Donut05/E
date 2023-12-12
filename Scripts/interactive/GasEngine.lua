@@ -2,7 +2,6 @@
 -- GasEngine.lua --
 dofile("$SURVIVAL_DATA/Scripts/game/survival_constants.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/survival_items.lua")
-dofile("$SURVIVAL_DATA/Scripts/game/util/pipes.lua")
 dofile("$SURVIVAL_DATA/Scripts/util.lua")
 dofile("$CONTENT_DATA/Scripts/GasEnginePipeGlobals.lua")
 
@@ -136,16 +135,10 @@ function GasEngine.server_onCreate( self )
 	self.pointsPerFuel = level.pointsPerFuel
 	self.gears = level.gears
 	self:server_init()
-
-	--Pipe Network stuff
-	self.pipeNetwork = {}
-	self:sv_buildPipeNetwork()
-	self.exhaustCloggingWindUp = 0
 end
 
 function GasEngine.server_onRefresh( self )
 	self:server_init()
-	self:sv_buildPipeNetwork()
 end
 
 function GasEngine.server_init( self )
@@ -265,37 +258,7 @@ function GasEngine.getInputs( self )
 
 end
 
-function GasEngine.cl_playparticle(self, pos)
-	sm.particle.createParticle("construct_welding", pos)
-end
-
 function GasEngine.server_onFixedUpdate( self, timeStep )
-
-	--Pipe BS
-	if self.shape:getBody():hasChanged( sm.game.getCurrentTick() - 1 ) then
-		self:sv_buildPipeNetwork()
-	end
-
-	-- Handle clogging
-	if self.pipeNetwork and self.pipeNetwork[#self.pipeNetwork] then
-		local shape = self.pipeNetwork[#self.pipeNetwork].shape
-		if sm.exists(shape) then
-			local startPos = shape.worldPosition
-			local boundingBox = shape:getBoundingBox()
-			local dir = shape.right * boundingBox:length()
-			if boundingBox.y > boundingBox.x or boundingBox.y > boundingBox.z then
-				dir = shape.at * boundingBox:length()
-			end
-			local endPos = shape.worldPosition + (boundingBox * dir)
-			local hit, result = sm.physics.raycast(startPos, endPos)
-			if hit then
-				self.exhaustCloggingWindUp = self.exhaustCloggingWindUp + 1
-				print("!")
-			elseif self.exhaustCloggingWindUp > 0 then
-				self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 1
-			end
-		end
-	end
 
 	if self.exhaustCloggingWindUp >= 200 then
 		sm.physics.explode(self.shape.worldPosition, 6, 3, 5, 10, "PropaneTank - ExplosionSmall")
@@ -388,12 +351,14 @@ function GasEngine.server_onFixedUpdate( self, timeStep )
 
 	-- Client table dirty
 	if self.dirtyClientTable then
-		self.network:setClientData( { gearIdx = self.saved.gearIdx, engineHasFuel = self.hasFuel or useCreativeFuel, scrapOffset = self.scrapOffset, exhaustSystem = self.pipeNetwork } )
+		self.network:setClientData( { gearIdx = self.saved.gearIdx, engineHasFuel = self.hasFuel or useCreativeFuel, scrapOffset = self.scrapOffset } )
 		self.dirtyClientTable = false
 	end
 end
 
 --[[ Client ]]
+
+local firstTime = true
 
 function GasEngine.client_onCreate( self )
 	local level = EngineLevels[tostring( self.shape:getShapeUuid() )]
@@ -404,8 +369,31 @@ function GasEngine.client_onCreate( self )
 	self.scrapOffset = self.scrapOffset or 0
 	self.power = 0
 
-	--Pipe system
-	self.pipeNetwork = {}
+	self.particleLimiter = 1
+	self.exhaustCloggingWindUp = 0
+	self.lastTick = sm.game.getCurrentTick()
+	self.pipePositions = {}
+	self.network:sendToServer("sv_buildExhaustNetwork", self.shape)
+	if firstTime then
+		firstTime = false
+		print("FETCHING PIPE INFO")
+		G_pipesAndTheirOpenings = {}
+		-- Get pipes pipe info
+		local shapeSet = sm.json.open("$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/pipes.shapeset")
+		for _, shapeEntry in ipairs(shapeSet.partList) do
+			if shapeEntry.pipe then
+				G_pipesAndTheirOpenings[shapeEntry.uuid] = shapeEntry.pipe.openings
+			end
+		end
+		-- Get engines pipe info
+		shapeSet = sm.json.open("$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/gasEngines.shapeset")
+		for _, shapeEntry in ipairs(shapeSet.partList) do
+			if shapeEntry.pipe then
+				G_pipesAndTheirOpenings[shapeEntry.uuid] = shapeEntry.pipe.openings
+			end
+		end
+	end
+	self.pipesAndTheirOpenings = G_pipesAndTheirOpenings -- Save the list locally so engines don't play tug of war with each other for it
 end
 
 function GasEngine.client_onRefresh(self)
@@ -439,9 +427,6 @@ function GasEngine.client_onClientDataUpdate( self, params )
 
 	self.engineHasFuel = params.engineHasFuel
 	self.scrapOffset = params.scrapOffset
-
-	self.pipeNetwork = params.exhaustSystem
-
 end
 
 function GasEngine.client_onDestroy( self )
@@ -455,37 +440,62 @@ function GasEngine.client_onDestroy( self )
 	end
 end
 
-local function isAnyOf(value, table)
-	for _, v in ipairs(table) do
-		if v == value then
-			return true
-		end
-	end
-	return false
+-- Just in case, formula to getting the exhaust hole position on the engine:
+-- offset = (startShape.right / 3.5 - startShape.up / 8 - startShape.at / 10)
+-- Takes a shape, returns the world positions of pipes that are on the end of the network, if there is none, returns positions of the exhaust holes on the engine model
+function GasEngine.sv_buildExhaustNetwork(self, startShape)
+	local loop, neighbours = true, startShape:getPipedNeighbours()
+	if #neighbours == 0 then
+		self.pipePositions = {
+			startShape
+		}
+		return
+	end--[[
+	while loop do
+		print("sus")
+	end]]
 end
 
 function GasEngine.client_onFixedUpdate( self, timeStep )
 
-	if self.pipeNetwork then
-		for i, table in ipairs(self.pipeNetwork) do
-			if table and table.shape and sm.exists(table.shape) then
-				-- Get info about the pipes
-				local startPos = table.shape.worldPosition
-				local boundingBox = table.shape:getBoundingBox()
-				local dir = table.shape.right
-				if boundingBox.y > boundingBox.x or boundingBox.y > boundingBox.z then
-					dir = table.shape.at
+	if self.shape.body:hasChanged(sm.game.getCurrentTick() - 1) then
+		print("recalculating")
+		self.network:sendToServer("sv_buildExhaustNetwork", self.shape)
+	end
+	if sm.game.getCurrentTick() >= self.lastTick + self.particleLimiter and self.effect:isPlaying() then
+		self.lastTick = sm.game.getCurrentTick()
+		for _, shape in ipairs(self.pipePositions) do
+			-- Get pipe related data about the shape
+			for _, table in ipairs(self.pipesAndTheirOpenings[tostring(shape.uuid)]) do
+				-- Handle clogging and effect playing
+				local axis = table.side:sub(2, 2)
+				local isNegative = table.side:sub(1, 1) == "-"
+				local dir = sm.vec3.zero()
+				if isNegative then
+					---@diagnostic disable-next-line: cast-local-type
+					dir = -shape["get" .. axis .. "Axis"](shape)
+				else
+					dir = shape["get" .. axis .. "Axis"](shape)
 				end
-				local endPos = table.shape.worldPosition + (boundingBox * (dir * 3)) -- The number dir is multiplied by is the prescision
-				--sm.particle.createParticle("construct_welding", endPos)
-				-- Play exhaust effect
-				local hit, result = sm.physics.raycast(startPos, endPos)
+				local offset = sm.vec3.new(table.x / 4, table.y / 4, table.z / 4)
+				local startPos, endPos = shape.worldPosition + offset - dir / 3, shape.worldPosition + offset + shape:getBoundingBox() * dir
+				sm.particle.createParticle("construct_welding", shape.worldPosition + offset)
+				local hit, result = false--sm.physics.raycast(startPos, endPos)
 				if not hit then
-					local effectPos = table.shape.worldPosition + (dir * boundingBox:length()) / 2.2
-					sm.effect.playEffect("GasEngine - Exhaust", effectPos, nil, nil, boundingBox)
+					if self.exhaustCloggingWindUp > 0 then
+						self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 2
+					end
+					---@diagnostic disable-next-line: param-type-mismatch
+					sm.effect.playEffect("GasEngine - Exhaust", shape.worldPosition, dir) -- * ((10 - self.particleLimiter) / 10)
+				else
+					self.exhaustCloggingWindUp = self.exhaustCloggingWindUp + 1
 				end
 			end
 		end
+	end
+	-- Reset clogging upon engine shutdown
+	if not self.effect:isPlaying() then
+		self.exhaustCloggingWindUp = 0
 	end
 
 	local active, direction, externalFuelTank, hasInput = self:getInputs()
@@ -526,7 +536,6 @@ function GasEngine.client_onFixedUpdate( self, timeStep )
 	for _, bearing in ipairs( bearings ) do
 		bearing:setMotorVelocity( self.motorVelocity, self.motorImpulse )
 	end
-
 end
 
 function GasEngine.client_onUpdate( self, dt )
@@ -671,6 +680,7 @@ function GasEngine.cl_updateEffect( self, direction, active )
 
 	if direction ~= 0 then
 		engineLoad = impulseFraction - math.min( velocityFraction, 1.0 )
+		self.particleLimiter = 10 - impulseFraction * 10
 	end
 
 	local onLift = self.shape:getBody():isOnLift()
@@ -771,28 +781,4 @@ function GasEngine.cl_n_onUpgrade( self, upgrade )
 	end
 	self.effect = sm.effect.createEffect( level.effect, self.interactable )
 	sm.effect.playHostedEffect( "Part - Upgrade", self.interactable )
-end
-
--- Pipe BS
-
-function GasEngine:sv_buildPipeNetwork()
-	self.pipeNetwork = {}
-
-	local function fnOnVertex( vertex )
-		if isAnyOf( vertex.shape:getShapeUuid(), G_GAS_ENGINE_PIPES ) then -- Is Pipe
-			local pipe = {
-				shape = vertex.shape,
-				distance = vertex.distance
-			}
-			table.insert( self.pipeNetwork, pipe )
-		end
-		return true
-	end
-
-	ConstructPipedShapeGraph( self.shape, fnOnVertex )
-
-	-- Sort by closest
-	table.sort( self.pipeNetwork, function(a, b) return a.distance < b.distance end )
-	print(self.pipeNetwork)
-	self.network:setClientData( { gearIdx = self.saved.gearIdx, engineHasFuel = self.hasFuel or useCreativeFuel, scrapOffset = self.scrapOffset, exhaustSystem = self.pipeNetwork } )
 end

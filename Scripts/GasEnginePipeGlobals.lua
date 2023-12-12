@@ -5,6 +5,6 @@ G_GAS_ENGINE_PIPES = {
     sm.uuid.new("8024db09-9147-4fe3-a747-00bc30ab724b"), --small_pipe_curve
     sm.uuid.new("e1273b8a-945b-4080-81eb-cbf79961cccb"), --small_pipe_3way
     sm.uuid.new("203fdf06-b311-49fd-933d-a1c6b671a017"), --small_pipe_3way_curve
-    sm.uuid.new(""),
+    sm.uuid.new("41784077-0636-470f-a6df-b868f152af29"), --giant_pipe_curve
     sm.uuid.new("")
 }
