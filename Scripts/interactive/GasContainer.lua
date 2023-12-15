@@ -1,4 +1,4 @@
----@diagnostic disable: need-check-nil, undefined-global, undefined-field
+---@diagnostic disable: need-check-nil, undefined-global, undefined-field, duplicate-set-field
 
 dofile("$SURVIVAL_DATA/Scripts/game/survival_items.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/survival_projectiles.lua")

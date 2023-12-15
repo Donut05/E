@@ -5,6 +5,7 @@ dofile("$SURVIVAL_DATA/Scripts/game/survival_items.lua")
 dofile("$SURVIVAL_DATA/Scripts/game/util/pipes.lua")
 dofile("$SURVIVAL_DATA/Scripts/util.lua")
 dofile("$CONTENT_DATA/Scripts/GasEnginePipeGlobals.lua")
+dofile("$CONTENT_DATA/Scripts/visualised_trigger.lua")
 
 GasEngine = class()
 GasEngine.maxParentCount = 2
@@ -485,31 +486,13 @@ function GasEngine.sv_buildExhaustNetwork(self, startShape, prevShape)
 			self.pipePositions[#self.pipePositions+1] = pipe.shape
 		end
 	end
---[[
-	local neighbours = startShape:getPipedNeighbours()
-	if #neighbours <= 1 then
-		local isEngine = self.pipesAndTheirOpenings[tostring(startShape.uuid)].isEngine
-		if isEngine and sm.exists(neighbours[1]) then
-			self.pipePositions[#self.pipePositions+1] = startShape
-			self.pipePositions[#self.pipePositions+1] = neighbours[1]
-			self:sv_buildExhaustNetwork(neighbours[1], startShape)
-		else
-			self.pipePositions[#self.pipePositions+1] = startShape
-		end
-	else
-		for _, neighbour in ipairs(neighbours) do
-			if neighbour ~= prevShape or isEngine then
-				self:sv_buildExhaustNetwork(neighbour, startShape) -- Send the current shape so we are not back tracking
-			end
-		end
-	end
-]]
 end
 
 function GasEngine.client_onFixedUpdate( self, timeStep )
 
 	if self.shape.body:hasChanged(sm.game.getCurrentTick() - 1) then
 		print("recalculating")
+		self.pipePositions = {}
 		self.network:sendToServer("sv_buildExhaustNetwork", self.shape)
 	end
 	if sm.game.getCurrentTick() >= self.lastTick + self.particleLimiter and self.effect:isPlaying() then
@@ -521,13 +504,6 @@ function GasEngine.client_onFixedUpdate( self, timeStep )
 					-- Handle clogging and effect playing
 					local axis = table.side:sub(2, 2)
 					local isNegative = table.side:sub(1, 1) == "-"
-					local dir = sm.vec3.zero()
-					if isNegative then
-						---@diagnostic disable-next-line: cast-local-type
-						dir = -shape["get" .. axis .. "Axis"](shape)
-					else
-						dir = shape["get" .. axis .. "Axis"](shape)
-					end
 					local offset = sm.vec3.zero()
 					if self.pipesAndTheirOpenings[tostring(shape.uuid)].isEngine then
 						if isNegative then
@@ -536,25 +512,44 @@ function GasEngine.client_onFixedUpdate( self, timeStep )
 							offset = (shape.right / 3.5 - shape.up / 8 - shape.at / 10)
 						end
 					else
-						local boundingBox = shape:getBoundingBox()
-						if boundingBox.y > boundingBox.x or boundingBox.y > boundingBox.z then
-							offset = sm.vec3.new(table.y / 4, table.x / 4, table.z / 4)
+						local boundingBox = shape:getBoundingBox() * 2
+						if axis == "Z" then
+							if isNegative then
+								offset = boundingBox * -shape.up
+							else
+								offset = boundingBox * shape.up
+							end
+						elseif axis == "Y" then
+							if isNegative then
+								offset = boundingBox * -shape.at
+							else
+								offset = boundingBox * shape.at
+							end
 						else
-							offset = sm.vec3.new(table.x / 4, table.y / 4, table.z / 4)
+							if isNegative then
+								offset = boundingBox * -shape.right
+							else
+								offset = boundingBox * shape.right
+							end
 						end
 					end
-					local startPos, endPos = shape.worldPosition, shape.worldPosition + offset + sm.vec3.new(0.5, 0.5, 0.5) * dir
-					sm.particle.createParticle("construct_welding", startPos)
+					local startSearchPos, endSearchPos = shape.worldPosition + offset, shape.worldPosition
+					local posSearchHit, posSearchResult = sm.physics.raycast(startSearchPos, endSearchPos)
+					local startPos, endPos, dir = sm.vec3.zero(), sm.vec3.zero(), sm.vec3.zero()
+					if posSearchHit then
+						startPos = shape.worldPosition
+						endPos = posSearchResult.pointWorld + posSearchResult.normalWorld * 0.25
+						dir = posSearchResult.normalWorld
+					end
 					local hit, result = sm.physics.raycast(startPos, endPos)
 					if not hit then
 						if self.exhaustCloggingWindUp > 0 then
 							self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 2
 						end
 						---@diagnostic disable-next-line: param-type-mismatch
-						sm.effect.playEffect("GasEngine - Exhaust", shape.worldPosition + offset, dir) -- * ((10 - self.particleLimiter) / 10)
+						sm.effect.playEffect("GasEngine - Exhaust", posSearchResult.pointWorld, dir)
 					else
 						self.exhaustCloggingWindUp = self.exhaustCloggingWindUp + 1
-						print(self.exhaustCloggingWindUp)
 					end
 				end
 			end
