@@ -13,7 +13,7 @@
          "rotationSet" : "PropZ",
          "scripted" : {
             "classname" : "SusEffect",
-            "filename" : "$CONTENT_DATA/Scripts/interactive/MyEffects.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/funky/MyEffects.lua"
          },
          "uuid" : "99e7b2b9-b760-4273-ada0-b15d8d93a120"
       },
@@ -29,7 +29,7 @@
          "rotationSet" : "Default",
          "scripted" : {
             "classname" : "Amogus",
-            "filename" : "$CONTENT_DATA/Scripts/interactive/amogus.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/funky/amogus.lua"
          },
          "uuid" : "d04badce-fc8a-46da-9389-f3bade34fb7d"
       },
@@ -93,7 +93,7 @@
          "rotationSet" : "PropY",
          "scripted" : {
             "classname" : "Connector",
-            "filename" : "$CONTENT_DATA/Scripts/interactive/AutoConnector.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/automation/AutoConnector.lua"
          },
          "showInInventory" : false,
          "sticky" : "-Y",
@@ -135,7 +135,7 @@
          "rotationSet" : "PropZ",
          "scripted" : {
             "classname" : "Cloak",
-            "filename" : "$CONTENT_DATA/Scripts/interactive/Cloak.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/Z.scrapped_or_to_be_finished/Cloak.lua"
          },
          "showInInventory" : false,
          "sticky" : "-Z",

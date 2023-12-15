@@ -10,6 +10,22 @@
          "flammable" : true,
          "name" : "obj_interactive_gasengine_01",
          "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 8,
@@ -21,23 +37,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "1bfccc0a-828f-475c-882c-87d5a96054c9"
@@ -52,6 +52,22 @@
          "flammable" : true,
          "name" : "obj_interactive_gasengine_02",
          "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -1.0,
+                  "z" : -1.0
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -1.0,
+                  "z" : -1.0
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 7,
@@ -63,23 +79,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -1.0,
-                  "z": -1.0
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -1.0,
-                  "z": -1.0
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "33d01ddd-f32b-4a9a-87d6-efb6710b389c"
@@ -94,6 +94,22 @@
          "flammable" : true,
          "name" : "obj_interactive_gasengine_03",
          "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 5,
@@ -105,23 +121,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "470b9a92-ed94-4ef2-b1ea-b45f47ef0982"
@@ -136,6 +136,22 @@
          "flammable" : false,
          "name" : "obj_interactive_gasengine_04",
          "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 4,
@@ -147,23 +163,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "bfcaac1a-5a7f-4fba-9980-1159617a7212"
@@ -178,6 +178,22 @@
          "flammable" : false,
          "name" : "obj_interactive_gasengine_05",
          "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 3,
@@ -189,23 +205,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "3091926a-9340-46d9-83d6-4fd7c68ad950"
@@ -220,6 +220,22 @@
          "flammable" : true,
          "name" : "obj_scrap_gasengine",
          "physicsMaterial" : "Metal",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
          "ratings" : {
             "buoyancy" : 2,
             "density" : 3,
@@ -248,23 +264,7 @@
          "scripted" : {
             "classname" : "GasEngine",
             "data" : {},
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasEngine.lua"
-         },
-         "pipe": {
-            "openings": [
-				   {
-                  "side": "+X",
-                  "x": 1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               },
-               {
-                  "side": "-X",
-                  "x": -1.0,
-                  "y": -0.25,
-                  "z": -0.25
-               }
-            ]
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
          },
          "sticky" : "-Y-Z+Z+X-X",
          "uuid" : "c96ab903-f238-4bae-a614-28a758716d00"

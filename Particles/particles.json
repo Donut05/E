@@ -28,6 +28,8 @@
       "particles/interactibles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_open.json",
       "particles/interactibles/underwaterChestParitcles/fileCabinet/filecabinet_bubbles_close.json",
       "particles/interactibles/cloak_generator/invis_activate_plus_idle.json",
+      "particles/interactibles/celebrationBot/p_launcher_open.json",
+      "particles/interactibles/celebrationBot/p_launcher_close.json",
       "particles/skybox/moon.json",
       "particles/skybox/star_sky.json",
       "particles/skybox/cargo_ships.json",

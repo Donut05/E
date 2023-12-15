@@ -8,6 +8,15 @@
          }
       ]
    },
+   "CelebrationBot - Launcher_open" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_launcher_open" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "Cloak_generator - Activation_plus_idle" : {
       "effectList" : [
          {
