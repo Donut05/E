@@ -79,6 +79,18 @@
          }
       ]
    },
+   "CelebrationBot - Communism" : {
+      "effectList" : [
+         {
+            "name" : "SovietMarch",
+            "parameters" : [ "CAE_Volume" ],
+            "type" : "audio"
+         }
+      ],
+      "parameterList" : {
+         "CAE_Volume" : 1.0
+      }
+   },
    "Environment - Rain_sound_DLL" : {
       "effectList" : [
          {

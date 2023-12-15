@@ -28,7 +28,8 @@ function Chest.server_onCreate(self)
 		container = container,
 		lootList = {},
 		cachedPos = self.shape.worldPosition,
-		playersHavingChestGuiOpen = 0
+		playersHavingChestGuiOpen = 0,
+		unloaded = false
 	}
 end
 
@@ -53,12 +54,18 @@ end
 
 function Chest.server_onDestroy(self)
 	--drop chest contents when destroyed
-	---@diagnostic disable-next-line: undefined-global
-	SpawnLoot(sm.player.getAllPlayers()[1], self.sv.lootList, self.sv.cachedPos)
+	if not self.sv.unloaded then
+		---@diagnostic disable-next-line: undefined-global
+		SpawnLoot(sm.player.getAllPlayers()[1], self.sv.lootList, self.sv.cachedPos)
+	end
 end
 
 function Chest.server_canErase(self)
 	return self.sv.container:isEmpty()
+end
+
+function Chest.server_onUnload(self)
+	self.sv.unloaded = true
 end
 
 function Chest.sv_openChestAnim(self)

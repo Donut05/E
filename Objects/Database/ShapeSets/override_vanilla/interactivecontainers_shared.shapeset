@@ -83,7 +83,7 @@
                "filterUid" : "d4d68946-aa03-4b8f-b1af-96b81ad4e305",
                "stackSize" : 20
             },
-            "filename" : "$CONTENT_DATA/Scripts/interactive/GasContainer.lua"
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasContainer.lua"
          },
          "uuid" : "056e5ff1-f030-40df-946a-b830bf494c92"
       },

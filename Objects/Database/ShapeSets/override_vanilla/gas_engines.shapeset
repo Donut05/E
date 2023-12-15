@@ -1,0 +1,273 @@
+{
+   "partList" : [
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "df7f01",
+         "flammable" : true,
+         "name" : "obj_interactive_gasengine_01",
+         "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 8,
+            "durability" : 4,
+            "friction" : 5
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive_upgradeable/obj_interactiveupgradeable_gasengine01.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "1bfccc0a-828f-475c-882c-87d5a96054c9"
+      },
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "df7f01",
+         "flammable" : true,
+         "name" : "obj_interactive_gasengine_02",
+         "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -1.0,
+                  "z" : -1.0
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -1.0,
+                  "z" : -1.0
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 7,
+            "durability" : 5,
+            "friction" : 5
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive_upgradeable/obj_interactiveupgradeable_gasengine02.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "33d01ddd-f32b-4a9a-87d6-efb6710b389c"
+      },
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "df7f01",
+         "flammable" : true,
+         "name" : "obj_interactive_gasengine_03",
+         "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 5,
+            "durability" : 6,
+            "friction" : 5
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive_upgradeable/obj_interactiveupgradeable_gasengine03.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "470b9a92-ed94-4ef2-b1ea-b45f47ef0982"
+      },
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "df7f01",
+         "flammable" : false,
+         "name" : "obj_interactive_gasengine_04",
+         "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 4,
+            "durability" : 7,
+            "friction" : 5
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive_upgradeable/obj_interactiveupgradeable_gasengine04.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "bfcaac1a-5a7f-4fba-9980-1159617a7212"
+      },
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "df7f01",
+         "flammable" : false,
+         "name" : "obj_interactive_gasengine_05",
+         "physicsMaterial" : "Mechanical",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 3,
+            "durability" : 8,
+            "friction" : 5
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive_upgradeable/obj_interactiveupgradeable_gasengine05.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "3091926a-9340-46d9-83d6-4fd7c68ad950"
+      },
+      {
+         "box" : {
+            "x" : 2,
+            "y" : 2,
+            "z" : 2
+         },
+         "color" : "2f7847",
+         "flammable" : true,
+         "name" : "obj_scrap_gasengine",
+         "physicsMaterial" : "Metal",
+         "pipe" : {
+            "openings" : [
+               {
+                  "side" : "+X",
+                  "x" : 1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               },
+               {
+                  "side" : "-X",
+                  "x" : -1.0,
+                  "y" : -0.250,
+                  "z" : -0.250
+               }
+            ]
+         },
+         "ratings" : {
+            "buoyancy" : 2,
+            "density" : 3,
+            "durability" : 3,
+            "friction" : 5
+         },
+         "renderable" : {
+            "lodList" : [
+               {
+                  "mesh" : "$SURVIVAL_DATA/Objects/Mesh/interactive/obj_interactive_makeshiftengine.fbx",
+                  "pose0" : "$SURVIVAL_DATA/Objects/Mesh/interactive/obj_interactive_makeshiftengine.fbx",
+                  "subMeshList" : [
+                     {
+                        "material" : "PoseAnimDifAsgNor",
+                        "textureList" : [
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_makeshiftengine_dif.tga",
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_makeshiftengine_asg.tga",
+                           "$SURVIVAL_DATA/Objects/Textures/interactive/obj_interactive_makeshiftengine_nor.tga"
+                        ]
+                     }
+                  ]
+               }
+            ]
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "GasEngine",
+            "data" : {},
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/GasEngine.lua"
+         },
+         "sticky" : "-Y-Z+Z+X-X",
+         "uuid" : "c96ab903-f238-4bae-a614-28a758716d00"
+      }
+   ]
+}
