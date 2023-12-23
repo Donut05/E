@@ -390,7 +390,7 @@ function GasEngine.client_onCreate( self )
 			end
 		end
 		-- Get engines pipe info
-		shapeSet = sm.json.open("$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/gasEngines.shapeset")
+		shapeSet = sm.json.open("$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/gas_engines.shapeset")
 		for _, shapeEntry in ipairs(shapeSet.partList) do
 			if shapeEntry.pipe then
 				G_pipesAndTheirOpenings[shapeEntry.uuid] = shapeEntry.pipe.openings
