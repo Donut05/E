@@ -137,7 +137,7 @@ end
 
 function GasolineContainer.cl_createTrail(self, data)
 	if data.vel then
-		if math.abs(data.vel:length()) < 3 then
+		if math.abs(data.vel:length()) < 1.5 then
 			sm.effect.playEffect("Thruster - Exhaust", data.pos, data.up * 10, data.rot)
 		else
 			sm.effect.playEffect("Thruster - Exhaust", data.pos, nil, data.rot)

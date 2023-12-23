@@ -22,6 +22,37 @@ function CelebrationBot.server_onFixedUpdate(self, timeStep)
 	end
 end
 
+function CelebrationBot.sv_launchFirework(self)
+	local offset = sm.vec3.zero()
+	if self.lastFireworkWasRight then
+		offset = self.shape.worldPosition + (-self.shape.right * 1.9 - self.shape.up * 0.5 + self.shape.at * 0.14)
+	else
+		offset = self.shape.worldPosition + (self.shape.right * 1.9 - self.shape.up * 0.5 + self.shape.at * 0.14)
+	end
+	self.lastFireworkWasRight = not self.lastFireworkWasRight
+	local height = self.shape.at * 15
+	local hit, result = sm.physics.raycast(offset, offset + height)
+	if hit then
+		height = result.pointWorld * self.shape.at
+	end
+	sm.physics.explode(height + offset, 7, 2, 6, 25, "PropaneTank - ExplosionSmall")
+	if self.fireworkColorCounter > #G_fireworkColors then
+		self.fireworkColorCounter = 1
+	end
+	local params = {
+		name = "p_firework_generic",
+		pos = height + offset,
+		color = G_fireworkColors[self.fireworkColorCounter]
+	}
+	self.network:sendToClients("cl_createParticle", params)
+	self.fireworkColorCounter = self.fireworkColorCounter + 1
+	params = {
+		name = "p_firework_shoot",
+		pos = offset
+	}
+	self.network:sendToClients("cl_createParticle", params)
+end
+
 --[[ Client ]]
 
 -- (Event) Called upon creation on client
@@ -40,14 +71,71 @@ function CelebrationBot.client_init(self)
 	self.animationSpeed = 0.0
 	self.celebratingFlag = false
 	self.specialFlag = false
+	self.lastFireworkWasRight = true
+	self.fireworkStepCounter = 1
+	self.fireworkColorCounter = 1
+	G_fireworkTimings = {
+		2500,
+		500,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		500,
+		20,
+		20,
+		20,
+		20,
+		20,
+		10,
+		10,
+		5,
+		5,
+		820,
+		20,
+		20,
+		10,
+		10,
+		100,
+		20,
+		20,
+		10,
+		10,
+		570,
+		20,
+		20,
+		20,
+		20,
+		560,
+		20,
+		20,
+		20,
+		40,
+		220,
+		20,
+		20,
+		20,
+		120
+	}
+	G_fireworkColors = {
+		sm.color.new("ff0000ff"),
+		sm.color.new("ff7f00ff"),
+		sm.color.new("ffcc00ff"),
+		sm.color.new("ffffffff")
+	}
 	self.confettiEffectLeft = sm.effect.createEffect("CelebrationBot - Confetti", self.interactable, "pejnt_right")
 	self.confettiEffectRight = sm.effect.createEffect("CelebrationBot - Confetti", self.interactable, "pejnt_left")
 	self.launcherEffectLeft = sm.effect.createEffect("CelebrationBot - Launcher_open", self.interactable)
 	self.launcherEffectRight = sm.effect.createEffect("CelebrationBot - Launcher_open", self.interactable)
-	self.launcherEffectLeft:setOffsetPosition(self.shape.right - self.shape.at)
-	self.launcherEffectRight:setOffsetPosition(-self.shape.right - self.shape.at)
+	self.launcherEffectLeftClose = sm.effect.createEffect("CelebrationBot - Launcher_close", self.interactable)
+	self.launcherEffectRightClose = sm.effect.createEffect("CelebrationBot - Launcher_close", self.interactable)
 	if sm.cae_injected then
 		self.audioEffectSpecial = sm.effect.createEffect("CelebrationBot - Communism", self.interactable)
+		-- Init timers
+		self.musicLoopFixTimer = sm.game.getCurrentTick()
+		self.musicSyncTimer = sm.game.getCurrentTick()
 	end
 	self.audioEffectNormal = sm.effect.createEffect("CelebrationBot - Audio", self.interactable)
 end
@@ -60,11 +148,12 @@ function CelebrationBot.client_onUpdate(self, dt)
 		self:start_animation("Celebration_start", 20)
 
 		if true then --math.random(0, 100) == 0 then
-			print("Selected special effect")
+			self.musicLoopFixTimer = sm.game.getCurrentTick()
+			self.fireworkStepCounter = 1
+			self.musicSyncTimer = sm.game.getCurrentTick() + G_fireworkTimings[1]
 			self.specialFlag = true
 			self.audioEffect = self.audioEffectSpecial
 		else
-			print("Selected normal effect")
 			self.audioEffect = self.audioEffectNormal
 		end
 	end
@@ -96,8 +185,16 @@ function CelebrationBot.client_onUpdate(self, dt)
 		-- Play start animation in reverse
 		self:update_animation(-dt)
 	end
+end
 
+function CelebrationBot.client_onFixedUpdate(self, dt)
 	if self.specialFlag then
+		-- Set launchers' postions
+		self.launcherEffectLeft:setOffsetPosition(-self.shape.right * 1.9 - self.shape.up * 0.15 - self.shape.at * 0.589)
+		self.launcherEffectRight:setOffsetPosition(self.shape.right * 1.9 - self.shape.up * 0.15 - self.shape.at * 0.589)
+		local rot = sm.vec3.getRotation(self.shape.at, self.shape.up)
+		self.launcherEffectLeft:setOffsetRotation(rot)
+		self.launcherEffectRight:setOffsetRotation(rot)
 		-- Deploy launchers
 		if not self.launcherEffectLeft:isPlaying() then
 			self.launcherEffectLeft:start()
@@ -106,23 +203,44 @@ function CelebrationBot.client_onUpdate(self, dt)
 			self.launcherEffectRight:start()
 		end
 		-- Loop the song
-		if not self.audioEffect:isPlaying() then
-			print("restart")
+		if not self.audioEffect:isPlaying() and (sm.game.getCurrentTick() >= self.musicLoopFixTimer + 80) then -- Delay checking loop by 2 seconds becuse :isPlaying() is retarded
+			---@diagnostic disable-next-line: param-type-mismatch
+			sm.particle.createParticle("p_firework_finale", self.shape.worldPosition + self.shape.at * 15, sm.vec3.getRotation(-self.shape.right, self.shape.up))
+			self.fireworkStepCounter = 1
+			self.musicLoopFixTimer = sm.game.getCurrentTick() + G_fireworkTimings[1]
 			self.audioEffect:start()
+		end
+		-- Fire the launchers
+		--print("Firework in T-" .. (self.musicSyncTimer - sm.game.getCurrentTick()))
+		if sm.game.getCurrentTick() == self.musicSyncTimer then
+			self.network:sendToServer("sv_launchFirework")
+			self.fireworkStepCounter = self.fireworkStepCounter + 1
+			if self.fireworkStepCounter > #G_fireworkTimings then
+				self.fireworkStepCounter = 1
+			end
+			self.musicSyncTimer = sm.game.getCurrentTick() + G_fireworkTimings[self.fireworkStepCounter]
 		end
 	else
 		-- Hide launchers
-		local posL = self.shape.worldPosition + (self.shape.right - self.shape.at)
-		local posR = self.shape.worldPosition + (self.shape.right - self.shape.at)
+		local posL = self.shape.worldPosition + (-self.shape.right * 1.9 - self.shape.up * 0.5 + self.shape.at * 0.14)
+		local posR = self.shape.worldPosition + (self.shape.right * 1.9 - self.shape.up * 0.5 + self.shape.at * 0.14)
 		if self.launcherEffectLeft:isPlaying() then
 			self.launcherEffectLeft:stopImmediate()
-			sm.particle.createParticle("p_launcher_close", posL)
+			self.launcherEffectLeftClose:setOffsetPosition(-self.shape.right * 1.9 - self.shape.up * 0.15 - self.shape.at * 0.589)
+			self.launcherEffectLeftClose:setOffsetRotation(sm.vec3.getRotation(self.shape.at, self.shape.up))
+			self.launcherEffectLeftClose:start()
 		end
 		if self.launcherEffectRight:isPlaying() then
 			self.launcherEffectRight:stopImmediate()
-			sm.particle.createParticle("p_launcher_close", posR)
+			self.launcherEffectRightClose:setOffsetPosition(self.shape.right * 1.9 - self.shape.up * 0.15 - self.shape.at * 0.589)
+			self.launcherEffectRightClose:setOffsetRotation(sm.vec3.getRotation(self.shape.at, self.shape.up))
+			self.launcherEffectRightClose:start()
 		end
 	end
+end
+
+function CelebrationBot.cl_createParticle(self, params)
+	sm.particle.createParticle(params.name, params.pos, params.rot or nil, params.color or nil)
 end
 
 function CelebrationBot.start_animation(self, animationName, frames, at)

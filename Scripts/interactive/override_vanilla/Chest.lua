@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field
 dofile("$SURVIVAL_DATA/Scripts/game/survival_loot.lua")
 
 ---A Chest can be used to store items from your inventory. Stored items cannot be deleted and will be dropped if the Chest is destroyed.
@@ -49,11 +50,15 @@ function Chest:server_onFixedUpdate()
 
 	if self.shape.body:isOnLift() then
 		Chest.setIsInWater(self, false)
+		self.sv.unloaded = true
+	else -- Does this violate variable naming rules? Yes. Do I care? Fuck no!
+		self.sv.unloaded = false
 	end
 end
 
 function Chest.server_onDestroy(self)
 	--drop chest contents when destroyed
+	---@diagnostic disable-next-line: undefined-field
 	if not self.sv.unloaded then
 		---@diagnostic disable-next-line: undefined-global
 		SpawnLoot(sm.player.getAllPlayers()[1], self.sv.lootList, self.sv.cachedPos)

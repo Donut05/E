@@ -8,6 +8,24 @@
          }
       ]
    },
+   "CelebrationBot - Firework_special" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_firework_finale" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "CelebrationBot - Launcher_close" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_launcher_close" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "CelebrationBot - Launcher_open" : {
       "effectList" : [
          {
