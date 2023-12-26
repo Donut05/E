@@ -1,15 +1,5 @@
 {
    "shapeSetList" : [
-      "$CONTENT_DATA/Objects/Database/ShapeSets/parts.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/blocks.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/enemies.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleTwo.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleLights.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/pipes.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/chests.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/gas_engines.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/challenge_mode_fix.shapeset",
-      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/interactivecontainers_shared.shapeset",
       "$GAME_DATA/Objects/Database/ShapeSets/blocks.json",
       "$GAME_DATA/Objects/Database/ShapeSets/plants.json",
       "$GAME_DATA/Objects/Database/ShapeSets/fittings.json",
@@ -23,6 +13,16 @@
       "$GAME_DATA/Objects/Database/ShapeSets/characterobject.json",
       "$CHALLENGE_DATA/Objects/Database/ShapeSets/blocks.json",
       "$CHALLENGE_DATA/Objects/Database/ShapeSets/challenge.json",
-      "$CHALLENGE_DATA/Objects/Database/ShapeSets/override.json"
+      "$CHALLENGE_DATA/Objects/Database/ShapeSets/override.json",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/parts.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/blocks.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/enemies.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleTwo.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/VehicleLights.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/pipes.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/chests.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/gas_engines.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/challenge_mode_fix.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/override_vanilla/interactivecontainers_shared.shapeset"
    ]
 }

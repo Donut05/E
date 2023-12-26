@@ -742,8 +742,8 @@ function GasEngine.cl_updateEffect( self, direction, active )
 
 	if direction ~= 0 then
 		engineLoad = impulseFraction - math.min( velocityFraction, 1.0 )
-		self.particleLimiter = 10 - impulseFraction * 10
 	end
+	self.particleLimiter = 20 * (1 - (impulseFraction + velocityFraction * 2))
 
 	local onLift = self.shape:getBody():isOnLift()
 	if #self.interactable:getParents() == 0 then
