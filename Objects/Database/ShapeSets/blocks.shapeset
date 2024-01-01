@@ -49,6 +49,7 @@
             "durability" : 4,
             "friction" : 1
          },
+         "restitution" : 10000.0,
          "stackSize" : 1652018,
          "tiling" : 16,
          "uuid" : "828bc42c-1f4a-4417-9d47-8fdcb67ff80e"

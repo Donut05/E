@@ -147,7 +147,7 @@ function CelebrationBot.client_onUpdate(self, dt)
 		self.celebratingFlag = true
 		self:start_animation("Celebration_start", 20)
 
-		if true then --math.random(0, 100) == 0 then
+		if math.random(0, 1000) == 0 and sm.cae_injected then
 			self.musicLoopFixTimer = sm.game.getCurrentTick()
 			self.fireworkStepCounter = 1
 			self.musicSyncTimer = sm.game.getCurrentTick() + G_fireworkTimings[1]
