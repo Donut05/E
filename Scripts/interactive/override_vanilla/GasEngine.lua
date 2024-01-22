@@ -541,7 +541,7 @@ function GasEngine.client_onFixedUpdate( self, timeStep )
 						endPos = posSearchResult.pointWorld + posSearchResult.normalWorld * 0.25
 						dir = posSearchResult.normalWorld
 					end
-					local hit, result = sm.physics.raycast(startPos, endPos)
+					local hit, result = sm.physics.spherecast(startPos + (sm.vec3.new(0.125, 0.125, 0.125) * dir), endPos, 0.125)
 					if not hit then
 						if self.exhaustCloggingWindUp > 0 then
 							self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 2
