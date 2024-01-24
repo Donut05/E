@@ -46,6 +46,7 @@ function Connector.client_onFixedUpdate(self, dt)
         self.stage, self.firstShape, self.secondShape, self.start, self._end, self.wasPowered, self.hasAcceptableInteratable, self.isFirstLoopAfterStageSwitch = 0, nil, nil, sm.vec3.zero(), sm.vec3.zero(), false, false, true
         self.pointer:stop()
         for j = 1, #self.effects do
+            if not sm.exists(self.effects[j]) then return end
             self.effects[j]:stopImmediate()
         end
         return
