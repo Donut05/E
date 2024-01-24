@@ -91,6 +91,14 @@
          "CAE_Volume" : 1.0
       }
    },
+   "Connector - Connecting_loop" : {
+      "effectList" : [
+         {
+            "audio" : [ "event:/tools/connectiontool/connectiontool_fire" ],
+            "type" : "audio"
+         }
+      ]
+   },
    "Environment - Rain_sound_DLL" : {
       "effectList" : [
          {

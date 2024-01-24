@@ -95,7 +95,7 @@
             "classname" : "Connector",
             "filename" : "$CONTENT_DATA/Scripts/interactive/automation/AutoConnector.lua"
          },
-         "showInInventory" : false,
+         "showInInventory" : true,
          "sticky" : "-Y",
          "uuid" : "aab8866b-9f00-412d-ba45-0cadee45956e"
       },
