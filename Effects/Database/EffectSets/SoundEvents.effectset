@@ -94,7 +94,7 @@
    "Connector - Connecting_loop" : {
       "effectList" : [
          {
-            "audio" : [ "event:/tools/connectiontool/connectiontool_fire" ],
+            "audio" : [ "event:/tools/connectiontool/connectiontool_direction" ],
             "type" : "audio"
          }
       ]
