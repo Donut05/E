@@ -66,15 +66,18 @@
             "durability" : 3,
             "friction" : 4
          },
-         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/interactive/obj_interactive_fridge.rend",
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/fridge_new.rend",
          "restrictions" : {
             "usable" : true
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "FoodContainer",
-            "data" : {},
-            "filename" : "$SURVIVAL_DATA/Scripts/game/containers/ConsumableContainer.lua"
+            "classname" : "Chest",
+            "data" : {
+               "slots" : 20,
+               "title" : "CHALLENGE CHEST"
+            },
+            "filename" : "$CONTENT_DATA/Scripts/interactive/override_vanilla/Chest.lua"
          },
          "sticky" : "-X+X-Y+Y-Z",
          "uuid" : "f08d772f-9851-400f-a014-d847900458a7"

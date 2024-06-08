@@ -262,7 +262,7 @@ end
 
 function GasEngine.server_onFixedUpdate( self, timeStep )
 
-	if self.exhaustCloggingWindUp >= 200 then
+	if self.exhaustCloggingWindUp >= 200 and g_StupidEngines then
 		sm.physics.explode(self.shape.worldPosition, 6, 3, 5, 10, "PropaneTank - ExplosionSmall")
 		if sm.exists(self.shape) then
 			self.shape:destroyShape()
@@ -543,13 +543,17 @@ function GasEngine.client_onFixedUpdate( self, timeStep )
 					end
 					local hit, result = sm.physics.spherecast(startPos + (sm.vec3.new(0.125, 0.125, 0.125) * dir), endPos, 0.125)
 					if not hit then
-						if self.exhaustCloggingWindUp > 0 then
-							self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 2
-						end
 						---@diagnostic disable-next-line: param-type-mismatch
 						sm.effect.playEffect("GasEngine - Exhaust", posSearchResult.pointWorld, dir)
+						if g_StupidEngines then
+							if self.exhaustCloggingWindUp > 0 then
+								self.exhaustCloggingWindUp = self.exhaustCloggingWindUp - 2
+							end
+						end
 					else
-						self.exhaustCloggingWindUp = self.exhaustCloggingWindUp + 1
+						if g_StupidEngines then
+							self.exhaustCloggingWindUp = self.exhaustCloggingWindUp + 1
+						end
 					end
 				end
 			end

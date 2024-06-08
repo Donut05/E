@@ -16,13 +16,14 @@ function Connector.client_onCreate(self)
     --Shape data
     self.firstShape, self.secondShape = nil, nil
     --Flags
-    self.animateBeam, self.firstTime, self.setEndasShape, self.passedStep1 = false, true, false, false
+    self.animateBeam, self.firstTime, self.setEndasShape, self.passedStep1, self.playSelf = false, true, false, false, false
     --Beam data
     self.start, self._end = sm.vec3.zero(), sm.vec3.zero()
     --Visual and audio effects
     self.effects = {}
-    self.draggingAudioLoop = sm.effect.createEffect("Connector - Connecting_loop")
     self.pointer = sm.effect.createEffect("Connector - Pointer", self.interactable)
+    self.connectionToSelf = sm.effect.createEffect("Connector - Connection_self")
+    self.draggingAudioLoop = sm.effect.createEffect("Connector - Connecting_loop", self.interactable)
     self:cl_createBeam()
 end
 
@@ -84,15 +85,21 @@ function Connector.cl_checkForShape(self, isFirst)
 end
 
 function Connector.cl_visualCheck(self)
+    self.playSelf = false
     local pos = self.interactable:getWorldBonePosition("pipe")
     local pos2 = self.interactable.shape:transformLocalPoint(sm.vec3.new(0, 0.2, 2.72))
     local sucess, result = sm.physics.raycast(pos, pos2)
     if sucess then
         if result.type == "body" then
             local shape = result:getShape()
-            if sm.exists(shape) and shape.interactable and shape ~= self.firstShape then
-                self.setEndasShape = true
-                self._end = shape.worldPosition
+            if sm.exists(shape) and shape.interactable then
+                if shape == self.firstShape then
+                    self.connectionToSelf:setPosition(shape.worldPosition)
+                    self.playSelf = true
+                else
+                    self.setEndasShape = true
+                    self._end = shape.worldPosition
+                end
             end
         end
     end
@@ -170,7 +177,19 @@ function Connector.client_onFixedUpdate(self, dt)
             if not self.effects[i]:isPlaying() then self.effects[i]:start() end
         end
     else
+        self.playSelf = false
         self:cl_stopBeam()
+    end
+
+    --Play self connect effect
+    if self.playSelf then
+        if not self.connectionToSelf:isPlaying() then
+            self.connectionToSelf:start()
+        end
+    else
+        if self.connectionToSelf:isPlaying() then
+            self.connectionToSelf:stopImmediate()
+        end
     end
 end
 

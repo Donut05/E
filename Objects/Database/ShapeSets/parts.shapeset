@@ -23,6 +23,23 @@
             "y" : 1,
             "z" : 1
          },
+         "color" : "696969",
+         "name" : "radial menu test",
+         "physicsMaterial" : "Mechanical",
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/effect block.rend",
+         "rotationSet" : "PropZ",
+         "scripted" : {
+            "classname" : "RadialMenu",
+            "filename" : "$CONTENT_DATA/Scripts/interactive/Z.scrapped_or_to_be_finished/radial_menu_test.lua"
+         },
+         "uuid" : "91588479-148f-4bd9-89c8-4294b8861207"
+      },
+      {
+         "box" : {
+            "x" : 1,
+            "y" : 1,
+            "z" : 1
+         },
          "name" : "Amogus twerk block",
          "physicsMaterial" : "Plastic",
          "renderable" : "$CONTENT_DATA/Objects/Renderables/invis_wall.rend",
@@ -156,6 +173,17 @@
             "diameter" : 1
          },
          "uuid" : "d93f0252-a965-4982-a3dc-a331f38b8c45"
+      },
+      {
+         "name" : "amogus man yppie",
+         "physicsMaterial" : "Default",
+         "renderable" : "$CONTENT_DATA/Objects/Renderables/effect block.rend",
+         "rotationSet" : "Default",
+         "scripted" : {
+            "classname" : "MogusSpawner",
+            "filename" : "$CONTENT_DATA/Scripts/interactive/funky/amogusman.lua"
+         },
+         "uuid" : "41df9090-87fd-4438-8a47-63f3c883421d"
       }
    ]
 }

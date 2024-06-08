@@ -71,6 +71,15 @@
          }
       ]
    },
+   "Connector - Connection_self" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "connection_self" ],
+            "type" : "particle"
+         }
+      ]
+   },
    "Connector - Pointer" : {
       "effectList" : [
          {

@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position_real="0 0 0.3125 0.70370370370370372" name="BackPanel">
+        <Widget type="Widget" skin="BackgroundPopup" position="0 0 600 745" name="MainPanel">
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="true"/>
+            <Property key="InheritsAlpha" value="false"/>
+            <Widget type="TextBox" skin="TextBox" position_real="0.081666666666666665 0.065771812080536909 0.83166666666666667 0.065771812080536909">
+                <Property key="Caption" value="#{PAINT_TOOL_TITLE}"/>
+                <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+            <Widget type="ItemBox" skin="InventoryItemBox2" position_real="0.081666666666666665 0.13154362416107382 0.84999999999999998 0.26845637583892618" name="ColorGrid">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedDragDrop" value="false"/>
+            </Widget>
+            <Widget type="Widget" skin="WhiteSkin" position_real="0.033333333333333333 0.41610738255033558 0.93333333333333335 0.0026845637583892616">
+                <Property key="Alpha" value="0.05"/>
+            </Widget>
+            <Widget type="Widget" skin="LogicGateButtons" position_real="0.25 0.46979865771812079 0.5 0.40268456375838924" name="ColorSelectorFrame">
+                <Widget type="ImageBox" skin="ImageBox" position_real="0.083333333333333329 0.10000000000000001 0.80000000000000004 0.80000000000000004" name="ColorSelectorImage"/>
+            </Widget>
+            <Widget type="ScrollBar" skin="InventoryHSlider" position_real="0.25 0.89932885906040272 0.49166666666666664 0.046979865771812082" name="ColorSliderG">
+                <Property key="Range" value="256"/>
+                <Property key="Repeat" value="true"/>
+                <Property key="MoveToClick" value="true"/>
+            </Widget>
+            <Widget type="Widget" skin="GenderButton" position_real="0.083333333333333329 0.67114093959731547 0.11666666666666667 0.093959731543624164" name="ColorShowFrame">
+                <Widget type="Widget" skin="PanelEmpty" position_real="0.071428571428571425 0.071428571428571425 0.8571428571428571 0.8571428571428571" name="ColorShowImage"/>
+            </Widget>
+            <Widget type="Widget" skin="SearchBarBackground" position_real="0.041666666666666664 0.77852348993288589 0.20000000000000001 0.046979865771812082" name="HexCodeFrame">
+                <Widget type="EditBox" skin="EditBoxEmpty" position_real="0 0 1 1" name="HexCodeInput">
+                    <Property key="Caption" value="rrggbb"/>
+                    <Property key="MaxTextLength" value="6"/>
+                    <Property key="TextAlign" value="Center"/>
+                    <Property key="FontName" value="SM_SearchText"/>
+                </Widget>
+            </Widget>
+            <Widget type="ScrollBar" skin="InventoryVSliderSmall" position_real="0.78333333333333333 0.46979865771812079 0.058333333333333334 0.40268456375838924" name="ColorSliderUpDown">
+                <Property key="MoveToClick" value="true"/>
+                <Property key="Range" value="256"/>
+                <Property key="Repeat" value="true"/>
+            </Widget>
+            <Widget type="TextBox" skin="TextBox" position_real="0.8666666666666667 0.91275167785234901 0.058333333333333334 0.046979865771812082" name="tag_down">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+                <Property key="Caption" value="\/"/>
+            </Widget>
+            <Widget type="TextBox" skin="TextBox" position_real="0.84999999999999998 0.91946308724832215 0.058333333333333334 0.046979865771812082" name="tag_green">
+                <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+                <Property key="Caption" value="G"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+            <Widget type="TextBox" skin="TextBox" position_real="0.85833333333333328 0.9261744966442953 0.058333333333333334 0.046979865771812082" name="tag_blue">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+                <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+                <Property key="Caption" value="B"/>
+                <Property key="TextAlign" value="Center"/>
+            </Widget>
+            <Widget type="Button" skin="ToggleButton" position_real="0.050000000000000003 0.55570469798657718 0.19166666666666668 0.079194630872483227" name="button_3d">
+                <Property key="FontName" value="SM_Button"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="Caption" value="3D PAINTING"/>
+                <Property key="TextColour" value="1 1 1"/>
+                <Property key="TextShadow" value="true"/>
+                <Property key="TextShadowColour" value="0 0 0"/>
+                <Property key="NeedMouse" value="true"/>
+                <Property key="Visible" value="true"/>
+            </Widget>
+            <Widget type="Button" skin="ToggleButton" position_real="0.050000000000000003 0.42953020134228187 0.19166666666666668 0.12080536912751678" name="button_mass_color">
+                <Property key="TextColour" value="1 1 1"/>
+                <Property key="TextShadowColour" value="0 0 0"/>
+                <Property key="FontName" value="SM_Button"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="Caption" value="MASS COLOR\nPARTS AND\nJOINTS"/>
+                <Property key="TextShadow" value="true"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.20833333333333334 0.42281879194630873 0.050000000000000003 0.038926174496644296" name="tick_mass_color">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+                <Property key="ImageTexture" value="checkmark.png"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.20833333333333334 0.5436241610738255 0.050000000000000003 0.038926174496644296" name="tick_3d">
+                <Property key="NeedMouse" value="false"/>
+                <Property key="NeedKey" value="false"/>
+                <Property key="ImageTexture" value="checkmark.png"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.8833333333333333 0.46979865771812079 0.058333333333333334 0.40268456375838924" name="ColorBarImage">
+                <Property key="ImageName" value="color_bar.png"/>
+                <Property key="ImageTexture" value="color_bar.png"/>
+                <Widget type="ScrollBar" skin="InventoryVSliderSmall" position_real="-0.42857142857142855 -0.016666666666666666 1.8571428571428572 1.0333333333333334" name="ColorBarSlider">
+                    <Property key="Range" value="256"/>
+                    <Property key="MoveToClick" value="true"/>
+                    <Property key="Repeat" value="true"/>
+                </Widget>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.7416666666666667 0.89932885906040272 0.058333333333333334 0.046979865771812082">
+                <Property key="ImageTexture" value="icon_keybinds_arrow_right.png"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.19166666666666668 0.89932885906040272 0.058333333333333334 0.046979865771812082">
+                <Property key="ImageTexture" value="icon_keybinds_arrow_left.png"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.78333333333333333 0.87248322147651003 0.058333333333333334 0.046979865771812082">
+                <Property key="ImageTexture" value="icon_keybinds_arrow_down.png"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position_real="0.78333333333333333 0.42281879194630873 0.058333333333333334 0.046979865771812082">
+                <Property key="ImageTexture" value="icon_keybinds_arrow_up.png"/>
+            </Widget>
+        </Widget>
+    </Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>

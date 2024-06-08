@@ -1,244 +1,156 @@
----@diagnostic disable: inject-field
-dofile("$SURVIVAL_DATA/Scripts/game/survival_loot.lua")
+---@diagnostic disable: undefined-field
+dofile("$SURVIVAL_DATA/Scripts/game/survival_items.lua")
+dofile("$CONTENT_DATA/Scripts/mod_utils.lua")
 
----A Chest can be used to store items from your inventory. Stored items cannot be deleted and will be dropped if the Chest is destroyed.
----@class Chest : ShapeClass
----@field sv ChestSv
----@field cl ChestCl
-Chest = class(nil)
+Chest = class()
 Chest.poseWeightCount = 1
 
---------------------
--- #region Server
---------------------
+FoodUuids = {
+	obj_plantables_banana,
+	obj_plantables_blueberry,
+	obj_plantables_orange,
+	obj_plantables_pineapple,
+	obj_plantables_carrot,
+	obj_plantables_redbeet,
+	obj_plantables_tomato,
+	obj_plantables_broccoli,
+	obj_plantables_potato,
+	obj_consumable_sunshake,
+	obj_consumable_carrotburger,
+	obj_consumable_pizzaburger,
+	obj_consumable_longsandwich,
+	obj_consumable_milk,
+	obj_resource_steak,
+	obj_resource_corn,
+	obj_forest_blueberry,
+	obj_pizza_slice,
+	obj_pizza,
+	obj_bowl_carrot_soup,
+	obj_bowl_salad,
+	obj_plate_sbt,
+	obj_bowl_goulash,
+	obj_mug_water,
+	obj_mug_orange_juice,
+	obj_woc_patty,
+	obj_french_fries,
+}
 
-function Chest.server_onCreate(self)
-	local container = self.shape.interactable:getContainer(0)
-	if not container then
-		container = self.shape:getInteractable():addContainer(0, self.data.slots, 65535)
-	elseif self.shape.body:isOnLift() then
-		--empty container when spawned via lift
-		sm.container.beginTransaction()
-		for i = 0, container.size, 1 do
-			sm.container.setItem(container, i, sm.uuid.getNil(), 0)
-		end
-		sm.container.endTransaction()
+function Chest:server_onCreate()
+	self.loaded = true
+	self.checkedForLift = 0
+    if self.interactable:getContainer(0) == nil then
+        self.chestContainer = self.interactable:addContainer( 0, self.data.slots or 10 )
+    end
+	if self.data.filter then
+		self.interactable:getContainer(0):setFilters( self.data.filter == "fridge" and FoodUuids or self.data.filter )
 	end
 
-	self.sv = {
-		container = container,
-		lootList = {},
-		cachedPos = self.shape.worldPosition,
-		playersHavingChestGuiOpen = 0,
-		unloaded = false
-	}
+	self.lastPos = self.shape.worldPosition
+
+	--initial contents load
+	self.contents = mod_utils.getContainerItems(self.interactable:getContainer(0))
+	self.loaded = true
 end
 
 function Chest:server_onFixedUpdate()
-	if not sm.exists(self.shape) then return end
-
-	--cache chest data
-	self.sv.lootList = {}
-	for i = 0, self.sv.container.size, 1 do
-		local item = self.sv.container:getItem(i)
-		if item.uuid ~= sm.uuid.getNil() then
-			self.sv.lootList[#self.sv.lootList + 1] = item
+	self.loaded = true
+	
+	if self.checkedForLift == 7 then
+		if self.interactable:getContainer(0) ~= nil and self.shape.body:isOnLift() and self.interactable.power ~= 69420 then
+			self.interactable:removeContainer(0)
+			self.chestContainer = self.interactable:addContainer( 0, self.data.slots or 10 )
 		end
+		self.network:setClientData(true)
+		self.interactable.power = 0
 	end
-
-	self.sv.cachedPos = self.shape.worldPosition
-
-	if self.shape.body:isOnLift() then
-		Chest.setIsInWater(self, false)
-		self.sv.unloaded = true
-	else -- Does this violate variable naming rules? Yes. Do I care? Fuck no!
-		self.sv.unloaded = false
+	if self.checkedForLift < 8 then
+		self.checkedForLift = self.checkedForLift + 1
 	end
-end
-
-function Chest.server_onDestroy(self)
-	--drop chest contents when destroyed
-	---@diagnostic disable-next-line: undefined-field
-	if not self.sv.unloaded then
-		---@diagnostic disable-next-line: undefined-global
-		SpawnLoot(sm.player.getAllPlayers()[1], self.sv.lootList, self.sv.cachedPos)
+	
+	if sm.game.getCurrentTick() % 40 == 0 then
+		self.lastPos = self.shape.worldPosition
+	end
+	--Only way to access the container stuff after DESTRUCTION
+	local ownContainer = self.interactable:getContainer(0)
+	if ownContainer == nil then return end
+	if ownContainer:hasChanged( sm.game.getCurrentTick() - 1 ) then
+		self.contents = mod_utils.getContainerItems(self.interactable:getContainer(0))
 	end
 end
 
-function Chest.server_canErase(self)
-	return self.sv.container:isEmpty()
+function Chest:client_onClientDataUpdate(data)
+	self.cl.checkedForLift = data
 end
 
-function Chest.server_onUnload(self)
-	self.sv.unloaded = true
+function Chest:server_onUnload()
+	self.loaded = false
 end
 
-function Chest.sv_openChestAnim(self)
-	self.sv.playersHavingChestGuiOpen = self.sv.playersHavingChestGuiOpen + 1
-	if self.sv.playersHavingChestGuiOpen == 1 then
-		self.network:sendToClients("cl_openChestAnim")
-	end
+function Chest:server_onDestroy()
+	if #self.contents < 1 or not self.loaded or not sm.game.getLimitedInventory() then return end
+	SpawnLoot(sm.player.getAllPlayers()[1], self.contents, self.lastPos)
 end
 
-function Chest.sv_closeChestAnim(self)
-	self.sv.playersHavingChestGuiOpen = self.sv.playersHavingChestGuiOpen - 1
-	if self.sv.playersHavingChestGuiOpen == 0 then
-		self.network:sendToClients("cl_closeChestAnim")
-	end
+function Chest:sv_updateState( toggle )
+    self.network:sendToClients("cl_updateState", toggle)
+	local effectName = self.data.forcedEffect or ((self.data.effect or "Chest") .. " - " .. (toggle and "Open" or "Close"))
+	--print(effectName)
+	sm.effect.playEffect(effectName, self.shape.worldPosition)
 end
-
--- #endregion
-
---------------------
--- #region Client
---------------------
-
-local chestOpeningSpeed = 8.0
-local effectRoationFix = sm.vec3.getRotation(sm.vec3.new(0, 0, 1), sm.vec3.new(0, 1, 0))
 
 function Chest:client_onCreate()
-	---@diagnostic disable-next-line: missing-fields
 	self.cl = {}
-	self.cl.chestAnimDirection = -1
-	self.cl.isInWater = false
-	if self.data.uwLoopingEffect then
-		self.cl.bubblesLooping = sm.effect.createEffect(self.data.uwLoopingEffect, self.interactable)
-	else
-		self.cl.bubblesLooping = sm.effect.createEffect("Chests - Large_chest_bubbles_loop", self.interactable)
-	end
-	self.cl.bubblesLooping:setOffsetRotation(effectRoationFix)
+	self.cl.checkedForLift = false
+	self.animSpeedMultiplier = self.data.animationSpeed or 15
+    self.gui = sm.gui.createContainerGui()
+    self.gui:setOnCloseCallback("cl_onClose")
+    self.gui:setText( "UpperName", string.upper(sm.shape.getShapeTitle(self.shape.uuid)) or "#{CONTAINER_TITLE_GENERIC}")
+    self.gui:setText( "LowerName", "#{INVENTORY_TITLE}" )
+	self.gui:setVisible( "TakeAll", self.data.takeAll == nil or self.data.takeAll )
+
+    self.open = false
+    self.animProgress = 0
 end
 
-function Chest.client_onInteract(self, character, state)
-	if not state then return end
-	local container = self.shape.interactable:getContainer(0)
+function Chest:client_onInteract( character, state )
+    if not state or not self.cl.checkedForLift then return end
+	local container = self.shape.interactable:getContainer( 0 )
 	if container then
-		self.cl.containerGui = sm.gui.createContainerGui(true)
-		if self.data.title then
-			self.cl.containerGui:setText("UpperName", self.data.title)
-		else
-			self.cl.containerGui:setText("UpperName", "#{CONTAINER_TITLE_GENERIC}")
-		end
-		self.cl.containerGui:setVisible("TakeAll", true)
-		self.cl.containerGui:setContainer("UpperGrid", container);
-		self.cl.containerGui:setText("LowerName", "#{INVENTORY_TITLE}")
-		self.cl.containerGui:setContainer("LowerGrid", sm.localPlayer.getInventory())
-		self.cl.containerGui:setOnCloseCallback("cl_guiClosed")
-		self.cl.containerGui:open()
-
-		if self.data.openSound then
-			if self.data.openSound2 and sm.cae_injected then
-				if math.random(0, 1) == 0 then
-					sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
-				else
-					sm.effect.playEffect(self.data.openSound2, self.shape.worldPosition)
-				end
-			else
-				sm.effect.playEffect(self.data.openSound, self.shape.worldPosition)
-			end
-		else
-			sm.effect.playEffect("Action - Chest_Open", self.shape.worldPosition)
-		end
-		self.network:sendToServer("sv_openChestAnim")
+		self.gui:setContainer( "UpperGrid", container )
+		self.gui:setContainer( "LowerGrid", sm.localPlayer.getInventory() )
+		self.gui:open()
 	end
+	if self.data.hasPose ~= nil or self.data.hasPose == false then return end
+	self.network:sendToServer("sv_updateState", true)
 end
 
-function Chest.cl_guiClosed(self)
-	self.network:sendToServer("sv_closeChestAnim")
-	if self.data.closeSound then
-		if self.data.closeSound2 and sm.cae_injected then
-			if math.random(0, 1) == 0 then
-				sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
-			else
-				sm.effect.playEffect(self.data.closeSound2, self.shape.worldPosition)
-			end
-		else
-			sm.effect.playEffect(self.data.closeSound, self.shape.worldPosition)
-		end
-	else
-		sm.effect.playEffect("Action - Chest_Close", self.shape.worldPosition)
+function Chest:client_canCarry()
+	self.loaded = false
+	local container = self.shape.interactable:getContainer( 0 )
+	if container and sm.exists( container ) then
+		return not container:isEmpty()
 	end
+	return false
 end
 
-function Chest.client_onDestroy(self)
-	if self.cl.containerGui then
-		if sm.exists(self.cl.containerGui) then
-			self.cl.containerGui:close()
-			self.cl.containerGui:destroy()
+
+function Chest:client_onUpdate( dt )
+	if sm.game.getCurrentTick() % 40 == 0 and self.open then
+		if not self.gui:isActive() then
+			self.network:sendToServer("sv_updateState", false)
 		end
 	end
+
+    if self.open and self.animProgress == 1 or not self.open and self.animProgress == 0 then return end
+
+    self.animProgress = sm.util.clamp(self.animProgress + (self.open and dt*self.animSpeedMultiplier or -dt*self.animSpeedMultiplier), 0, 1)
+    self.interactable:setPoseWeight( 0, self.animProgress )
 end
 
-function Chest.cl_openChestAnim(self)
-	self.cl.chestAnimDirection = 1
-	if self.cl.isInWater then
-		if self.data.uwOpenEffect then
-			sm.effect.playEffect(self.data.uwOpenEffect, self.shape.worldPosition, nil,
-				self.shape.worldRotation * effectRoationFix)
-		else
-			sm.effect.playEffect("Chests - Large_chest_bubbles_open", self.shape.worldPosition, nil,
-				self.shape.worldRotation * effectRoationFix)
-		end
-	end
+function Chest:cl_onClose()
+    self.network:sendToServer("sv_updateState", false)
 end
 
-function Chest.cl_closeChestAnim(self)
-	self.cl.chestAnimDirection = -1
-	if self.cl.isInWater then
-		if self.data.uwCloseEffect then
-			sm.effect.playEffect(self.data.uwCloseEffect, self.shape.worldPosition, nil,
-				self.shape.worldRotation * effectRoationFix)
-		else
-			sm.effect.playEffect("Chests - Large_chest_bubbles_close", self.shape.worldPosition, nil,
-				self.shape.worldRotation * effectRoationFix)
-		end
-	end
+function Chest:cl_updateState( toggle )
+    self.open = toggle
 end
-
-function Chest.client_onUpdate(self, dt)
-	local poseWeight = self.interactable:getPoseWeight(0)
-	poseWeight = poseWeight + (chestOpeningSpeed * self.cl.chestAnimDirection) * dt
-	poseWeight = sm.util.clamp(poseWeight, 0, 1)
-	self.interactable:setPoseWeight(0, poseWeight)
-	if self.cl.isInWater then
-		if not self.cl.bubblesLooping:isPlaying() then
-			self.cl.bubblesLooping:start()
-		end
-	else
-		if self.cl.bubblesLooping:isPlaying() then
-			self.cl.bubblesLooping:stop()
-		end
-	end
-end
-
--- #endregion
-
---------------------
--- #region Custom
---------------------
-
-function Chest.setIsInWater(self, isInWater)
-	self.cl.isInWater = isInWater
-end
-
--- #endregion
-
---------------------
--- #region Types
---------------------
-
----@class ChestSv
----@field container Container
----@field cachedPos Vec3 cached position of the Chest
----@diagnostic disable-next-line: undefined-doc-name
----@field lootList table <number, Item> list of all items in a Chest
----@field playersHavingChestGuiOpen integer how many players have the chest opened rn
-
----@class ChestCl
----@field containerGui GuiInterface gui that is visible when opening the chest
----@field chestAnimDirection -1|1 whehter the chest keeps opening or closing
----@field isInWater boolean whehter the chest is in the water or not
----@field bubblesLooping Effect Looping bubbles effect that plays when chest is underwater
-
-
--- #endregion

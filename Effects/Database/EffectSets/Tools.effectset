@@ -1,32 +1,29 @@
 {
-    "Dirtf - Tirade_flames": {
-        "effectList": [
-            {
-                "offset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "particles": [
-                    "DMCA_tirade_flames"
-                ],
-                "type": "particle"
-            }
-        ]
-    },
-    "Medi - Beam_segment": {
-        "effectList": [
-            {
-                "offset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "particles": [
-                    "medi_beam_segment"
-                ],
-                "type": "particle"
-            }
-        ]
-    }
+   "Dirtf - Tirade_flames" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "DMCA_tirade_flames" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "Medi - Beam_segment" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "medi_beam_segment" ],
+            "type" : "particle"
+         }
+      ]
+   },
+   "PaintTool - Bot_highlight" : {
+      "effectList" : [
+         {
+            "offset" : [ 0.0, 0.0, 0.0 ],
+            "particles" : [ "p_arrow_bot_highlight" ],
+            "type" : "particle"
+         }
+      ]
+   }
 }
